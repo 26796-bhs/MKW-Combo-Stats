@@ -1,0 +1,139 @@
+-- database: ./database.db
+
+-- Use the ▷ button in the top right corner to run the entire file.
+
+SELECT * FROM "table-name";
+
+
+CREATE TABLE `Characters` (
+    `Name` TEXT PRIMARY KEY UNIQUE NOT NULL,
+    `SpeedOnRoad` INTEGER,
+    `SpeedOffRoad` INTEGER,
+    `SeedOnWater` INTEGER,
+    `Acceleration` INTEGER,
+    `Mini-turbo` INTEGER,
+    `Weight` INTEGER,
+    `HandlingOnRoad` INTEGER,
+    `HandlingOffRoad` INTEGER,
+    `HandlingOnWater` INTEGER
+    );
+
+CREATE TABLE `Vehicles` (
+    `Name` TEXT PRIMARY KEY UNIQUE NOT NULL,
+    `VehicleType` TEXT,
+    `SpeedOnRoad` INTEGER,
+    `SpeedOffRoad` INTEGER,
+    `SeedOnWater` INTEGER,
+    `Acceleration` INTEGER,
+    `Mini-turbo` INTEGER,
+    `Weight` INTEGER,
+    `HandlingOnRoad` INTEGER,
+    `HandlingOffRoad` INTEGER,
+    `HandlingOnWater` INTEGER
+);
+
+ALTER TABLE `Characters` ADD COLUMN `ImageUrl` TEXT;
+
+ALTER TABLE `Vehicles` ADD COLUMN `ImageUrl` TEXT;
+
+INSERT INTO `Characters` VALUES (
+    `Mario`
+),(
+    `Luigi`
+),(
+    `Peach`
+),(
+    `Yoshi`
+),(
+    `Toad`
+),(
+    `KoopaTroopa`
+),(
+    `Bowser`
+),(
+    `Wario`
+),(
+    `Waluigi`
+),(
+    `Pualine`
+),(
+    `Baby Mario`
+),(
+    `Baby Luigi`
+),(
+    `Baby Peach`
+),(
+    `Baby Daisy`
+),(
+    `Toadette`
+),(
+    `Baby Rosalina`
+),(
+    `Shy Guy`
+),(
+    `Nabbit`
+),(
+    `Paranha Plant`
+),(
+    `Hammer Bro`
+),(
+    `Monty Mole`
+),(
+    `Goomba`
+),(
+    `Sidestepper`
+),(
+    `Cheep Cheep`
+),(
+    `Dry Bones`
+),(
+    `Wiggler`
+),(
+    `Pokey`
+),(
+    `Cow`
+),(
+    `Stingby`
+),(
+    `Snowman`
+),(
+    `Penguin`
+),(
+    `Para-Biddybud`
+),(
+    `Daisy`
+),(
+    `Rosalina`
+),(
+    `Lakitu`
+),(
+    `Bowser Jr.`
+),(
+    `Birdo`
+),(
+    `King Boo`
+),(
+    `Donkey Kong`
+),(
+    `Spike`
+),(
+    `Cataquack`
+),(
+    `Pianta`
+),(
+    `Rocky Wrench`
+),(
+    `Conkdor`
+),(
+    `Peepa`
+),(
+    `Swoop`
+),(
+    `Fish Bone`
+),(
+    `Coin Coffer`
+),(
+    `Dolphin`
+),(
+    `Chargin' Chuck`
+)
