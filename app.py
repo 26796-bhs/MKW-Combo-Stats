@@ -30,5 +30,9 @@ def query_db(query, args=(), one=False):
 def home(): # Home page
     return query_db("SELECT * FROM CHARACTERS")
 
+@app.route('/db/')
+def db(): # Database
+    return "db"
+
 if __name__ == "__main__":
     app.run(debug=True)

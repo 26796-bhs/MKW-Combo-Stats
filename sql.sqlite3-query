@@ -2,9 +2,12 @@
 
 -- Use the ▷ button in the top right corner to run the entire file.
 
-DROP TABLE IF EXISTS  Characters;
-DROP TABLE IF EXISTS  VEHICLES;
+DROP TABLE IF EXISTS Characters;
+DROP TABLE IF EXISTS Vehicles;
 DROP TABLE IF EXISTS Types;
+DROP TABLE IF EXISTS Maps;
+DROP TABLE IF EXISTS Cups;
+DROP TABLE IF EXISTS Rally;
 
 CREATE TABLE `Types` (
     `ID` PRIMARY KEY UNIQUE,
@@ -50,6 +53,36 @@ CREATE TABLE `Vehicles` (
     `HandlingOffRoad` INTEGER,
     `HandlingOnWater` INTEGER,
     `ImageUrl` TEXT
+);
+
+CREATE TABLE `Maps` (
+    `HiddenID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+    `Name` TEXT UNIQUE NOT NULL,
+    `Road` FLOAT,
+    `OffRoad` FLOAT,
+    `Water` FLOAT,
+    `BestCharacter` INTEGER REFERENCES `Characters`(`HiddenID`),
+    `BestVehicle` INTEGER REFERENCES `Vehicles`(`HiddenID`)
+);
+
+CREATE TABLE `Cups` (
+    `HiddenID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+    `Name` TEXT UNIQUE NOT NULL,
+    `Course1` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Course2` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Course3` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Course4` INTEGER REFERENCES `Maps`(`HiddenID`)
+);
+
+CREATE TABLE `Rally` (
+    `HiddenID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+    `Name` TEXT UNIQUE NOT NULL,
+    `StartingPoint` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Checkpoint1` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Checkpoint2` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Checkpoint3` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `Checkpoint4` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `FinalCourse` INTEGER REFERENCES `Maps`(`HiddenID`),
 );
 
 INSERT INTO `Characters` VALUES (
@@ -235,6 +268,10 @@ INSERT INTO `Vehicles` VALUES (
     38, "Dread Sled", 3, -2, 4, 0, -1, -1, 0, -2, 4, -1, "https://mario.wiki.gallery/images/thumb/5/52/MKWorld_ATV_Dread_Sled.png/225px-MKWorld_ATV_Dread_Sled.png"
     ),(
     39, "Stellar Sled", 3, 1, 3, 6, -4, -4, 2, -4, -3, 3, "https://mario.wiki.gallery/images/thumb/5/5a/MKWorld_Kart_Stellar_Sled.png/225px-MKWorld_Kart_Stellar_Sled.png"
+);
+
+INSERT INTO `Maps` VALUES (
+    "1", "TEST", 0.5, 0.5, 0, 1, 1
 );
 
 
