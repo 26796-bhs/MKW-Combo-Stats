@@ -82,7 +82,7 @@ CREATE TABLE `Rally` (
     `Checkpoint2` INTEGER REFERENCES `Maps`(`HiddenID`),
     `Checkpoint3` INTEGER REFERENCES `Maps`(`HiddenID`),
     `Checkpoint4` INTEGER REFERENCES `Maps`(`HiddenID`),
-    `FinalCourse` INTEGER REFERENCES `Maps`(`HiddenID`),
+    `FinalCourse` INTEGER REFERENCES `Maps`(`HiddenID`)
 );
 
 INSERT INTO `Characters` VALUES (

@@ -1,4 +1,4 @@
-from flask import Flask, g
+from flask import Flask, g, render_template
 import sqlite3
 
 DATABASE = "database.db"
@@ -25,10 +25,22 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 
-
 @app.route('/')
 def home(): # Home page
-    return query_db("SELECT * FROM CHARACTERS")
+    return render_template()
+
+
+@app.route('/characters')
+def char(): # Fetch characters
+    return query_db("SELECT * FROM Characters")
+
+@app.route('/vehicles')
+def vehic(): #Fetch vheicles
+    return query_db("SELECT * FROM Vehicles")
+
+@app.route('/maps')
+def maps():
+    return query_db("SELECT * FROM Maps")
 
 @app.route('/db/')
 def db(): # Database
