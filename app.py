@@ -27,7 +27,7 @@ def query_db(query, args=(), one=False):
 
 @app.route('/')
 def home(): # Home page
-    return render_template()
+    return render_template("layout.html")
 
 
 @app.route('/characters')
