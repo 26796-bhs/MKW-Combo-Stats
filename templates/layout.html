@@ -19,11 +19,22 @@
                 <a class="nav-link" href="/About">About</a>
                 <a class="nav-link" href="/Credits">Credits</a>
                 <a class="source-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
+                <a href="javascript:void(0);" class="icon" onclick="toggleNav()">&#9776;</a>
             </div>
         </div>
     </div>
     {% block body %}
     {% endblock %}
+    <script>
+        function toggleNav() {
+            var x = document.querySelector(".nav-links");
+            if (x.className === "nav-links") {
+                x.className += " responsive";
+            } else {
+                x.className = "nav-links";
+            }
+        }
+    </script>
 </body>
 
 </html>

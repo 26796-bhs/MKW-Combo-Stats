@@ -26,9 +26,7 @@
   -webkit-backdrop-filter: blur(50px) brightness(100%);
 }
 
-.site-title,
-.nav-link,
-.source-button {
+.site-title, .nav-link, .source-button {
   position: relative;
   z-index: 1;
   font-family: "Inter", Helvetica;
@@ -53,6 +51,8 @@
   text-decoration: underline;
 }
 
+
+
 .source-button {
   display: inline-flex;
   align-items: center;
@@ -63,4 +63,54 @@
   color: #ffffff;
   border-radius: 29px;
   font-size: 16px;
+}
+
+/* Hamburger icon */
+.icon {
+  display: none;
+  font-size: 24px;
+  color: #000000;
+  text-decoration: none;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .box .nav-bar {
+    padding: 0 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links.responsive {
+    position: absolute;
+    top: 75px;
+    right: 0;
+    width: 200px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    padding: 20px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 10px 10px;
+  }
+
+  .nav-links.responsive .nav-link,
+  .nav-links.responsive .source-button {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+  }
+
+  .nav-links.responsive .source-button {
+    margin-top: 8px;
+  }
+
+  .icon {
+    display: block;
+  }
 }
