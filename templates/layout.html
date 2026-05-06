@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MKW COMBO STATS</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='guide.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }} ">
+</head>
+
+<body>
+    <div class="box">
+        <div class="nav-bar">
+            <div class="navbar"></div>
+            <a class="site-title" href="/">MKW Combo Stats</a>
+            <div class="nav-links">
+                <a class="nav-link" href="/About">About</a>
+                <a class="nav-link" href="/Credits">Credits</a>
+                <a class="source-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
+            </div>
+        </div>
+    </div>
+    {% block body %}
+    {% endblock %}
+</body>
+
+</html>
