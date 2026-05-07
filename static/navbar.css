@@ -74,6 +74,8 @@
     color: #000000;
     text-decoration: none;
     cursor: pointer;
+    position: relative;
+    z-index: 2; 
 }
 
 /* Responsive styles */
@@ -87,6 +89,7 @@
     }
 
     .nav-links.responsive {
+        display: flex; /* This is the one thing wasted me 10 minutes to make the dropdown show */
         position: absolute;
         top: 75px;
         right: 20px;
