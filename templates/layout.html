@@ -19,14 +19,14 @@
                 <a class="nav-link" href="/About">About</a>
                 <a class="nav-link" href="/Credits">Credits</a>
                 <a class="source-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
-                <a href="javascript:void(0);" class="icon" onclick="toggleNav()">&#9776;</a>
             </div>
+            <a href="javascript:void(0);" class="icon" onclick="toggleNavBar()">&#9776;</a>
         </div>
     </div>
     {% block body %}
     {% endblock %}
     <script>
-        function toggleNav() {
+        function toggleNavBar() {
             var x = document.querySelector(".nav-links");
             if (x.className === "nav-links") {
                 x.className += " responsive";

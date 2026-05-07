@@ -1,116 +1,120 @@
 .box {
-  position: relative;
-  width: 100%;
-  min-height: 111px;
+    position: relative;
+    width: 100%;
+    min-height: 111px;
 }
 
 .box .nav-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 75px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 10;
 }
 
 .box .navbar {
-  position: absolute;
-  inset: 0;
-  background-color: #d9d9d900;
-  box-shadow: 0px 0px 100px #00000040;
-  backdrop-filter: blur(50px) brightness(100%);
-  -webkit-backdrop-filter: blur(50px) brightness(100%);
+    position: absolute;
+    inset: 0;
+    background-color: #d9d9d900;
+    box-shadow: 0px 0px 100px #00000040;
+    backdrop-filter: blur(50px) brightness(100%);
+    -webkit-backdrop-filter: blur(50px) brightness(100%);
 }
 
-.site-title, .nav-link, .source-button {
-  position: relative;
-  z-index: 1;
-  font-family: "Inter", Helvetica;
-  font-weight: 400;
-  color: #000000;
-  text-decoration: none;
-  white-space: nowrap;
+.site-title,
+.nav-link,
+.source-button {
+    position: relative;
+    z-index: 1;
+    font-family: "Inter", Helvetica;
+    font-weight: 400;
+    color: #000000;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 .site-title {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
 }
 
 .nav-link {
-  font-size: 16px;
-  text-decoration: underline;
+    font-size: 16px;
+    text-decoration: underline;
 }
 
 
 
 .source-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  min-height: 44px;
-  background-color: var(--colorsindigo);
-  color: #ffffff;
-  border-radius: 29px;
-  font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    min-height: 44px;
+    background-color: var(--colorsindigo);
+    color: #ffffff;
+    border-radius: 29px;
+    font-size: 16px;
 }
 
 /* Hamburger icon */
 .icon {
-  display: none;
-  font-size: 24px;
-  color: #000000;
-  text-decoration: none;
+    display: none;
+    font-size: 24px;
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-  .box .nav-bar {
-    padding: 0 20px;
-  }
+    .box .nav-bar {
+        padding: 0 20px;
+    }
 
-  .nav-links {
-    display: none;
-  }
+    .nav-links {
+        display: none;
+    }
 
-  .nav-links.responsive {
-    position: absolute;
-    top: 75px;
-    right: 0;
-    width: 200px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
-    padding: 20px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 0 0 10px 10px;
-  }
+    .nav-links.responsive {
+        position: absolute;
+        top: 75px;
+        right: 20px;
+        width: 180px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(50px);
+        -webkit-backdrop-filter: blur(50px);
+        padding: 20px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 10px 10px;
+        z-index: 11;
+    }
 
-  .nav-links.responsive .nav-link,
-  .nav-links.responsive .source-button {
-    width: 100%;
-    text-align: left;
-    margin: 0;
-  }
+    .nav-links.responsive .nav-link,
+    .nav-links.responsive .source-button {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+    }
 
-  .nav-links.responsive .source-button {
-    margin-top: 8px;
-  }
+    .nav-links.responsive .source-button {
+        margin-top: 8px;
+    }
 
-  .icon {
-    display: block;
-  }
+    .icon {
+        display: block; 
+    }
 }
