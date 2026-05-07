@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='guide.css') }} ">
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }} ">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 
 <body>
@@ -20,17 +21,10 @@
                 <a class="nav-link" href="/Credits">Credits</a>
                 <a class="source-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
             </div>
-            <a href="javascript:void(0);" class="icon" onclick="toggleNavBar()">&#9776;</a>
+            <a href="javascript:void(0);" class="icon">&#9776;</a>
         </div>
     </div>
     {% block body %}
     {% endblock %}
-    <script>
-        function toggleNavBar() {
-            var x = document.querySelector(".nav-links");
-            x.classList.toggle("responsive");
-        }
-    </script>
 </body>
-
 </html>
