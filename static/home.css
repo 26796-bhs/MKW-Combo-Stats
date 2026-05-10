@@ -1,9 +1,9 @@
 .stats-card {
     position: absolute;
-    width: 30%;
-    left: 35px;
-    bottom: 35px;
-    top: 110px;
+    width: 22.5%;
+    left: 50px;
+    bottom: 50px;
+    top: 125px;
     border-radius: 25px;
 }
 
@@ -30,17 +30,19 @@
 .selected-character-pfp {
     position: absolute;
     width: 100px;
-    left: 20%;
+    left: 10%;
     top: 25px;
-    /* transform: translateX(-50%); */
+    filter: blur(1.5px)
+        /* transform: translateX(-50%); */
 }
 
 .selected-vehicle-pfp {
     position: absolute;
     width: 100px;
-    right: 20%;
+    right: 10%;
     top: 25px;
-    /* transform: translateX(50%); */
+    filter: blur(1.5px)
+        /* transform: translateX(50%); */
 }
 
 .selection-pfp {
@@ -48,11 +50,13 @@
     width: 75px;
 }
 
+/* This is the "x" sign between two selected pfp (Why did I name it eks I'll never remember) */
 .eks {
     aspect-ratio: 1/1;
     position: absolute;
     width: 25px;
-    top: 100px;
+    top: 62.5px;
     left: 50%;
     transform: translateX(-50%);
+    filter: blur(1.25px)
 }
