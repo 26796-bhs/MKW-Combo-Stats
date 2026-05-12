@@ -24,6 +24,7 @@
     border-radius: 35px;
     aspect-ratio: 1 / 1;
     background-color: white;
+    corner-shape: superellipse(1.1);
 }
 
 .selected-pfp {
@@ -54,56 +55,61 @@
     top: 87.5px;
     left: 50%;
     transform: translateX(-50%);
-    filter: blur(1.25px)
+    filter: blur(0.75px)
 }
 
 .sections {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 24px;
     position: relative;
-    margin-top: 175px;
-    margin-left: 25px;
-    margin-right: 25px;
-    margin-bottom: 25px;
+    margin-top: 145px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 70px;
 }
 
 .section {
     display: block;
-    padding: 12px 14px;
+    padding: 8px 12px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
     width: 100%;
 }
 
 .section-title {
-    margin: 0 0 10px 0;
-    font-size: 18px;
+    margin: 0 0 8px 0;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: 1px;
     color: #052631;
+    font-family: "Stack Sans Text", sans-serif;
+    font-style: normal;
 }
 
 /* Stats rows */
 .section>div[class^="section-stats"] {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 8px;
 }
 
 .stats-title {
     margin: 0;
+    margin-left: 10px;
     font-size: 13px;
     color: #071229;
     width: 70px;
     flex: 0 0 auto;
+    font-family: "SN Pro", sans-serif;
+    font-style: normal;
 }
 
 .stats-progress-bar {
     flex: 1 1 auto;
-    height: 12px;
+    height: 10px;
     background: #ffffff;
     border-radius: 999px;
     overflow: hidden;
@@ -121,4 +127,62 @@
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     /* box-shadow: 0 3px 8px rgba(46, 151, 255, 0.18); */
+}
+
+.action-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 3 / 1;
+    width: 150px;
+    border-radius: 75px;
+    overflow: hidden;
+    z-index: 1;
+    color: #ffffff;
+    font-family: "Stack Sans Text", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(130deg, #2E96E7 0%, #41BDCD 35%, #60FEA2 100%);
+    filter: blur(2px);
+    border-radius: 999px;
+    z-index: -1;
+}
+
+/* Curved name arcs for selected pfps */
+.name-arc {
+    position: absolute;
+    width: 175px;
+    height: 40px;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.name-arc text {
+    fill: #052631;
+    font-size: 14px;
+    font-family: "Stack Sans Text", sans-serif;
+    font-weight: 700;
+}
+
+.name-arc-character {
+    left: calc(15% + 47.5px);
+    top: calc(45px + 95px + 6px);
+    transform: translateX(-50%);
+}
+
+.name-arc-vehicle {
+    left: calc(100% - 15% - 47.5px);
+    top: calc(45px + 95px + 6px);
+    transform: translateX(-50%);
 }
