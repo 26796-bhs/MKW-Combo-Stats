@@ -75,6 +75,11 @@
     left: calc(100% - 15% - 47.5px);
 }
 
+.name-arc-selection {
+    display: flex;
+    justify-content: center;
+}
+
 /* This is the "x" sign between two selected pfp (Why did I name it eks I'll never remember) */
 .eks {
     aspect-ratio: 1/1;

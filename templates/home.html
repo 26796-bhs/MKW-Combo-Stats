@@ -94,6 +94,8 @@
     <!-- Share -->
     <div class="action-btn">Share</div>
 </div>
+
+
 <div class="combo-selection">
     <div class="dropdown-box">
         <p class="dropdown-title">Characters</p>
@@ -101,7 +103,14 @@
             {% for data in characters %}
             <div class="selection">
                 <img class="pfp-shape selection-pfp" src='{{ data[11] }}' alt='{{ data[1] }}'></img>
-                <!-- name here deal later -->
+
+                <svg class="name-arc name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <text>
+                        <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">Character Name</textPath>
+                    </text>
+                </svg>
             </div>
             {% endfor %}
         </div>
