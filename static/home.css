@@ -47,6 +47,34 @@
     width: 75px;
 }
 
+.name-arc {
+    position: absolute;
+    width: 175px;
+    height: 40px;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+    top: 85px;
+    transform: translateX(-50%);
+}
+
+.name-arc text {
+    fill: #052631;
+    font-size: 14px;
+    font-family: "Stack Sans Text", sans-serif;
+    font-weight: 700;
+}
+
+.name-arc-character {
+    left: calc(15% + 47.5px);
+    top: 85px;
+    transform: translateX(-50%);
+}
+
+.name-arc-vehicle {
+    left: calc(100% - 15% - 47.5px);
+}
+
 /* This is the "x" sign between two selected pfp (Why did I name it eks I'll never remember) */
 .eks {
     aspect-ratio: 1/1;
@@ -156,33 +184,4 @@
     filter: blur(2px);
     border-radius: 999px;
     z-index: -1;
-}
-
-/* Curved name arcs for selected pfps */
-.name-arc {
-    position: absolute;
-    width: 175px;
-    height: 40px;
-    overflow: visible;
-    pointer-events: none;
-    z-index: 2;
-}
-
-.name-arc text {
-    fill: #052631;
-    font-size: 14px;
-    font-family: "Stack Sans Text", sans-serif;
-    font-weight: 700;
-}
-
-.name-arc-character {
-    left: calc(15% + 47.5px);
-    top: calc(45px + 95px + 6px);
-    transform: translateX(-50%);
-}
-
-.name-arc-vehicle {
-    left: calc(100% - 15% - 47.5px);
-    top: calc(45px + 95px + 6px);
-    transform: translateX(-50%);
 }
