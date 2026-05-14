@@ -5,6 +5,7 @@
     bottom: 50px;
     top: 125px;
     border-radius: 25px;
+    corner-shape: superellipse(1.1);
 }
 
 .stats-card::before {
@@ -165,8 +166,8 @@
 .action-btn {
     position: absolute;
     left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
+    bottom: 47px;
+    transform: translate(-50%, 50%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,6 +180,7 @@
     font-family: "Stack Sans Text", sans-serif;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .action-btn::before {
@@ -189,4 +191,61 @@
     filter: blur(2px);
     border-radius: 999px;
     z-index: -1;
+}
+
+.action-btn:hover {
+    width: 165px;
+}
+
+.combo-selection {
+    display: block;
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+    top: 125px;
+    border-radius: 25px;
+    width: 65%;
+}
+
+.dropdown-box {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+    width: 100%;
+    border-radius: 25px;
+
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(250, 250, 250, 0.4);
+    box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
+
+    overflow: hidden;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-box:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.dropdown-title {
+    position: absolute;
+    height: 50px;
+    top: 15px;
+    left: 15px;
+    font-size: 20px;
+    vertical-align: middle;
+    font-family: "Stack Sans Text", sans-serif;
+}
+
+.dropdown-collapsed {
+    height: 50px;
+}
+
+.dropdown-expanded {
+    height: auto;
 }
