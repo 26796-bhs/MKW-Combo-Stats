@@ -43,12 +43,6 @@
     right: 15%;
 }
 
-.selection-pfp {
-    position: static;
-    width: 75px;
-    flex: 0 0 75px;
-}
-
 .name-arc {
     position: absolute;
     width: 175px;
@@ -77,10 +71,20 @@
     left: calc(100% - 15% - 47.5px);
 }
 
+.name-arc.name-arc-selection,
 .name-arc-selection {
+    position: static;
+    width: auto;
+    height: auto;
+    top: auto;
+    left: auto;
+    transform: none;
+    overflow: visible;
+    pointer-events: none;
     display: flex;
-    width: calc(100% - 75px);
+    align-items: center;
     justify-content: center;
+    margin: 0;
 }
 
 /* This is the "x" sign between two selected pfp (Why did I name it eks I'll never remember) */
@@ -211,7 +215,7 @@
 
 .dropdown-box {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 0 20px;
     position: relative;
     width: 100%;
@@ -226,7 +230,7 @@
     overflow: hidden;
 
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: max-height 280ms ease, background-color 200ms ease, transform 200ms ease;
 }
 
 .dropdown-box:hover {
@@ -246,33 +250,53 @@
 }
 
 .dropdown-collapsed {
-    height: 50px;
+    max-height: 50px;
     overflow: hidden;
 }
 
 .dropdown-expanded {
-    height: auto;
-    padding-top: 70px;
-    overflow: auto;
     max-height: 70vh;
-    align-items: flex-start;
 }
 
 .dropdown-contentbox {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+    margin-top: 70px;
     gap: 12px;
     width: 100%;
     box-sizing: border-box;
     padding: 10px 0 20px;
-    align-items: start;
-    grid-auto-rows: minmax(48px, auto);
+    align-items: flex-start;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.dropdown-box.dropdown-expanded .dropdown-contentbox {
+    max-height: calc(70vh - 70px);
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .selection {
     display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 12px;
     padding: 8px 0;
     width: 100%;
+}
+
+.selection-pfp {
+    position: relative;
+    width: 75px;
+    object-fit: cover;
+    object-position: top;
+}
+
+
+.name-arc-selection {
+    position: relative;
+    display: block;
+    width: calc(100% - 75px);
+    justify-content: center;
+    transform: translate(0, 0);
 }
