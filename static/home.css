@@ -44,8 +44,9 @@
 }
 
 .selection-pfp {
-    position: absolute;
+    position: static;
     width: 75px;
+    flex: 0 0 75px;
 }
 
 .name-arc {
@@ -78,6 +79,7 @@
 
 .name-arc-selection {
     display: flex;
+    width: calc(100% - 75px);
     justify-content: center;
 }
 
@@ -240,12 +242,37 @@
     font-size: 20px;
     vertical-align: middle;
     font-family: "Stack Sans Text", sans-serif;
+    z-index: 2;
 }
 
 .dropdown-collapsed {
     height: 50px;
+    overflow: hidden;
 }
 
 .dropdown-expanded {
     height: auto;
+    padding-top: 70px;
+    overflow: auto;
+    max-height: 70vh;
+    align-items: flex-start;
+}
+
+.dropdown-contentbox {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0 20px;
+    align-items: start;
+    grid-auto-rows: minmax(48px, auto);
+}
+
+.selection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    width: 100%;
 }

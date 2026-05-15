@@ -97,10 +97,11 @@
 
 
 <div class="combo-selection">
-    <div class="dropdown-box">
+    <div class="dropdown-box dropdown-expanded">
         <p class="dropdown-title">Characters</p>
         <div class="dropdown-contentbox">
             {% for data in characters %}
+            <script>console.log("test"); console.log(data)</script>
             <div class="selection">
                 <img class="pfp-shape selection-pfp" src='{{ data[11] }}' alt='{{ data[1] }}'></img>
 
@@ -108,7 +109,7 @@
                     aria-hidden="true">
                     <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
-                        <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">Character Name</textPath>
+                        <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
                     </text>
                 </svg>
             </div>
