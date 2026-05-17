@@ -213,6 +213,10 @@
     width: 65%;
 }
 
+.combo-selection>*+* {
+    margin-top: 20px;
+}
+
 .dropdown-box {
     display: flex;
     align-items: flex-start;

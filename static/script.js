@@ -7,13 +7,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const icon = document.querySelector(".icon");
     if (icon) icon.addEventListener("click", toggleNavBar);
 
-    // Toggle dropdown expand/collapse on click
-    const dropdown = document.querySelector('.dropdown-box');
-    if (dropdown) {
+    const dropdowns = document.querySelectorAll('.dropdown-box');
+    dropdowns.forEach(function (dropdown) {
         dropdown.addEventListener('click', function (e) {
-            // Toggle only on clicks to the header area or the container itself
+            // Check if the click was on the title or the dropdown container itself
             if (e.target.closest('.dropdown-title') || e.target === dropdown) {
-                if (dropdown.classList.contains('dropdown-collapsed')) {
+                // Use .toggle() to cleanly switch the classes
+                const isCollapsed = dropdown.classList.contains('dropdown-collapsed');
+
+                if (isCollapsed) {
                     dropdown.classList.remove('dropdown-collapsed');
                     dropdown.classList.add('dropdown-expanded');
                 } else {
@@ -22,5 +24,5 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         });
-    }
+    });
 });
