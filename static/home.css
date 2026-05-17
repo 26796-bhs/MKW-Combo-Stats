@@ -279,10 +279,15 @@
 
 .selection {
     display: flex;
-    justify-content: center;
-    gap: 12px;
+    background-color: #F5D5D575;
+    border-radius: 10px;
+    border-color: #FFFFFF;
+    filter: blur(1.5);
+    align-items: center;
     padding: 8px 0;
     width: 100%;
+    flex-direction: column;
+    /* overflow: hidden; */
 }
 
 .selection-pfp {
@@ -296,7 +301,16 @@
 .name-arc-selection {
     position: relative;
     display: block;
-    width: calc(100% - 75px);
-    justify-content: center;
-    transform: translate(0, 0);
+    width: calc(100px);
+    top: -25px;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.name-arc-selection text {
+    fill: #052631;
+    font-size: 28px;
+    font-family: "Stack Sans Text", sans-serif;
+    font-weight: 700;
 }
