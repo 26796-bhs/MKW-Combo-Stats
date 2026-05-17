@@ -10,9 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll('.dropdown-box');
     dropdowns.forEach(function (dropdown) {
         dropdown.addEventListener('click', function (e) {
-            // Check if the click was on the title or the dropdown container itself
             if (e.target.closest('.dropdown-title') || e.target === dropdown) {
-                // Use .toggle() to cleanly switch the classes
                 const isCollapsed = dropdown.classList.contains('dropdown-collapsed');
 
                 if (isCollapsed) {
