@@ -279,9 +279,11 @@
 
 .selection {
     display: flex;
-    background-color: #F5D5D575;
+    background-color: #fdfdfda0;
     border-radius: 10px;
-    border-color: #FFFFFF;
+    border-color: #F5F5F5;
+    border-style: solid;
+    border-width: 1px;
     filter: blur(1.5);
     align-items: center;
     padding: 8px 0;
@@ -292,7 +294,7 @@
 
 .selection-pfp {
     position: relative;
-    width: 75px;
+    width: 85px;
     object-fit: cover;
     object-position: top;
 }
@@ -301,8 +303,8 @@
 .name-arc-selection {
     position: relative;
     display: block;
-    width: calc(100px);
-    top: -25px;
+    width: 100px;
+    top: -20px;
     overflow: visible;
     pointer-events: none;
     z-index: 2;

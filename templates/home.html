@@ -115,5 +115,23 @@
             {% endfor %}
         </div>
     </div>
+    <div class="dropdown-box dropdown-expanded">
+        <p class="dropdown-title">Vehicles</p>
+        <div class="dropdown-contentbox">
+            {% for data in vehicles %}
+            <div class="selection">
+                <img class="pfp-shape selection-pfp" src='{{ data[12] }}' alt='{{ data[1] }}'></img>
+
+                <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <text>
+                        <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                    </text>
+                </svg>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
