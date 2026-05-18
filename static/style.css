@@ -22,7 +22,7 @@ a {
 }
 
 
-/* If no image given, which this doesnt work :/ */
+/* If no image given, use pure white, which this doesnt work :/ */
 img:not([src]),
 img[src=""] {
   display: block;
@@ -32,7 +32,5 @@ img[src=""] {
 
 html {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
