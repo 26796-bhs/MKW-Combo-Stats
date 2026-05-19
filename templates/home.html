@@ -100,7 +100,8 @@
         <p class="dropdown-title">Characters</p>
         <div class="dropdown-contentbox">
             {% for data in characters %}
-            <div class="selection" style="--bg-image: url('{{ data[11] }}'); --opacity: 0.25;">
+            <div class="selection" data-hiddenid="{{ data[0] }}"
+                style="--bg-image: url('{{ data[11] }}'); --opacity: 0.25;">
                 <img class=" pfp-shape selection-pfp" src='{{ data[11] }}' alt='{{ data[1] }}'></img>
 
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +119,8 @@
         <p class="dropdown-title">Vehicles</p>
         <div class="dropdown-contentbox">
             {% for data in vehicles %}
-            <div class="selection" style="--bg-image: url('{{ data[12] }}'); --opacity: 0.25;">
+            <div class="selection" data-hiddenid="{{ data[0] }}"
+                style="--bg-image: url('{{ data[12] }}'); --opacity: 0.25;">
                 <img class=" pfp-shape selection-pfp" src='{{ data[12] }}' alt='{{ data[1] }}'></img>
 
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"

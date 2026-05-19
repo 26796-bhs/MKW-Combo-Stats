@@ -32,21 +32,30 @@ def home(): # Home page
     return render_template("home.html", characters=characters, vehicles=vehicles)
 
 
-@app.route('/characters')
-def char(): # Fetch characters
-    return query_db("SELECT * FROM Characters")
+@app.route('/characters/<int:id>')
+def char(id): # Fetch characters
+    if id == None:
+        return query_db("SELECT * FROM Characters")
+    else:
+        return query_db("SELECT * FROM Characters WHERE HiddenID = ?", [id])
 
-@app.route('/vehicles')
-def vehic(): #Fetch vheicles
-    return query_db("SELECT * FROM Vehicles")
+@app.route('/vehicles/<int:id>')
+def vehic(id): #Fetch vheicles
+    if id == None:
+        return query_db("SELECT * FROM Vehicles")
+    else:
+        return query_db("SELECT * FROM Vehicles WHERE HiddenID = ?", [id])
 
-@app.route('/maps')
-def maps():
-    return query_db("SELECT * FROM Maps")
+@app.route('/maps/<int:id>')
+def maps(id):
+    if id == None:
+        return query_db("SELECT * FROM Maps")
+    else:
+        return query_db("SELECT * FROM Maps WHERE HiddenID = ?", [id])
 
 @app.route('/db/')
 def db(): # Database
-    return "db"
+    return "Yeah no. You are not getting the whole database by /db/ :sob:"
 
 if __name__ == "__main__":
     app.run(debug=True)

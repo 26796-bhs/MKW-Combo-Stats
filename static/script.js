@@ -8,11 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const selections = document.querySelectorAll('.selection');
     const selectedCharacter = [
         document.querySelector('.selected-character-pfp'),
-        document.querySelector('.name-arc-character').querySelector('textPath')
+        document.querySelector('.name-arc-character').querySelector('textPath'),
+        0
     ]
     const selectedVehicle = [
         document.querySelector('.selected-vehicle-pfp'),
-        document.querySelector('.name-arc-vehicle').querySelector('textPath')
+        document.querySelector('.name-arc-vehicle').querySelector('textPath'),
+        0
     ]
 
     dropdowns.forEach(function (dropdown) {
@@ -36,17 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const name = selection.querySelector('textPath');
         const isCharacter = selection.closest('#character-dropdown');
         const isVehicle = selection.closest('#vehicle-dropdown');
+        const hiddenid = selection.dataset.hiddenid
         selection.addEventListener('click', function (e) {
-            console.log(name.textContent)
-            if (isCharacter) {
+            if (isCharacter && selectedCharacter[2] != hiddenid) {
                 selectedCharacter[0].src = image.src
                 selectedCharacter[0].alt = image.alt
-                console.log(name.textContent)
                 selectedCharacter[1].textContent = name.textContent
-            } else if (isVehicle) {
+                selectedCharacter[2] = hiddenid
+            } else if (isVehicle && selectedVehicle[2] != hiddenid) {
                 selectedVehicle[0].src = image.src
                 selectedVehicle[0].alt = image.alt
                 selectedVehicle[1].textContent = name.textContent
+                selectedVehicle[2] = hiddenid
             }
         })
     })
