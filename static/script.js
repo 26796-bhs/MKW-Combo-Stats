@@ -4,10 +4,17 @@ function toggleNavBar() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const icon = document.querySelector(".icon");
-    if (icon) icon.addEventListener("click", toggleNavBar);
-
     const dropdowns = document.querySelectorAll('.dropdown-box');
+    const selections = document.querySelectorAll('.selection');
+    const selectedCharacter = [
+        document.querySelector('.selected-character-pfp'),
+        document.querySelector('.name-arc-character').querySelector('textPath')
+    ]
+    const selectedVehicle = [
+        document.querySelector('.selected-vehicle-pfp'),
+        document.querySelector('.name-arc-vehicle').querySelector('textPath')
+    ]
+
     dropdowns.forEach(function (dropdown) {
         dropdown.addEventListener('click', function (e) {
             if (e.target.closest('.dropdown-title') || e.target === dropdown) {
@@ -23,4 +30,24 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    selections.forEach(function (selection) {
+        const image = selection.querySelector('.selection-pfp');
+        const name = selection.querySelector('textPath');
+        const isCharacter = selection.closest('#character-dropdown');
+        const isVehicle = selection.closest('#vehicle-dropdown');
+        selection.addEventListener('click', function (e) {
+            console.log(name.textContent)
+            if (isCharacter) {
+                selectedCharacter[0].src = image.src
+                selectedCharacter[0].alt = image.alt
+                console.log(name.textContent)
+                selectedCharacter[1].textContent = name.textContent
+            } else if (isVehicle) {
+                selectedVehicle[0].src = image.src
+                selectedVehicle[0].alt = image.alt
+                selectedVehicle[1].textContent = name.textContent
+            }
+        })
+    })
 });
