@@ -32,9 +32,9 @@ def home(): # Home page
     return render_template("home.html", characters=characters, vehicles=vehicles)
 
 
-@app.route('/characters/<int:id>')
+@app.route('/characters/<id>')
 def char(id): # Fetch characters
-    if id == None:
+    if id == "all":
         return query_db("SELECT * FROM Characters")
     else:
         return query_db("SELECT * FROM Characters WHERE HiddenID = ?", [id])
