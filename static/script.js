@@ -33,12 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedCharacter = [
         document.querySelector('.selected-character-pfp'),
         document.querySelector('.name-arc-character').querySelector('textPath'),
-        0
+        '0'
     ]
     const selectedVehicle = [
         document.querySelector('.selected-vehicle-pfp'),
         document.querySelector('.name-arc-vehicle').querySelector('textPath'),
-        0
+        '0'
     ]
 
     dropdowns.forEach(function (dropdown) {
@@ -80,12 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const hiddenid = selection.dataset.hiddenid
         selection.addEventListener('click', async function (e) {
             if (isCharacter && selectedCharacter[2] != hiddenid) {
-                selectedCharacter[0].style.setProperty('--imgurl', `url('${image.src}')`);
+                selectedCharacter[0].style.setProperty('--imgurl', image.style.getPropertyValue('--bg-image').trim());
                 selectedCharacter[1].textContent = name.textContent
                 selectedCharacter[2] = hiddenid
                 await updateStats()
             } else if (isVehicle && selectedVehicle[2] != hiddenid) {
-                selectedVehicle[0].style.setProperty('--imgurl', `url('${image.src}')`);
+                selectedVehicle[0].style.setProperty('--imgurl', image.style.getPropertyValue('--bg-image').trim());
                 selectedVehicle[1].textContent = name.textContent
                 selectedVehicle[2] = hiddenid
                 await updateStats()
