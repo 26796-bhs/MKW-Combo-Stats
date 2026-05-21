@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="stats-card">
-    <img class="pfp-shape selected-pfp selected-character-pfp" src='' alt=' '></img>
+    <div class="pfp-shape selected-pfp selected-character-pfp" style="--imgurl: url('{{ characters[0][11] }}');"></div>
+
     <svg class="name-arc name-arc-character" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path id="charNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
         <text>
@@ -12,7 +13,8 @@
         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
             stroke-linejoin="round" />
     </svg>
-    <img class="pfp-shape selected-pfp selected-vehicle-pfp" src='' alt=' '></img>
+    <div class="pfp-shape selected-pfp selected-vehicle-pfp" style="--imgurl: url('{{ vehicles[0][12] }}');"></div>
+
     <svg class="name-arc name-arc-vehicle" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
         <text>
@@ -102,7 +104,7 @@
             {% for data in characters %}
             <div class="selection" data-hiddenid="{{ data[0] }}"
                 style="--bg-image: url('{{ data[11] }}'); --opacity: 0.25;">
-                <img class=" pfp-shape selection-pfp" src='{{ data[11] }}' alt='{{ data[1] }}'></img>
+                <div class=" pfp-shape selection-pfp" style="--bg-image: url('{{ data[11] }}');"></div>
 
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">
@@ -121,7 +123,7 @@
             {% for data in vehicles %}
             <div class="selection" data-hiddenid="{{ data[0] }}"
                 style="--bg-image: url('{{ data[12] }}'); --opacity: 0.25;">
-                <img class=" pfp-shape selection-pfp" src='{{ data[12] }}' alt='{{ data[1] }}'></img>
+                <div class=" pfp-shape selection-pfp" style="--bg-image: url('{{ data[12] }}');"></div>
 
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">

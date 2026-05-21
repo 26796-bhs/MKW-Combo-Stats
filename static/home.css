@@ -23,16 +23,39 @@
 
 .pfp-shape {
     border-radius: 35px;
+    corner-shape: superellipse(1.1);
     aspect-ratio: 1 / 1;
     background-color: white;
-    corner-shape: superellipse(1.1);
 }
 
 .selected-pfp {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
     position: absolute;
     width: 95px;
+    height: 95px;
     top: 50px;
-    filter: blur(1.5px)
+    background-image: var(--imgurl);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+.selected-pfp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--imgurl);
+    /* background-image: linear-gradient(155deg, #E4EDFC 20%, #DDFFF4 90%); */
+    filter: blur(5px);
+    border-radius: 25px;
+    z-index: -1;
 }
 
 .selected-character-pfp {
@@ -323,6 +346,25 @@
     width: 85px;
     object-fit: cover;
     object-position: top;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+
+.selection-pfp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--bg-image);
+    /* background-image: linear-gradient(155deg, #E4EDFC 20%, #DDFFF4 90%); */
+    filter: blur(5px);
+    border-radius: 25px;
+    z-index: -1;
 }
 
 

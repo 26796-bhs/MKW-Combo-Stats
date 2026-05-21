@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function updateStats() {
         const data = await get_combo(selectedCharacter[2], selectedVehicle[2])
-        console.log(data)
+        console.log(selectedCharacter[2], selectedVehicle[2], data)
         updateStatsBar("SPEED", "On Road", data[0])
         updateStatsBar("SPEED", "Off Road", data[1])
         updateStatsBar("SPEED", "In Water", data[2])
@@ -80,14 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const hiddenid = selection.dataset.hiddenid
         selection.addEventListener('click', async function (e) {
             if (isCharacter && selectedCharacter[2] != hiddenid) {
-                selectedCharacter[0].src = image.src
-                selectedCharacter[0].alt = image.alt
+                selectedCharacter[0].style.setProperty('--imgurl', `url('${image.src}')`);
                 selectedCharacter[1].textContent = name.textContent
                 selectedCharacter[2] = hiddenid
                 await updateStats()
             } else if (isVehicle && selectedVehicle[2] != hiddenid) {
-                selectedVehicle[0].src = image.src
-                selectedVehicle[0].alt = image.alt
+                selectedVehicle[0].style.setProperty('--imgurl', `url('${image.src}')`);
                 selectedVehicle[1].textContent = name.textContent
                 selectedVehicle[2] = hiddenid
                 await updateStats()
