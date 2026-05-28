@@ -92,4 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
     })
+
+    updateStats()
 });
