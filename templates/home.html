@@ -1,4 +1,9 @@
 {% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home/style.css') }}">
+{% endblock %}
+
 {% block body %}
 <div class="stats-card">
     <div class="pfp-shape selected-pfp selected-character-pfp" style="--imgurl: url('{{ characters[0][11] }}');"></div>
@@ -137,4 +142,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='home/script.js') }}" defer></script>
 {% endblock %}
