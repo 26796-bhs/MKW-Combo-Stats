@@ -1,4 +1,4 @@
-import { get_combo } from "./modules/communication-service.js"
+import { get_combo } from "../modules/communication-service.js";
 
 function toggleNavBar() {
     var x = document.querySelector(".nav-links");
