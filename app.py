@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template
+from flask import Flask, g, render_template, request, abort
 import sqlite3
 
 DATABASE = "database.db"
@@ -52,6 +52,19 @@ def maps(id):
         return query_db("SELECT * FROM Maps")
     else:
         return query_db("SELECT * FROM Maps WHERE HiddenID = ?", [id])
+
+@app.post('/api/selection/')
+def apiselection():
+    data = request.get_json()
+    map = data.map
+    priority = data.priority
+    if (priority == "Speed"):
+        return query_db("SELECT BestCharacterSpeed, BestVehicleSpeed FROM Maps WHERE HiddenID = ?", [map])
+    elif (priority == "Turbo"):
+        return query_db("SELECT BestCharacterTurbo, BestVehicleTurbo FROM Maps WHERE HiddenID = ?", [map])
+    else:
+        abort(400)
+    
 
 @app.route('/db/')
 def db(): # Database

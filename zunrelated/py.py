@@ -1,1 +1,2 @@
-print([i for i in range(9)])
+array = [1,2,3,4,5]
+print(array[2:])
