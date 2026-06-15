@@ -46,12 +46,13 @@ def vehic(id): #Fetch vheicles
     else:
         return query_db("SELECT * FROM Vehicles WHERE HiddenID = ?", [id])
 
+@app.route('/maps')
+def maps():
+    return query_db("SELECT * FROM Maps")
+    
 @app.route('/maps/<int:id>')
-def maps(id):
-    if id == None:
-        return query_db("SELECT * FROM Maps")
-    else:
-        return query_db("SELECT * FROM Maps WHERE HiddenID = ?", [id])
+def maps_with_id(id):
+    return query_db("SELECT * FROM Maps WHERE HiddenID = ?", [id])
 
 @app.post('/api/selection/')
 def apiselection():

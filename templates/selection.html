@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='selection/style.css') }}">
+<script type="module" src="{{ url_for('static', filename='selection/script.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="stats-card">
+    <div class="pfp-shape selected-pfp selected-character-pfp" style="--imgurl: url('{{ characters[0][11] }}');"></div>
+
+    <svg class="name-arc name-arc-character" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path id="charNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
+        <text>
+            <textPath href="#charNamePath" startOffset="50%" text-anchor="middle">Mario</textPath>
+        </text>
+    </svg>
+    <svg class="eks" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+    </svg>
+    <div class="pfp-shape selected-pfp selected-vehicle-pfp" style="--imgurl: url('{{ vehicles[0][12] }}');"></div>
+
+    <svg class="name-arc name-arc-vehicle" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
+        <text>
+            <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">Standard Kart</textPath>
+        </text>
+    </svg>
+
+
+    <!-- Stats -->
+    <div class="sections">
+        <div class="section">
+            <p class="section-title">SPEED</p>
+            <div class="section-stats-1">
+                <p class="stats-title">On Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 60%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-2">
+                <p class="stats-title">Off Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 45%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-3">
+                <p class="stats-title">In Water</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 50%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <p class="section-title">HANDLING</p>
+            <div class="section-stats-1">
+                <p class="stats-title">On Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 40%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-2">
+                <p class="stats-title">Off Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 55%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-3">
+                <p class="stats-title">In Water</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 50%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <p class="section-title">OTHER</p>
+            <div class="section-stats-1">
+                <p class="stats-title">Accel</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 55%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-2">
+                <p class="stats-title">Turbo</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 55%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-3">
+                <p class="stats-title">Weight</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 45%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share -->
+    <div class="action-btn">Share</div>
+</div>
+
+{% endblock %}
