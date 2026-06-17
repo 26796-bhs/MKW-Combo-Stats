@@ -138,7 +138,7 @@ INSERT INTO `Characters` VALUES (
     ),(
     24, "Dry Bones", 7, 8, 7, 13, 11, 7, 12, 14, 12, "https://mario.wiki.gallery/images/thumb/d/d3/MK_NS2_Dry_Bones.png/150px-MK_NS2_Dry_Bones.png"
     ),(
-    25, "Wiggler", 13, 12, 12, 8, 8, 12, 9, 7, 7, "https://mario.wiki.gallery/images/thumb/9/93/MKWorld_Wiggler.png/150px-MKWorld_Wiggler.pngg"
+    25, "Wiggler", 13, 12, 12, 8, 8, 12, 9, 7, 7, "https://mario.wiki.gallery/images/thumb/9/93/MKWorld_Wiggler.png/150px-MKWorld_Wiggler.png"
     ),(
     26, "Pokey", 10, 11, 10, 10, 9, 10, 9, 11, 9, "https://mario.wiki.gallery/images/thumb/f/fc/Pokey_MKWorld_Select.png/150px-Pokey_MKWorld_Select.png"
     ),(

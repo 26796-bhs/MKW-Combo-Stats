@@ -31,6 +31,11 @@ def home(): # Home page
     vehicles=query_db("SELECT * FROM Vehicles")
     return render_template("home.html", characters=characters, vehicles=vehicles)
 
+@app.route('/Selection')
+def selection(): # Selection page
+    maps=query_db("SELECT * FROM Maps")
+    return render_template("selection.html", maps=maps)
+
 
 @app.route('/characters/<id>')
 def char(id): # Fetch characters
