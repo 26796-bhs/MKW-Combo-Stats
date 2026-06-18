@@ -278,50 +278,47 @@ INSERT INTO `Maps` VALUES
 -- Mushroom Cup
 (0, 'Mario Bros. Circuit', 0.9, 0.1, 0.0, 6, 17, 31, 21, "https://mario.wiki.gallery/images/thumb/8/85/MKWd_Mario_Bros_Circuit_Icon.png/270px-MKWd_Mario_Bros_Circuit_Icon.png"),
 (1, 'Whistlestop Summit', 0.2, 0.1, 0.7, 6, 39, 12, 26, "https://mario.wiki.gallery/images/thumb/d/db/MKWd_Whistlestop_Summit_Icon.png/270px-MKWd_Whistlestop_Summit_Icon.png"),
-(2, 'DK Spaceport', 0.8, 0.2, 0.0, 7, 20, 31, 23, ""),
-(3, 'Desert Hills', 0.7, 0.2, 0.1, 25, 37, 45, 21, ""),
+(2, 'DK Spaceport', 0.8, 0.2, 0.0, 7, 20, 31, 23, "https://mario.wiki.gallery/images/thumb/8/89/MKWd_DK_Spaceport_Icon.png/270px-MKWd_DK_Spaceport_Icon.png"),
+(3, 'Desert Hills', 0.7, 0.2, 0.1, 25, 37, 45, 21, "https://mario.wiki.gallery/images/thumb/6/6a/MKWd_Desert_Hills_Icon.png/270px-MKWd_Desert_Hills_Icon.png"),
 
 -- Flower Cup
-(4, 'Shy Guy Bazaar', 0.9, 0.1, 0.0, 6, 17, 13, 23, ""),
-(5, 'Wario Stadium', 0.8, 0.2, 0.0, 8, 20, 31, 26, ""),
-(6, 'Airship Fortress', 0.6, 0.1, 0.3, 6, 34, 45, 21, ""),
-(7, 'DK Pass', 0.6, 0.4, 0.0, 27, 11, 12, 23, ""),
+(4, 'Shy Guy Bazaar', 0.9, 0.1, 0.0, 6, 17, 13, 23, "https://mario.wiki.gallery/images/thumb/3/32/MKWd_Shy_Guy_Bazaar_Icon.png/270px-MKWd_Shy_Guy_Bazaar_Icon.png"),
+(5, 'Wario Stadium', 0.8, 0.2, 0.0, 8, 20, 31, 26, "https://mario.wiki.gallery/images/thumb/3/34/MKWd_Wario_Stadium_Icon.png/270px-MKWd_Wario_Stadium_Icon.png"),
+(6, 'Airship Fortress', 0.6, 0.1, 0.3, 6, 34, 45, 21, "https://mario.wiki.gallery/images/thumb/c/c4/MKWd_Airship_Fortress_Icon.png/270px-MKWd_Airship_Fortress_Icon.png"),
+(7, 'DK Pass', 0.6, 0.4, 0.0, 27, 11, 12, 23, "https://mario.wiki.gallery/images/thumb/e/e1/MKWd_DK_Pass_Icon.png/270px-MKWd_DK_Pass_Icon.png"),
 
 -- Star Cup
-(8, 'Starview Peak', 0.8, 0.1, 0.1, 38, 17, 31, 21, ""),
-(9, 'Salty Salty Speedway', 0.1, 0.1, 0.8, 6, 39, 13, 26, ""),
-(10, 'Peach Stadium', 1.0, 0.0, 0.0, 49, 20, 45, 23, ""),
-(11, 'Chain Chomp Desert', 0.5, 0.5, 0.0, 8, 12, 31, 21, ""),
+(8, 'Starview Peak', 0.8, 0.1, 0.1, 38, 17, 31, 21, "https://mario.wiki.gallery/images/thumb/c/c4/MKWd_Starview_Peak_Icon.png/270px-MKWd_Starview_Peak_Icon.png"),
+(9, 'Salty Salty Speedway', 0.1, 0.1, 0.8, 6, 39, 13, 26, "https://mario.wiki.gallery/images/thumb/e/e0/MKWorld_Icon_Salty_Salty_Speedway.png/270px-MKWorld_Icon_Salty_Salty_Speedway.png"),
+(10, 'Peach Stadium', 1.0, 0.0, 0.0, 49, 20, 45, 23, "https://mario.wiki.gallery/images/thumb/0/0c/MKWd_Peach_Stadium_Icon.png/270px-MKWd_Peach_Stadium_Icon.png"),
+(11, 'Chain Chomp Desert', 0.5, 0.5, 0.0, 8, 12, 31, 21, "https://mario.wiki.gallery/images/thumb/2/2f/MKWorld_Battle_Chain_Chomp_Desert.png/270px-MKWorld_Battle_Chain_Chomp_Desert.png"),
 
 -- Special Cup
-(12, 'Dino Dino Jungle', 0.9, 0.1, 0.0, 6, 37, 12, 26, ""),
-(13, 'Big Donut', 0.3, 0.7, 0.0, 27, 5, 31, 21, ""),
-(14, 'Koopa Troopa Beach', 0.8, 0.2, 0.0, 7, 17, 45, 23, ""),
-(15, 'Ghost Valley 1', 1.0, 0.0, 0.0, 6, 20, 13, 21, ""),
+(12, 'Dino Dino Jungle', 0.9, 0.1, 0.0, 6, 37, 12, 26, "https://mario.wiki.gallery/images/thumb/5/51/MKWorld_Icon_Dino_Dino_Jungle.png/270px-MKWorld_Icon_Dino_Dino_Jungle.png"),
+(13, 'Big Donut', 0.3, 0.7, 0.0, 27, 5, 31, 21, "https://mario.wiki.gallery/images/thumb/4/42/MKWorld_Battle_Big_Donut.png/270px-MKWorld_Battle_Big_Donut.png"),
+(14, 'Koopa Troopa Beach', 0.8, 0.2, 0.0, 7, 17, 45, 23, "https://mario.wiki.gallery/images/thumb/c/c2/MKWd_Koopa_Troopa_Beach_Icon.png/270px-MKWd_Koopa_Troopa_Beach_Icon.png"),
+(15, 'Ghost Valley 1', 1.0, 0.0, 0.0, 6, 20, 13, 21, "https://mario.wiki.gallery/images/thumb/b/bc/MKWorld_Acorn_Heights_Icon.png/270px-MKWorld_Acorn_Heights_Icon.png"),
 
 -- Shell Cup
-(16, 'Choco Island 1', 0.2, 0.8, 0.0, 38, 18, 31, 21, ""),
-(17, 'Ghost Valley 2', 0.8, 0.2, 0.0, 49, 17, 12, 26, ""),
-(18, 'Koopa Beach 1', 0.3, 0.3, 0.4, 6, 39, 45, 23, ""),
-(19, 'Choco Island 2', 1.0, 0.0, 0.0, 7, 37, 31, 21, ""),
+(16, 'Choco Island 1', 0.2, 0.8, 0.0, 38, 18, 31, 21, "https://mario.wiki.gallery/images/thumb/c/c2/MKWd_Koopa_Troopa_Beach_Icon.png/270px-MKWd_Koopa_Troopa_Beach_Icon.png"),
+(17, 'Ghost Valley 2', 0.8, 0.2, 0.0, 49, 17, 12, 26, "https://mario.wiki.gallery/images/thumb/5/5d/MKWd_Faraway_Oasis_Icon.png/270px-MKWd_Faraway_Oasis_Icon.png"),
+(18, 'Koopa Beach 1', 0.3, 0.3, 0.4, 6, 39, 45, 23, "https://mario.wiki.gallery/images/thumb/6/66/MKWd_Crown_City_2_Icon.png/270px-MKWd_Crown_City_2_Icon.png"),
+(19, 'Choco Island 2', 1.0, 0.0, 0.0, 7, 37, 31, 21, "https://mario.wiki.gallery/images/thumb/0/0c/MKWd_Peach_Stadium_Icon.png/270px-MKWd_Peach_Stadium_Icon.png"),
 
 -- Banana Cup
-(20, 'Vanilla Lake 1', 0.3, 0.7, 0.0, 8, 11, 13, 21, ""),
-(21, 'Ghost Valley 3', 0.4, 0.5, 0.1, 27, 12, 31, 26, ""),
-(22, 'TBD Course 22', 0.8, 0.2, 0.0, 25, 17, 12, 23, ""),
-(23, 'TBD Course 23', 0.6, 0.4, 0.0, 38, 5, 45, 21, ""),
+(20, 'Vanilla Lake 1', 0.3, 0.7, 0.0, 8, 11, 13, 21, "https://mario.wiki.gallery/images/thumb/1/1a/MKWorld_Icon_Peach_Beach.png/270px-MKWorld_Icon_Peach_Beach.png"),
+(21, 'Ghost Valley 3', 0.4, 0.5, 0.1, 27, 12, 31, 26, "https://mario.wiki.gallery/images/thumb/e/e0/MKWorld_Icon_Salty_Salty_Speedway.png/270px-MKWorld_Icon_Salty_Salty_Speedway.png"),
+(22, 'TBD Course 22', 0.8, 0.2, 0.0, 25, 17, 12, 23, "https://mario.wiki.gallery/images/thumb/5/51/MKWorld_Icon_Dino_Dino_Jungle.png/270px-MKWorld_Icon_Dino_Dino_Jungle.png"),
+(23, 'TBD Course 23', 0.6, 0.4, 0.0, 38, 5, 45, 21, "https://mario.wiki.gallery/images/thumb/5/5e/MKWorld_Question_Ruins_icon.png/270px-MKWorld_Question_Ruins_icon.png"),
 
 -- Leaf Cup
-(24, 'TBD Course 24', 0.7, 0.3, 0.0, 6, 17, 31, 23, ""),
-(25, 'TBD Course 25', 0.3, 0.4, 0.3, 6, 39, 13, 21, ""),
-(26, 'TBD Course 26', 0.9, 0.1, 0.0, 7, 20, 12, 26, ""),
-(27, 'TBD Course 27', 0.6, 0.4, 0.0, 49, 18, 31, 21, ""),
+(24, 'TBD Course 24', 0.7, 0.3, 0.0, 6, 17, 31, 23, "https://mario.wiki.gallery/images/thumb/0/06/MKWorld_Cheep_Cheep_Falls_icon.png/270px-MKWorld_Cheep_Cheep_Falls_icon.png"),
+(25, 'TBD Course 25', 0.3, 0.4, 0.3, 6, 39, 13, 21, "https://mario.wiki.gallery/images/thumb/7/70/MKWorld_Dandelion_Depths_icon.png/270px-MKWorld_Dandelion_Depths_icon.png"),
+(26, 'TBD Course 26', 0.9, 0.1, 0.0, 7, 20, 12, 26, "https://mario.wiki.gallery/images/thumb/0/08/MKWorld_Boo_Cinema_icon.png/270px-MKWorld_Boo_Cinema_icon.png"),
+(27, 'TBD Course 27', 0.6, 0.4, 0.0, 49, 18, 31, 21, "https://mario.wiki.gallery/images/thumb/0/01/MKWorld_Dry_Bones_Burnout_icon.png/270px-MKWorld_Dry_Bones_Burnout_icon.png"),
 
 -- Lightning Cup
-(28, 'TBD Course 28', 0.9, 0.1, 0.0, 8, 17, 45, 23, ""),
-(29, 'TBD Course 29', 0.2, 0.1, 0.7, 6, 34, 31, 21, ""),
-(30, 'TBD Course 30', 0.7, 0.3, 0.0, 25, 20, 12, 26, ""),
-(31, 'TBD Course 31', 1.0, 0.0, 0.0, 6, 37, 13, 21, "");
-
-
-SELECT * FROM CHARACTERS ORDER BY Name ASC;
+(28, 'TBD Course 28', 0.9, 0.1, 0.0, 8, 17, 45, 23, "https://mario.wiki.gallery/images/thumb/4/42/MKWorld_Moo_Moo_Meadows_icon.png/270px-MKWorld_Moo_Moo_Meadows_icon.png"),
+(29, 'TBD Course 29', 0.2, 0.1, 0.7, 6, 34, 31, 21, "https://mario.wiki.gallery/images/thumb/b/b1/MKWorld_Choco_Mountain_icon.png/270px-MKWorld_Choco_Mountain_icon.png"),
+(30, 'TBD Course 30', 0.7, 0.3, 0.0, 25, 20, 12, 26, "https://mario.wiki.gallery/images/thumb/1/1e/MKWorld_Toads_Factory_icon.png/270px-MKWorld_Toads_Factory_icon.png"),
+(31, 'TBD Course 31', 1.0, 0.0, 0.0, 6, 37, 13, 21, "https://mario.wiki.gallery/images/thumb/8/86/MKWorld_Bowsers_Castle_icon.png/270px-MKWorld_Bowsers_Castle_icon.png");
