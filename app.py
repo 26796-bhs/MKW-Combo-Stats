@@ -62,14 +62,17 @@ def maps_with_id(id):
 @app.post('/api/selection/')
 def apiselection():
     data = request.get_json()
-    map = data.map
-    priority = data.priority
-    if (priority == "Speed"):
-        return query_db("SELECT BestCharacterSpeed, BestVehicleSpeed FROM Maps WHERE HiddenID = ?", [map])
-    elif (priority == "Turbo"):
-        return query_db("SELECT BestCharacterTurbo, BestVehicleTurbo FROM Maps WHERE HiddenID = ?", [map])
+    map_id = data.get('map')
+    priority = data.get('priority')
+    if priority == "Speed":
+        result = query_db("SELECT BestCharacterSpeed, BestVehicleSpeed FROM Maps WHERE HiddenID = ?", [map_id], one=True)
+    elif priority == "Turbo":
+        result = query_db("SELECT BestCharacterTurbo, BestVehicleTurbo FROM Maps WHERE HiddenID = ?", [map_id], one=True)
     else:
         abort(400)
+    if not result:
+        abort(404)
+    return {"character": result[0], "vehicle": result[1]}
     
 
 @app.route('/db/')

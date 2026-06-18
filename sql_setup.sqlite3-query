@@ -64,7 +64,8 @@ CREATE TABLE `Maps` (
     `BestCharacterSpeed` INTEGER REFERENCES `Characters`(`HiddenID`),
     `BestVehicleSpeed` INTEGER REFERENCES `Vehicles`(`HiddenID`),
     `BestCharacterTurbo` INTEGER REFERENCES `Characters`(`HiddenID`),
-    `BestVehicleTurbo` INTEGER REFERENCES `Vehicles`(`HiddenID`)
+    `BestVehicleTurbo` INTEGER REFERENCES `Vehicles`(`HiddenID`),
+    `ImageUrl` TEXT
 );
 
 CREATE TABLE `Cups` (
@@ -273,64 +274,54 @@ INSERT INTO `Vehicles` VALUES (
 );
 
 
-INSERT INTO `Maps` (
-    `HiddenID`, 
-    `Name`, 
-    `Road`, 
-    `OffRoad`, 
-    `Water`, 
-    `BestCharacterSpeed`, 
-    `BestVehicleSpeed`, 
-    `BestCharacterTurbo`, 
-    `BestVehicleTurbo`
-) VALUES
+INSERT INTO `Maps` VALUES
 -- Mushroom Cup
-(0, 'Mario Kart Stadium', 0.9, 0.1, 0.0, 6, 17, 31, 21),   -- Bowser + Big Horn | Para-Biddybud + Standard Bike
-(1, 'Water Park', 0.2, 0.1, 0.7, 6, 39, 12, 26),          -- Bowser + Stellar Sled | Baby Peach + Tune Thumper
-(2, 'Sweet Sweet Canyon', 0.8, 0.2, 0.0, 7, 20, 31, 23),   -- Wario + Billdozer | Para-Biddybud + Cute Scoot
-(3, 'Thwomp Ruins', 0.7, 0.2, 0.1, 25, 37, 45, 21),        -- Wiggler + Rallygator | Swoop + Standard Bike
+(0, 'Mario Bros. Circuit', 0.9, 0.1, 0.0, 6, 17, 31, 21, "https://mario.wiki.gallery/images/thumb/8/85/MKWd_Mario_Bros_Circuit_Icon.png/270px-MKWd_Mario_Bros_Circuit_Icon.png"),
+(1, 'Whistlestop Summit', 0.2, 0.1, 0.7, 6, 39, 12, 26, "https://mario.wiki.gallery/images/thumb/d/db/MKWd_Whistlestop_Summit_Icon.png/270px-MKWd_Whistlestop_Summit_Icon.png"),
+(2, 'DK Spaceport', 0.8, 0.2, 0.0, 7, 20, 31, 23, ""),
+(3, 'Desert Hills', 0.7, 0.2, 0.1, 25, 37, 45, 21, ""),
 
 -- Flower Cup
-(4, 'Mario Circuit', 0.9, 0.1, 0.0, 6, 17, 13, 23),        -- Bowser + Big Horn | Baby Daisy + Cute Scoot
-(5, 'Toad Harbor', 0.8, 0.2, 0.0, 8, 20, 31, 26),          -- Waluigi + Billdozer | Para-Biddybud + Tune Thumper
-(6, 'Twisted Mansion', 0.6, 0.1, 0.3, 6, 34, 45, 21),      -- Bowser + Lobster Roller | Swoop + Standard Bike
-(7, 'Shy Guy Falls', 0.6, 0.4, 0.0, 27, 11, 12, 23),       -- Cow + Bowser Bruiser | Baby Peach + Cute Scoot
+(4, 'Shy Guy Bazaar', 0.9, 0.1, 0.0, 6, 17, 13, 23, ""),
+(5, 'Wario Stadium', 0.8, 0.2, 0.0, 8, 20, 31, 26, ""),
+(6, 'Airship Fortress', 0.6, 0.1, 0.3, 6, 34, 45, 21, ""),
+(7, 'DK Pass', 0.6, 0.4, 0.0, 27, 11, 12, 23, ""),
 
 -- Star Cup
-(8, 'Sunshine Airport', 0.8, 0.1, 0.1, 38, 17, 31, 21),    -- Donkey Kong + Big Horn | Para-Biddybud + Standard Bike
-(9, 'Dolphin Shoals', 0.1, 0.1, 0.8, 6, 39, 13, 26),       -- Bowser + Stellar Sled | Baby Daisy + Tune Thumper
-(10, 'Electrodrome', 1.0, 0.0, 0.0, 49, 20, 45, 23),       -- Chargin' Chuck + Billdozer | Swoop + Cute Scoot
-(11, 'Mount Wario', 0.5, 0.5, 0.0, 8, 12, 31, 21),         -- Waluigi + Tiny Titan | Para-Biddybud + Standard Bike
+(8, 'Starview Peak', 0.8, 0.1, 0.1, 38, 17, 31, 21, ""),
+(9, 'Salty Salty Speedway', 0.1, 0.1, 0.8, 6, 39, 13, 26, ""),
+(10, 'Peach Stadium', 1.0, 0.0, 0.0, 49, 20, 45, 23, ""),
+(11, 'Chain Chomp Desert', 0.5, 0.5, 0.0, 8, 12, 31, 21, ""),
 
 -- Special Cup
-(12, 'Cloudtop Cruise', 0.9, 0.1, 0.0, 6, 37, 12, 26),     -- Bowser + Rallygator | Baby Peach + Tune Thumper
-(13, 'Bone-Dry Dunes', 0.3, 0.7, 0.0, 27, 5, 31, 21),      -- Cow + Chargin' Truck | Para-Biddybud + Standard Bike
-(14, "Bowser's Castle", 0.8, 0.2, 0.0, 7, 17, 45, 23),     -- Wario + Big Horn | Swoop + Cute Scoot
-(15, 'Rainbow Road', 1.0, 0.0, 0.0, 6, 20, 13, 21),        -- Bowser + Billdozer | Baby Daisy + Standard Bike
+(12, 'Dino Dino Jungle', 0.9, 0.1, 0.0, 6, 37, 12, 26, ""),
+(13, 'Big Donut', 0.3, 0.7, 0.0, 27, 5, 31, 21, ""),
+(14, 'Koopa Troopa Beach', 0.8, 0.2, 0.0, 7, 17, 45, 23, ""),
+(15, 'Ghost Valley 1', 1.0, 0.0, 0.0, 6, 20, 13, 21, ""),
 
 -- Shell Cup
-(16, 'Moo Moo Meadows', 0.2, 0.8, 0.0, 38, 18, 31, 21),    -- Donkey Kong + Li'l Dumpy | Para-Biddybud + Standard Bike
-(17, 'GBA Mario Circuit', 0.8, 0.2, 0.0, 49, 17, 12, 26),  -- Chargin' Chuck + Big Horn | Baby Peach + Tune Thumper
-(18, 'Cheep Cheep Beach', 0.3, 0.3, 0.4, 6, 39, 45, 23),   -- Bowser + Stellar Sled | Swoop + Cute Scoot
-(19, "Toad's Turnpike", 1.0, 0.0, 0.0, 7, 37, 31, 21),     -- Wario + Rallygator | Para-Biddybud + Standard Bike
+(16, 'Choco Island 1', 0.2, 0.8, 0.0, 38, 18, 31, 21, ""),
+(17, 'Ghost Valley 2', 0.8, 0.2, 0.0, 49, 17, 12, 26, ""),
+(18, 'Koopa Beach 1', 0.3, 0.3, 0.4, 6, 39, 45, 23, ""),
+(19, 'Choco Island 2', 1.0, 0.0, 0.0, 7, 37, 31, 21, ""),
 
 -- Banana Cup
-(20, 'Dry Dry Desert', 0.3, 0.7, 0.0, 8, 11, 13, 21),      -- Waluigi + Bowser Bruiser | Baby Daisy + Standard Bike
-(21, 'Donut Plains 3', 0.4, 0.5, 0.1, 27, 12, 31, 26),     -- Cow + Tiny Titan | Para-Biddybud + Tune Thumper
-(22, 'Royal Raceway', 0.8, 0.2, 0.0, 25, 17, 12, 23),      -- Wiggler + Big Horn | Baby Peach + Cute Scoot
-(23, 'DK Jungle', 0.6, 0.4, 0.0, 38, 5, 45, 21),           -- Donkey Kong + Chargin' Truck | Swoop + Standard Bike
+(20, 'Vanilla Lake 1', 0.3, 0.7, 0.0, 8, 11, 13, 21, ""),
+(21, 'Ghost Valley 3', 0.4, 0.5, 0.1, 27, 12, 31, 26, ""),
+(22, 'TBD Course 22', 0.8, 0.2, 0.0, 25, 17, 12, 23, ""),
+(23, 'TBD Course 23', 0.6, 0.4, 0.0, 38, 5, 45, 21, ""),
 
 -- Leaf Cup
-(24, 'Wario Stadium', 0.7, 0.3, 0.0, 6, 17, 31, 23),       -- Bowser + Big Horn | Para-Biddybud + Cute Scoot
-(25, 'Sherbet Land', 0.3, 0.4, 0.3, 6, 39, 13, 21),        -- Bowser + Stellar Sled | Baby Daisy + Standard Bike
-(26, 'Music Park', 0.9, 0.1, 0.0, 7, 20, 12, 26),          -- Wario + Billdozer | Baby Peach + Tune Thumper
-(27, 'Yoshi Valley', 0.6, 0.4, 0.0, 49, 18, 31, 21),       -- Chargin' Chuck + Li'l Dumpy | Para-Biddybud + Standard Bike
+(24, 'TBD Course 24', 0.7, 0.3, 0.0, 6, 17, 31, 23, ""),
+(25, 'TBD Course 25', 0.3, 0.4, 0.3, 6, 39, 13, 21, ""),
+(26, 'TBD Course 26', 0.9, 0.1, 0.0, 7, 20, 12, 26, ""),
+(27, 'TBD Course 27', 0.6, 0.4, 0.0, 49, 18, 31, 21, ""),
 
 -- Lightning Cup
-(28, 'Tick-Tock Clock', 0.9, 0.1, 0.0, 8, 17, 45, 23),     -- Waluigi + Big Horn | Swoop + Cute Scoot
-(29, 'Piranha Plant Slide', 0.2, 0.1, 0.7, 6, 34, 31, 21), -- Bowser + Lobster Roller | Para-Biddybud + Standard Bike
-(30, 'Grumble Volcano', 0.7, 0.3, 0.0, 25, 20, 12, 26),    -- Wiggler + Billdozer | Baby Peach + Tune Thumper
-(31, 'N64 Rainbow Road', 1.0, 0.0, 0.0, 6, 37, 13, 21);    -- Bowser + Rallygator | Baby Daisy + Standard Bike
+(28, 'TBD Course 28', 0.9, 0.1, 0.0, 8, 17, 45, 23, ""),
+(29, 'TBD Course 29', 0.2, 0.1, 0.7, 6, 34, 31, 21, ""),
+(30, 'TBD Course 30', 0.7, 0.3, 0.0, 25, 20, 12, 26, ""),
+(31, 'TBD Course 31', 1.0, 0.0, 0.0, 6, 37, 13, 21, "");
 
 
 SELECT * FROM CHARACTERS ORDER BY Name ASC;
