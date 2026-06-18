@@ -18,6 +18,8 @@
     corner-shape: superellipse(1.1);
     padding: 24px;
     box-sizing: border-box;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .base-card::before {
@@ -36,6 +38,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    min-height: 0;
     border-radius: 25px;
     corner-shape: superellipse(1.1);
     overflow: hidden;
@@ -46,22 +49,18 @@
 }
 
 .map-preview {
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
+    flex: 1 1 0;
     min-height: 0;
+    overflow: hidden;
+    background-color: white;
 }
 
 .map-preview-img {
+    display: block;
     width: 100%;
-    max-width: 320px;
-    background-image: var(--imgurl);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    box-shadow: 0 2px 8px rgba(6, 30, 40, 0.06);
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .combo-panel {
@@ -86,6 +85,7 @@
     border: none;
     border-top: 1px solid rgba(5, 38, 49, 0.15);
     margin: 14px 0;
+    flex-shrink: 0;
 }
 
 .prioritize {
@@ -168,10 +168,11 @@
 
 /* Right panel */
 .map-picker {
-    flex: 1 1 auto;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     min-width: 0;
+    min-height: 0;
     border-radius: 25px;
     corner-shape: superellipse(1.1);
     background-color: rgba(255, 255, 255, 0.7);
@@ -190,22 +191,19 @@
     font-weight: 700;
     color: #052631;
     letter-spacing: 1px;
+    flex-shrink: 0;
 }
 
 .maps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: max-content;
     gap: 14px;
+    flex: 1 1 0;
+    min-height: 0;
     overflow-y: auto;
-    flex: 1 1 auto;
     padding: 4px 4px 8px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
     align-content: start;
-}
-
-.maps-grid::-webkit-scrollbar {
-    display: none;
 }
 
 .map-card {
@@ -221,6 +219,7 @@
     transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
     position: relative;
     overflow: hidden;
+    min-width: 0;
 }
 
 .map-card::before {
@@ -251,14 +250,15 @@
 }
 
 .map-card-img {
+    display: block;
     position: relative;
     z-index: 1;
-    width: 100%;
-    max-width: 110px;
-    background-image: var(--imgurl);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    width: 110px;
+    height: 110px;
+    flex: 0 0 110px;
+    object-fit: cover;
+    object-position: center;
+    background-color: white;
 }
 
 .map-card-name {

@@ -1,6 +1,10 @@
 import { get_best_combo, get_character, get_vehicle } from "../modules/communication-service.js";
 
 function setImage(el, url) {
+    if (el.tagName === 'IMG') {
+        el.src = url || '';
+        return;
+    }
     if (url) {
         el.style.setProperty('--imgurl', `url('${url}')`);
     } else {
@@ -31,8 +35,14 @@ function selectMap(card) {
     card.classList.add('selected');
 
     const imgUrl = card.dataset.imgurl;
+    const cardImg = card.querySelector('.map-card-img');
     const preview = document.getElementById('map-preview-img');
-    setImage(preview, imgUrl || null);
+    if (cardImg?.src) {
+        preview.src = cardImg.src;
+        preview.alt = card.dataset.name || 'Selected map preview';
+    } else {
+        setImage(preview, imgUrl || null);
+    }
 
     return card.dataset.hiddenid;
 }
@@ -43,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedMapId = null;
 
     mapCards.forEach(card => {
-        const imgUrl = card.dataset.imgurl;
+        const imgUrl = card.dataset.imgurl || card.querySelector('.map-card-img')?.src;
         if (imgUrl) {
             card.style.setProperty('--bg-image', `url('${imgUrl}')`);
         }

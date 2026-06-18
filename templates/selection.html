@@ -9,7 +9,7 @@
 <div class="base-card">
     <div class="selection-panel">
         <div class="map-preview">
-            <div class="map-preview-img pfp-shape" id="map-preview-img"></div>
+            <img class="map-preview-img" id="map-preview-img" alt="Selected map preview" referrerpolicy="no-referrer">
         </div>
         <div class="combo-panel">
             <p class="combo-title">Best combo for this map:</p>
@@ -42,8 +42,11 @@
             <div class="map-card" data-hiddenid="{{ map[0] }}"
                 {% if map[9] %}data-imgurl="{{ map[9] }}"{% endif %}
                 data-name="{{ map[1] }}">
-                <div class="map-card-img pfp-shape"
-                    {% if map[9] %}style="--imgurl: url('{{ map[9] }}');"{% endif %}></div>
+                <img class="map-card-img pfp-shape"
+                    src="{{ map[9] or '' }}"
+                    alt="{{ map[1] }}"
+                    loading="lazy"
+                    referrerpolicy="no-referrer">
                 <p class="map-card-name">{{ map[1] }}</p>
             </div>
             {% endfor %}
