@@ -42,18 +42,25 @@ document.addEventListener("DOMContentLoaded", function () {
     ]
 
     dropdowns.forEach(function (dropdown) {
-        dropdown.addEventListener('click', function (e) {
-            if (e.target.closest('.dropdown-title') || e.target === dropdown) {
-                const isCollapsed = dropdown.classList.contains('dropdown-collapsed');
+        const contentBox = dropdown.querySelector('.dropdown-contentbox');
+        if (contentBox) {
+            contentBox.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        }
 
+        dropdown.addEventListener('click', function (e) {
+            // Only toggle when clicking the top 50px of the dropdown
+            if (e.offsetY <= 50) {
+                const isCollapsed = dropdown.classList.contains('dropdown-collapsed');
                 if (isCollapsed) {
                     dropdown.classList.remove('dropdown-collapsed');
                     dropdown.classList.add('dropdown-expanded');
                 } else {
                     dropdown.classList.remove('dropdown-expanded');
                     dropdown.classList.add('dropdown-collapsed');
-                };
-            };
+                }
+            }
         });
     });
 

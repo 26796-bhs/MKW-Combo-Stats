@@ -36,6 +36,12 @@ def selection(): # Selection page
     maps=query_db("SELECT * FROM Maps")
     return render_template("selection.html", maps=maps)
 
+@app.route('/Compare')
+def compare(): # Compare page
+    characters=query_db("SELECT * FROM Characters")
+    vehicles=query_db("SELECT * FROM Vehicles")
+    return render_template("compare.html", characters=characters, vehicles=vehicles)
+
 
 @app.route('/characters/<id>')
 def char(id): # Fetch characters

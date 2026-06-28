@@ -1,15 +1,905 @@
+/* Figma compare tokens */
 .compare-grid {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 48px);
+    padding: 16px 39px 20px;
     box-sizing: border-box;
+    --navbar-height: 111px;
+    height: calc(100vh - var(--navbar-height));
+    max-height: calc(100vh - var(--navbar-height));
+    width: 100%;
+    overflow: hidden;
+    --glass-border: rgba(236, 231, 231, 0.9);
+    --glass-shadow: 0 0 50px -17px rgba(0, 0, 0, 0.25);
+    --glass-shadow-soft: 0 0 50px -10px rgba(0, 0, 0, 0.15);
+    --glass-blur: blur(10px);
+    --glass-blur-strong: blur(12px) saturate(180%);
+    background:
+        radial-gradient(ellipse 80% 60% at 15% 10%, rgba(228, 237, 252, 0.7) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 55% at 85% 90%, rgba(221, 255, 244, 0.65) 0%, transparent 50%),
+        #ffffff;
 }
 
-.compare-grid>.comparebox {
+.compare-grid.panels-1 .comparebox {
+    flex: 0 0 auto;
+    width: min(380px, 100%);
+}
+
+.compare-grid.panels-2 .comparebox,
+.compare-grid.panels-3 .comparebox {
     flex: 1 1 0;
     min-width: 0;
-    box-sizing: border-box;
+    max-width: 380px;
 }
 
-.comparebox {}
+/* Shared glass panel shell — box-shadow uses full frame (Figma: show behind transparent areas) */
+.comparebox {
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    border-radius: 25px;
+    corner-shape: superellipse(1.1);
+    box-sizing: border-box;
+    position: relative;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: var(--glass-shadow);
+    transition: flex 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+}
+
+.comparebox::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 0;
+    pointer-events: none;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+}
+
+/* Stage 1: add (+) — transparent glass card; shadow bleeds through transparent areas
+   Figma "Show behind transparent areas" = checked → filter: drop-shadow() */
+.comparebox.add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    backdrop-filter: var(--glass-blur-strong);
+    -webkit-backdrop-filter: var(--glass-blur-strong);
+    box-shadow: none;
+    filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.25));
+    transition: filter 0.2s ease;
+}
+
+.comparebox.add::before {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(236, 231, 231, 0.5);
+}
+
+.add-compare-btn {
+    position: relative;
+    z-index: 2;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    color: #ffffff;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.add-compare-icon {
+    display: block;
+    width: clamp(72px, 14vh, 96px);
+    height: clamp(72px, 14vh, 96px);
+    filter: blur(1px);
+}
+
+.add-compare-icon path {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.add-compare-btn:hover {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+}
+
+.add-compare-btn:active {
+    transform: scale(0.95);
+}
+
+/* Stage 2: choosing — Figma node 98:3 */
+.comparebox.choosing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0;
+}
+
+.comparebox.choosing::before {
+    background: linear-gradient(
+        239.51deg,
+        rgba(248, 250, 251, 0.9) 18.98%,
+        rgba(221, 255, 244, 0.9) 81.02%
+    );
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.picker-preview {
+    display: flex;
+    width: min(320px, calc(100% - 32px));
+    height: clamp(100px, 18vh, 140px);
+    margin-top: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow-soft);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    position: relative;
+    z-index: 1;
+}
+
+.picker-slot {
+    flex: 1 1 50%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.picker-slot:hover {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.picker-slot-vehicle {
+    background: rgba(245, 255, 244, 0.82);
+}
+
+.picker-slot-vehicle:hover {
+    background: rgba(245, 255, 244, 0.95);
+}
+
+.picker-slot-hint {
+    font-family: "Inter", Helvetica, sans-serif;
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.35);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    position: absolute;
+    bottom: 8px;
+    pointer-events: none;
+}
+
+.picker-slot.has-selection .picker-slot-hint {
+    opacity: 0;
+}
+
+.picker-slot-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+.picker-slot.has-selection .picker-slot-image {
+    filter: blur(2px);
+}
+
+.picker-labels {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+.picker-label {
+    font-family: "Inter", Helvetica, sans-serif;
+    font-size: 12px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 45%;
+}
+
+.picker-plus {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: #052631;
+    filter: blur(0.4px);
+}
+
+/* Confirm — Figma node 107:23 (~231px from panel bottom on 817px frame) */
+.confirm-btn {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(100px, 24%, 180px);
+    transform: translateX(-50%);
+    width: 150px;
+    height: 50px;
+    border: 1px solid var(--glass-border);
+    border-radius: 21px;
+    corner-shape: superellipse(1.1);
+    background: rgba(248, 250, 251, 0.4);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: none;
+    /* "Show behind transparent areas" = checked → filter: drop-shadow() */
+    filter: drop-shadow(0px 4px 18px rgba(0, 0, 0, 0.15));
+    font-family: "Inter", Helvetica, sans-serif;
+    font-size: 18px;
+    color: #000000;
+    cursor: pointer;
+    z-index: 2;
+    transition: background-color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}
+
+.confirm-btn:hover:not(:disabled) {
+    background: rgba(248, 250, 251, 0.92);
+    transform: translateX(-50%) translateY(-1px);
+    filter: drop-shadow(0px 2px 12px rgba(0, 0, 0, 0.10));
+}
+
+.confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Picker overlay — full-height, replaces card content */
+.picker-dropdowns {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(250, 250, 250, 0.5);
+    backdrop-filter: var(--glass-blur-strong);
+    -webkit-backdrop-filter: var(--glass-blur-strong);
+}
+
+.picker-dropdowns[hidden] {
+    display: none;
+}
+
+.picker-dropdown-header {
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.picker-tab {
+    flex: 1 1 50%;
+    border: none;
+    padding: 14px 0;
+    cursor: pointer;
+    font-family: "Inter", Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: rgba(0, 0, 0, 0.35);
+    background: transparent;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.picker-tab:hover {
+    color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.picker-tab.active {
+    color: #052631;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 -2px 0 #052631;
+}
+
+.picker-dropdown-body {
+    flex: 1 1 0;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.picker-dropdown-body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Override dropdown-box styles for the overlay context — compact, no box model */
+.comparebox.choosing .dropdown-box {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    overflow: visible;
+    max-height: none;
+    cursor: default;
+}
+
+.comparebox.choosing .dropdown-box::before {
+    display: none;
+}
+
+.comparebox.choosing .dropdown-box + .dropdown-box {
+    margin-top: 0;
+}
+
+.comparebox.choosing .dropdown-box .dropdown-title {
+    position: static;
+    height: auto;
+    padding: 12px 8px 4px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.comparebox.choosing .dropdown-box .dropdown-contentbox {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    padding: 4px 8px 12px;
+    margin-top: 0;
+    max-height: none;
+    overflow: visible;
+    align-items: start;
+    grid-auto-rows: minmax(85px, auto);
+}
+
+.comparebox.choosing .dropdown-box .dropdown-contentbox .selection {
+    padding: 6px 0 2px;
+    border-radius: 12px;
+}
+
+.comparebox.choosing .dropdown-box .dropdown-contentbox .selection-pfp {
+    width: 60px;
+}
+
+.comparebox.choosing .dropdown-box .dropdown-contentbox .name-arc-selection {
+    font-size: 18px;
+}
+
+.comparebox.choosing .dropdown-box[hidden] {
+    display: none;
+}
+
+/* Hide preview/labels/confirm when picker is open */
+.picker-dropdowns:not([hidden]) ~ .picker-preview,
+.comparebox.choosing:has(.picker-dropdowns:not([hidden])) .picker-labels,
+.comparebox.choosing:has(.picker-dropdowns:not([hidden])) .confirm-btn {
+    visibility: hidden;
+}
+
+/* Stage 3: stats — Figma node 90:12 */
+.comparebox.stats::before {
+    background: linear-gradient(
+        135.59deg,
+        rgba(228, 237, 252, 0.88) 33.15%,
+        rgba(221, 255, 244, 0.88) 83.7%
+    );
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.comparebox.stats .stats-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border-radius: 25px;
+    overflow: hidden;
+    background: transparent;
+}
+
+.comparebox.stats .stats-card::before {
+    content: '';
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(228, 237, 252, 0.75) 20%, rgba(221, 255, 244, 0.75) 90%);
+    filter: blur(8px);
+    border-radius: 25px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.comparebox.stats .stats-header {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    height: clamp(140px, 22vh, 170px);
+    z-index: 1;
+}
+
+.comparebox.stats .stats-header .selected-pfp {
+    position: absolute;
+    width: clamp(72px, 11vh, 95px);
+    height: clamp(72px, 11vh, 95px);
+    top: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 12px rgba(6, 30, 40, 0.06);
+}
+
+.comparebox.stats .stats-header .selected-pfp::before {
+    filter: blur(4px);
+    border-radius: 35px;
+}
+
+.comparebox.stats .stats-header .selected-character-pfp {
+    left: 28px;
+    right: auto;
+}
+
+.comparebox.stats .stats-header .selected-vehicle-pfp {
+    right: 28px;
+    left: auto;
+}
+
+.comparebox.stats .stats-header .name-arc {
+    position: absolute;
+    width: 140px;
+    height: 32px;
+    top: clamp(72px, 12vh, 88px);
+    z-index: 2;
+}
+
+.comparebox.stats .stats-header .name-arc text {
+    font-size: 12px;
+}
+
+.comparebox.stats .stats-header .name-arc-character {
+    left: calc(28px + clamp(36px, 5.5vh, 47.5px));
+    transform: translateX(-50%);
+}
+
+.comparebox.stats .stats-header .name-arc-vehicle {
+    left: auto;
+    right: calc(28px + clamp(36px, 5.5vh, 47.5px));
+    transform: translateX(50%);
+}
+
+.comparebox.stats .stats-header .eks {
+    position: absolute;
+    width: 20px;
+    top: clamp(74px, 12vh, 90px);
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(0.75px);
+}
+
+.comparebox.stats .sections {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    margin: 0 16px 12px;
+    gap: 12px;
+    z-index: 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.comparebox.stats .sections::-webkit-scrollbar {
+    display: none;
+}
+
+.comparebox.stats .section {
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(8px) saturate(160%);
+    -webkit-backdrop-filter: blur(8px) saturate(160%);
+    box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
+}
+
+.comparebox.stats .section-title {
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #052631;
+}
+
+.comparebox.stats .section > div[class^="section-stats"] {
+    margin-bottom: 4px;
+    gap: 8px;
+}
+
+.comparebox.stats .stats-title {
+    font-size: 12px;
+    width: 62px;
+    margin-left: 6px;
+    color: #071229;
+}
+
+.comparebox.stats .stats-progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    filter: blur(0.6px);
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+.comparebox.stats .stats-progress-value {
+    background: #036cff;
+    filter: blur(0.35px);
+    box-shadow: 0 1px 4px rgba(3, 108, 255, 0.25);
+}
+
+.comparebox.stats .stats-progress-value.min-value {
+    background: linear-gradient(90deg, #ff4d4d 0%, #ff1a1a 100%) !important;
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.5) !important;
+    filter: none !important;
+}
+
+.comparebox.stats .stats-progress-value.max-value {
+    background: linear-gradient(90deg, #2fa7ff 0%, #1e90ff 100%) !important;
+    box-shadow: 0 0 20px rgba(47, 167, 255, 0.7), 0 0 40px rgba(47, 167, 255, 0.5), 0 0 60px rgba(47, 167, 255, 0.3) !important;
+    animation: glow 1.5s ease-in-out infinite alternate;
+    filter: none !important;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(47, 167, 255, 0.5), 0 0 20px rgba(47, 167, 255, 0.3), 0 0 30px rgba(47, 167, 255, 0.2);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(47, 167, 255, 0.7), 0 0 40px rgba(47, 167, 255, 0.5), 0 0 60px rgba(47, 167, 255, 0.3);
+    }
+}
+
+/* ===== Shared styles from home/style.css (unscoped) ===== */
+
+/* Base .selected-pfp — used by JS-generated stats HTML */
+.selected-pfp {
+    display: block;
+    width: 95px;
+    height: 95px;
+    object-fit: cover;
+    object-position: top;
+    position: absolute;
+    top: 16px;
+    background-image: var(--imgurl);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+.selected-pfp::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--imgurl);
+    filter: blur(5px);
+    border-radius: 25px;
+    z-index: -1;
+}
+
+.selected-character-pfp {
+    left: 28px;
+}
+
+.selected-vehicle-pfp {
+    right: 28px;
+}
+
+.name-arc {
+    position: absolute;
+    width: 140px;
+    height: 32px;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+    top: clamp(72px, 12vh, 88px);
+    transform: translateX(-50%);
+}
+
+.name-arc text {
+    fill: #052631;
+    font-size: 12px;
+    font-family: "Stack Sans Text", sans-serif;
+    font-weight: 700;
+}
+
+.name-arc-character {
+    left: calc(28px + clamp(36px, 5.5vh, 47.5px));
+}
+
+.name-arc-vehicle {
+    left: auto;
+    right: calc(28px + clamp(36px, 5.5vh, 47.5px));
+}
+
+/* The "x" sign between two selected pfps */
+.eks {
+    aspect-ratio: 1/1;
+    position: absolute;
+    width: 20px;
+    top: clamp(74px, 12vh, 90px);
+    left: 50%;
+    transform: translateX(-50%);
+    filter: blur(0.75px);
+}
+
+/* Base .stats-card — used by JS-generated stats HTML */
+.stats-card {
+    border-radius: 25px;
+    corner-shape: superellipse(1.1);
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(155deg, #E4EDFC 20%, #DDFFF4 90%);
+    filter: blur(5px);
+    border-radius: 25px;
+    z-index: -1;
+}
+
+/* Base .sections, .section, etc. — used by stats-sections-template */
+.sections {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.section {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
+    width: 100%;
+}
+
+.section-title {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #052631;
+    font-family: "Stack Sans Text", sans-serif;
+    font-style: normal;
+}
+
+.section > div[class^="section-stats"] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.stats-title {
+    margin: 0;
+    margin-left: 10px;
+    font-size: 13px;
+    color: #071229;
+    width: 70px;
+    flex: 0 0 auto;
+    font-family: "SN Pro", sans-serif;
+    font-style: normal;
+}
+
+.stats-progress-bar {
+    flex: 1 1 auto;
+    height: 10px;
+    background: #ffffff;
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.05);
+    filter: blur(1.25px);
+}
+
+.stats-progress-value {
+    height: 100%;
+    width: var(--value);
+    background: linear-gradient(90deg, #2fa7ff 0%, #1e90ff 100%);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.pfp-shape {
+    border-radius: 35px;
+    corner-shape: superellipse(1.1);
+    aspect-ratio: 1 / 1;
+    background-color: white;
+}
+
+.dropdown-box {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 20px;
+    position: relative;
+    width: 100%;
+    border-radius: 25px;
+    corner-shape: superellipse(1.1);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(250, 250, 250, 0.4);
+    box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
+    overflow: hidden;
+    cursor: pointer;
+    transition: max-height 280ms ease, background-color 200ms ease, transform 200ms ease;
+}
+
+.dropdown-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    backdrop-filter: blur(12px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.dropdown-box:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.dropdown-title {
+    position: absolute;
+    height: 50px;
+    top: 15px;
+    left: 25px;
+    font-size: 20px;
+    vertical-align: middle;
+    font-family: "Stack Sans Text", sans-serif;
+    z-index: 2;
+}
+
+.dropdown-collapsed {
+    max-height: 50px;
+}
+
+.dropdown-expanded {
+    max-height: 70vh;
+}
+
+.dropdown-contentbox {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+    margin-top: 70px;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0 20px;
+    align-items: flex-start;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.dropdown-box.dropdown-expanded .dropdown-contentbox {
+    max-height: calc(70vh - 70px);
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    width: 100%;
+    background-color: #fdfdfda0;
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.selection::before {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(20px);
+    opacity: var(--opacity);
+    z-index: -1;
+}
+
+.selection-pfp {
+    position: relative;
+    width: 85px;
+    object-fit: cover;
+    object-position: top;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+.selection-pfp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--bg-image);
+    filter: blur(5px);
+    border-radius: 25px;
+    z-index: -1;
+}
+
+.name-arc-selection {
+    position: relative;
+    display: block;
+    width: 100px;
+    top: -20px;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.name-arc-selection text {
+    fill: #052631;
+    font-size: 28px;
+    font-family: "Stack Sans Text", sans-serif;
+    font-weight: 700;
+}
+
+@media screen and (max-width: 1100px) {
+    .compare-grid {
+        flex-direction: column;
+        align-items: center;
+        height: calc(100vh - var(--navbar-height));
+        max-height: calc(100vh - var(--navbar-height));
+        padding: 16px 20px 24px;
+        overflow-y: auto;
+    }
+
+    .compare-grid.panels-2 .comparebox,
+    .compare-grid.panels-3 .comparebox {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .comparebox {
+        height: min(480px, calc(100vh - var(--navbar-height) - 40px));
+        max-height: min(480px, calc(100vh - var(--navbar-height) - 40px));
+        flex-shrink: 0;
+    }
+}

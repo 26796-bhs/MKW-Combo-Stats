@@ -2,18 +2,117 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='compare/style.css') }}">
+<script type="module" src="{{ url_for('static', filename='compare/script.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-<div class="compare-grid">
-    <div class="comparebox chosen">
+<div class="compare-grid panels-1" id="compare-grid"></div>
 
+<template id="stats-sections-template">
+    <div class="sections">
+        <div class="section">
+            <p class="section-title">SPEED</p>
+            <div class="section-stats-1">
+                <p class="stats-title">On Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-2">
+                <p class="stats-title">Off Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-3">
+                <p class="stats-title">In Water</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <p class="section-title">HANDLING</p>
+            <div class="section-stats-1">
+                <p class="stats-title">On Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-2">
+                <p class="stats-title">Off Road</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-3">
+                <p class="stats-title">In Water</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <p class="section-title">OTHER</p>
+            <div class="section-stats-1">
+                <p class="stats-title">Accel</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-2">
+                <p class="stats-title">Turbo</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+            <div class="section-stats-3">
+                <p class="stats-title">Weight</p>
+                <div class="stats-progress-bar">
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="comparebox choosing"></div>
-    <div class="comparebox new"></div>
-</div>
-{% endblock %}
+</template>
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='compare/script.js') }}" defer></script>
+<template id="character-dropdown-template">
+    <div class="dropdown-box dropdown-expanded">
+        <p class="dropdown-title">Characters</p>
+        <div class="dropdown-contentbox">
+            {% for data in characters %}
+            <div class="selection" data-hiddenid="{{ data[0] }}"
+                style="--bg-image: url('{{ data[11] }}'); --opacity: 0.25;">
+                <div class="pfp-shape selection-pfp" style="--bg-image: url('{{ data[11] }}');"></div>
+                <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <text>
+                        <textPath startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                    </text>
+                </svg>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</template>
+
+<template id="vehicle-dropdown-template">
+    <div class="dropdown-box dropdown-expanded">
+        <p class="dropdown-title">Vehicles</p>
+        <div class="dropdown-contentbox">
+            {% for data in vehicles %}
+            <div class="selection" data-hiddenid="{{ data[0] }}"
+                style="--bg-image: url('{{ data[12] }}'); --opacity: 0.25;">
+                <div class="pfp-shape selection-pfp" style="--bg-image: url('{{ data[12] }}');"></div>
+                <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <text>
+                        <textPath startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                    </text>
+                </svg>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</template>
 {% endblock %}
