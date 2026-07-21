@@ -1,4 +1,27 @@
-  stats: {
+const classes = { // [mtb, spdSr, spdRr, spdWt, acc, wgt, hndSr, hndRr, hndWt, size]
+  drivers: {
+    mario:      [1,4,3,3,3,4,4,2,2,1],
+    luigi:      [1,3,4,3,3,4,2,4,2,1],
+    peach:      [2,3,2,2,4,3,5,3,3,1],
+    yoshi:      [2,2,3,2,4,3,3,5,3,1],
+    dk:         [0,5,6,5,1,6,0,2,0,2],
+    bowser:     [0,6,6,6,0,7,0,0,0,2],
+    bowserJr:   [2,2,2,3,4,3,3,3,5,1],
+    koopa:      [3,1,1,2,5,2,4,4,6,0],
+    toad:       [3,1,2,1,5,2,4,6,4,0],
+    toadette:   [3,2,1,1,5,2,6,4,4,0],
+    kingboo:    [0,4,5,4,2,5,1,3,1,2],
+    wario:      [0,6,5,5,1,6,2,0,0,2],
+    waluigi:    [0,5,5,6,1,6,0,0,2,2],
+    birdo:      [1,3,3,4,3,4,2,2,4,1],
+    pauline:    [0,5,4,4,2,5,3,1,1,2],
+    rosalina:   [0,4,4,5,2,5,1,1,3,2],
+    marioBb:    [3,1,0,0,6,1,7,5,5,0],
+    luigiBb:    [3,0,1,0,6,1,5,7,5,0],
+    peachBb:    [4,0,0,0,7,0,6,6,6,0],
+    rosalinaBb: [3,0,0,1,6,1,5,5,7,0]
+  },
+  bodies: {
     std:       [5,5,5,5,5,2,5,5,5],
     rally:     [4,4,8,4,4,3,3,8,3],
     stdBike:   [9,1,1,1,9,0,7,7,7],
@@ -23,48 +46,1017 @@
     trike:     [1,7,7,10,1,5,1,1,7],
     pipe:      [8,2,2,2,8,1,6,6,6],
     gator:     [3,9,6,6,3,6,5,0,0],
-  },
+  }
+};
 
-  category: {
-    std: { full: "Kart" },
-    rally: { or: "Rally" },
-    plush: { or: "Plushy" },
-    bloop: { or: "Blooper" },
-    zoom: { or: "Zoom" },
-    truck: { post: "Truck", pre: "Chargin’" },
-    rod: { post: "Rod", pre: "Hot" },
-    frog: { or: "Revster" },
-    royale: { or: "Royale" },
-    dasher: { post: "-Dasher", pre: "Dasher" },
-    biddy: { or: "Biddy" },
-    titan: { or: "Titan" },
-    starSled: { pre: "Stellar", or: "Sled" },
-    reel: { or: "Racer" },
-    bee: { or: "Bumble" },
-    carpet: { or: "Flyer" },
-    cloud: { or: "Cloud" },
-    blast: { or: "Blast" },
-    horn: { or: "Horn" },
-    dump: { pre: "Li’l", or: "Dumpy" },
-    trike: { pre: "Mecha", or: "Trike" },
-    pipe: { or: "Pipe" },
-    bill: { or: "Dozer" },
-    dorrie: { post: "Dorrie", pre: "Funky" },
-    junk: { or: "Hog" },
-    lobster: { or: "Lobster" },
-    dreadSled: { or: "Dread" },
-    gator: { or: "Gator" },
-    bruiser: { or: "Bruiser" },
-    stdBike: { or: "Bike" },
-    rallyBike: { or: "Rally" },
-    scoot: { or: "Scoot", pre: "Cute" },
-    machBike: { or: "Rocket" },
-    pipeBike: { pre: "Hyper", or: "Pipe" },
-    radio: { or: "Thumper" },
-    chopper: { or: "Chopper" },
-    fin: { or: "Fin" },
-    rob: { or: "H. O. G." },
-    dolphin: { or: "Dasher", pre: "Dolphin" },
-    loco: { or: "Moto", pre: "Loco" }
+const parts = {
+  drivers: {
+    mario: {
+      class: "mario",
+      group: "mario",
+      code: "M"
+    },
+      "mario-touring": {
+        class: "mario",
+        group: "mario",
+        code: "Mt"
+      },
+      "mario-pro": {
+        class: "mario",
+        group: "mario",
+        code: "Mp"
+      },
+      "mario-mech": {
+        class: "mario",
+        group: "mario",
+        code: "Mm"
+      },
+      "mario-desert": {
+        class: "mario",
+        group: "mario",
+        code: "Md"
+      },
+      "mario-cowboy": {
+        class: "mario",
+        group: "mario",
+        code: "MC"
+      },
+      "mario-sight": {
+        class: "mario",
+        group: "mario",
+        code: "MS"
+      },
+      "mario-aviator": {
+        class: "mario",
+        group: "mario",
+        code: "MP"
+      },
+      "mario-festival": {
+        class: "mario",
+        group: "mario",
+        code: "Mh"
+      },
+      "mario-at": {
+        class: "mario",
+        group: "mario",
+        code: "MT"
+      },
+    luigi: {
+      class: "luigi",
+      group: "luigi",
+      code: "L"
+    },
+      "luigi-touring": {
+        class: "luigi",
+        group: "luigi",
+        code: "Lt"
+      },
+      "luigi-pro": {
+        class: "luigi",
+        group: "luigi",
+        code: "Lp"
+      },
+      "luigi-mech": {
+        class: "luigi",
+        group: "luigi",
+        code: "Lm"
+      },
+      "luigi-desert": {
+        class: "luigi",
+        group: "luigi",
+        code: "Ld"
+      },
+      "luigi-farmer": {
+        class: "luigi",
+        group: "luigi",
+        code: "Lf"
+      },
+      "luigi-festival": {
+        class: "luigi",
+        group: "luigi",
+        code: "Lh"
+      },
+      "luigi-at": {
+        class: "luigi",
+        group: "luigi",
+        code: "LT"
+      },
+      "luigi-gondolier": {
+        class: "luigi",
+        group: "luigi",
+        code: "LG"
+      },
+    peach: {
+      class: "peach",
+      group: "peach",
+      code: "P"
+    },
+      "peach-touring": {
+        class: "peach",
+        group: "peach",
+        code: "Pt"
+      },
+      "peach-pro": {
+        class: "peach",
+        group: "peach",
+        code: "Pp"
+      },
+      "peach-farmer": {
+        class: "peach",
+        group: "peach",
+        code: "Pf"
+      },
+      "peach-sight": {
+        class: "peach",
+        group: "peach",
+        code: "PS"
+      },
+      "peach-aviator": {
+        class: "peach",
+        group: "peach",
+        code: "PP"
+      },
+      "peach-festival": {
+        class: "peach",
+        group: "peach",
+        code: "Py"
+      },
+      "peach-aero": {
+        class: "peach",
+        group: "peach",
+        code: "Pa"
+      },
+      "peach-vacation": {
+        class: "peach",
+        group: "peach",
+        code: "Pv"
+      },
+    daisy: {
+      class: "peach",
+      group: "peach",
+      code: "J"
+    },
+      "daisy-touring": {
+        class: "peach",
+        group: "peach",
+        code: "Jt"
+      },
+      "daisy-pro": {
+        class: "peach",
+        group: "peach",
+        code: "Jp"
+      },
+      "daisy-desert": {
+        class: "peach",
+        group: "peach",
+        code: "Jd"
+      },
+      "daisy-swim": {
+        class: "peach",
+        group: "peach",
+        code: "JW"
+      },
+      "daisy-aero": {
+        class: "peach",
+        group: "peach",
+        code: "Ja"
+      },
+      "daisy-vacation": {
+        class: "peach",
+        group: "peach",
+        code: "Jv"
+      },
+    yoshi: {
+      class: "yoshi",
+      group: "yoshi",
+      code: "Y"
+    },
+      "yoshi-touring": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y5"
+      },
+      "yoshi-pro": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y3"
+      },
+      "yoshi-aristocrat": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y9"
+      },
+      "yoshi-ice": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y7"
+      },
+      "yoshi-biker": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y6"
+      },
+      "yoshi-swim": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y8"
+      },
+      "yoshi-festival": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y4"
+      },
+      "yoshi-food": {
+        class: "yoshi",
+        group: "yoshi",
+        code: "Y1"
+      },
+    dk: {
+      class: "dk",
+      group: "dk",
+      code: "D"
+    },
+      "dk-at": {
+        class: "dk",
+        group: "dk",
+        code: "DT"
+      },
+    bowser: {
+      class: "bowser",
+      group: "bowser",
+      code: "B"
+    },
+      "bowser-pro": {
+        class: "bowser",
+        group: "bowser",
+        code: "Bp"
+      },
+      "bowser-charged": {
+        class: "bowser",
+        group: "bowser",
+        code: "BC"
+      },
+      "bowser-biker": {
+        class: "bowser",
+        group: "bowser",
+        code: "Bb"
+      },
+      "bowser-at": {
+        class: "bowser",
+        group: "bowser",
+        code: "BT"
+      },
+    bowserJr: {
+      class: "bowserJr",
+      group: "bowserJr",
+      code: "b"
+    },
+      "bowserJr-pro": {
+        class: "bowserJr",
+        group: "bowserJr",
+        code: "bp"
+      },
+      "bowserJr-biker": {
+        class: "bowserJr",
+        group: "bowserJr",
+        code: "bb"
+      },
+      "bowserJr-explorer": {
+        class: "bowserJr",
+        group: "bowserJr",
+        code: "be"
+      },
+    koopa: {
+      class: "koopa",
+      group: "koopa",
+      code: "k"
+    },
+      "koopa-runner": {
+        class: "koopa",
+        group: "koopa",
+        code: "kR"
+      },
+      "koopa-pro": {
+        class: "koopa",
+        group: "koopa",
+        code: "kp"
+      },
+      "koopa-sailor": {
+        class: "koopa",
+        group: "koopa",
+        code: "ks"
+      },
+      "koopa-at": {
+        class: "koopa",
+        group: "koopa",
+        code: "kT"
+      },
+      "koopa-work": {
+        class: "koopa",
+        group: "koopa",
+        code: "kw"
+      },
+    toad: {
+      class: "toad",
+      group: "toad",
+      code: "T"
+    },
+      "toad-pro": {
+        class: "toad",
+        group: "toad",
+        code: "Tp"
+      },
+      "toad-engi": {
+        class: "toad",
+        group: "toad",
+        code: "TE"
+      },
+      "toad-burger": {
+        class: "toad",
+        group: "toad",
+        code: "TB"
+      },
+      "toad-explorer": {
+        class: "toad",
+        group: "toad",
+        code: "Te"
+      },
+    toadette: {
+      class: "toadette",
+      group: "toadette",
+      code: "t"
+    },
+      "toadette-pro": {
+        class: "toadette",
+        group: "toadette",
+        code: "tp"
+      },
+      "toadette-conductor": {
+        class: "toadette",
+        group: "toadette",
+        code: "tC"
+      },
+      "toadette-ice": {
+        class: "toadette",
+        group: "toadette",
+        code: "tI"
+      },
+      "toadette-explorer": {
+        class: "toadette",
+        group: "toadette",
+        code: "te"
+      },
+    lakitu: {
+      class: "koopa",
+      group: "koopa",
+      code: "u"
+    },
+      "lakitu-pit": {
+        class: "koopa",
+        group: "koopa",
+        code: "up"
+      },
+      "lakitu-fish": {
+        class: "koopa",
+        group: "koopa",
+        code: "uF"
+      },
+    kingboo: {
+      class: "kingboo",
+      group: "kingboo",
+      code: "K"
+    },
+      "kingboo-pro": {
+        class: "kingboo",
+        group: "kingboo",
+        code: "Kp"
+      },
+      "kingboo-aristocrat": {
+        class: "kingboo",
+        group: "kingboo",
+        code: "KA"
+      },
+      "kingboo-pirate": {
+        class: "kingboo",
+        group: "kingboo",
+        code: "KP"
+      },
+    shyguy: {
+      class: "toad",
+      group: "toad",
+      code: "s"
+    },
+      "shyguy-pit": {
+        class: "toad",
+        group: "toad",
+        code: "sp"
+      },
+      "shyguy-ski": {
+        class: "toad",
+        group: "toad",
+        code: "sS"
+      },
+    wario: {
+      class: "wario",
+      group: "wario",
+      code: "W"
+    },
+      "wario-pro": {
+        class: "wario",
+        group: "wario",
+        code: "Wp"
+      },
+      "wario-desert": {
+        class: "wario",
+        group: "wario",
+        code: "Wd"
+      },
+      "wario-bee": {
+        class: "wario",
+        group: "wario",
+        code: "WW"
+      },
+      "wario-biker": {
+        class: "wario",
+        group: "wario",
+        code: "Wb"
+      },
+      "wario-pirate": {
+        class: "wario",
+        group: "wario",
+        code: "WP"
+      },
+      "wario-ruffian": {
+        class: "wario",
+        group: "wario",
+        code: "WE"
+      },
+      "wario-work": {
+        class: "wario",
+        group: "wario",
+        code: "Ww"
+      },
+    waluigi: {
+      class: "waluigi",
+      group: "waluigi",
+      code: "w"
+    },
+      "waluigi-pro": {
+        class: "waluigi",
+        group: "waluigi",
+        code: "wp"
+      },
+      "waluigi-vampire": {
+        class: "waluigi",
+        group: "waluigi",
+        code: "wW"
+      },
+      "waluigi-mariachi": {
+        class: "waluigi",
+        group: "waluigi",
+        code: "wM"
+      },
+      "waluigi-biker": {
+        class: "waluigi",
+        group: "waluigi",
+        code: "wb"
+      },
+      "waluigi-ruffian": {
+        class: "waluigi",
+        group: "waluigi",
+        code: "wR"
+      },
+    birdo: {
+      class: "birdo",
+      group: "birdo",
+      code: "y"
+    },
+      "birdo-pro": {
+        class: "birdo",
+        group: "birdo",
+        code: "yp"
+      },
+      "birdo-vacation": {
+        class: "birdo",
+        group: "birdo",
+        code: "yv"
+      },
+    pauline: {
+      class: "pauline",
+      group: "pauline",
+      code: "U"
+    },
+      "pauline-aero": {
+        class: "pauline",
+        group: "pauline",
+        code: "Ua"
+      },
+    rosalina: {
+      class: "rosalina",
+      group: "rosalina",
+      code: "R"
+    },
+      "rosalina-touring": {
+        class: "rosalina",
+        group: "rosalina",
+        code: "Rt"
+      },
+      "rosalina-pro": {
+        class: "rosalina",
+        group: "rosalina",
+        code: "Rp"
+      },
+      "rosalina-aurora": {
+        class: "rosalina",
+        group: "rosalina",
+        code: "RA"
+      },
+      "rosalina-aero": {
+        class: "rosalina",
+        group: "rosalina",
+        code: "Ra"
+      },
+    marioBb: {
+      class: "marioBb",
+      group: "marioBb",
+      code: "m"
+    },
+      "marioBb-pro": {
+        class: "marioBb",
+        group: "marioBb",
+        code: "mp"
+      },
+      "marioBb-swim": {
+        class: "marioBb",
+        group: "marioBb",
+        code: "mW"
+      },
+      "marioBb-work": {
+        class: "marioBb",
+        group: "marioBb",
+        code: "mw"
+      },
+    luigiBb: {
+      class: "luigiBb",
+      group: "luigiBb",
+      code: "l"
+    },
+      "luigiBb-pro": {
+        class: "luigiBb",
+        group: "luigiBb",
+        code: "lp"
+      },
+      "luigiBb-work": {
+        class: "luigiBb",
+        group: "luigiBb",
+        code: "lw"
+      },
+    peachBb: {
+      class: "peachBb",
+      group: "peachBb",
+      code: "p"
+    },
+      "peachBb-touring": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "pt"
+      },
+      "peachBb-pro": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "pp"
+      },
+      "peachBb-sailor": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "ps"
+      },
+      "peachBb-explorer": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "pe"
+      },
+    daisyBb: {
+      class: "peachBb",
+      group: "peachBb",
+      code: "j"
+    },
+      "daisyBb-touring": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "jt"
+      },
+      "daisyBb-pro": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "jp"
+      },
+      "daisyBb-sailor": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "js"
+      },
+      "daisyBb-explorer": {
+        class: "peachBb",
+        group: "peachBb",
+        code: "je"
+      },
+    rosalinaBb: {
+      class: "rosalinaBb",
+      group: "rosalinaBb",
+      code: "r"
+    },
+      "rosalinaBb-touring": {
+        class: "rosalinaBb",
+        group: "rosalinaBb",
+        code: "rt"
+      },
+      "rosalinaBb-pro": {
+        class: "rosalinaBb",
+        group: "rosalinaBb",
+        code: "rp"
+      },
+      "rosalinaBb-sailor": {
+        class: "rosalinaBb",
+        group: "rosalinaBb",
+        code: "rs"
+      },
+      "rosalinaBb-explorer": {
+        class: "rosalinaBb",
+        group: "rosalinaBb",
+        code: "re"
+      },
+    nabbit: {
+      class: "toadette",
+      group: "toadette",
+      code: "n"
+    },
+    goomba: {
+      class: "marioBb",
+      group: "marioBb",
+      code: "g"
+    },
+    drybones: {
+      class: "luigiBb",
+      group: "luigiBb",
+      code: "x"
+    },
+    piranha: {
+      class: "pauline",
+      group: "pauline",
+      code: "X"
+    },
+    spike: {
+      class: "marioBb",
+      group: "marioBb",
+      code: "S"
+    },
+    wiggler: {
+      class: "wario",
+      group: "wario",
+      code: "H"
+    },
+    hammerbro: {
+      class: "luigi",
+      group: "luigi",
+      code: "v"
+    },
+    crab: {
+      class: "rosalinaBb",
+      group: "rosalinaBb",
+      code: "i"
+    },
+    cataquack: {
+      class: "rosalina",
+      group: "rosalina",
+      code: "a"
+    },
+    mole: {
+      class: "yoshi",
+      group: "yoshi",
+      code: "E"
+    },
+    cheep: {
+      class: "koopa",
+      group: "koopa",
+      code: "Q"
+    },
+    pianta: {
+      class: "waluigi",
+      group: "waluigi",
+      code: "A"
+    },
+    wrench: {
+      class: "mario",
+      group: "mario",
+      code: "e"
+    },
+    conkdor: {
+      class: "kingboo",
+      group: "kingboo",
+      code: "c"
+    },
+    swoop: {
+      class: "peachBb",
+      group: "peachBb",
+      code: "o"
+    },
+    pokey: {
+      class: "luigi",
+      group: "luigi",
+      code: "O"
+    },
+    peepa: {
+      class: "luigiBb",
+      group: "luigiBb",
+      code: "Z"
+    },
+    stingby: {
+      class: "toad",
+      group: "toad",
+      code: "z"
+    },
+    fishbone: {
+      class: "rosalinaBb",
+      group: "rosalinaBb",
+      code: "q"
+    },
+    coffer: {
+      class: "peach",
+      group: "peach",
+      code: "G"
+    },
+    cow: {
+      class: "dk",
+      group: "dk",
+      code: "C"
+    },
+    snowman: {
+      class: "pauline",
+      group: "pauline",
+      code: "8"
+    },
+    penguin: {
+      class: "birdo",
+      group: "birdo",
+      code: "N"
+    },
+    dolphin: {
+      class: "bowserJr",
+      group: "bowserJr",
+      code: "h"
+    },
+    biddy: {
+      class: "peachBb",
+      group: "peachBb",
+      code: "I"
+    },
+    chuck: {
+      class: "dk",
+      group: "dk",
+      code: "V"
+    }
+  },
+  bodies: {
+    std: {
+      type: "kart",
+      class: "std",
+      group: "std",
+      code: "A"
+    },
+    rally: {
+      type: "kart",
+      class: "rally",
+      group: "rally",
+      code: "R"
+    },
+    stdBike: {
+      type: "bike",
+      class: "stdBike",
+      group: "stdBike",
+      code: "a"
+    },
+    rallyBike: {
+      type: "bike",
+      class: "rallyBike",
+      group: "rallyBike",
+      code: "r"
+    },
+    plush: {
+      type: "kart",
+      class: "std",
+      group: "std",
+      code: "T"
+    },
+    bloop: {
+      type: "kart",
+      class: "bloop",
+      group: "bloop",
+      code: "o"
+    },
+    scoot: {
+      type: "bike",
+      class: "stdBike",
+      group: "stdBike",
+      code: "s"
+    },
+    machBike: {
+      type: "bike",
+      class: "machBike",
+      group: "machBike",
+      code: "m"
+    },
+    zoom: {
+      type: "kart",
+      class: "rally",
+      group: "rally",
+      code: "Z"
+    },
+    truck: {
+      type: "kart",
+      class: "truck",
+      group: "truck",
+      code: "C"
+    },
+    pipeBike: {
+      type: "bike",
+      class: "rallyBike",
+      group: "rallyBike",
+      code: "p"
+    },
+    dorrie: {
+      type: "atv",
+      class: "dorrie",
+      group: "dorrie",
+      code: "D"
+    },
+    rod: {
+      type: "kart",
+      class: "rod",
+      group: "rod",
+      code: "M"
+    },
+    frog: {
+      type: "kart",
+      class: "frog",
+      group: "frog",
+      code: "F"
+    },
+    radio: {
+      type: "bike",
+      class: "stdBike",
+      group: "stdBike",
+      code: "O"
+    },
+    junk: {
+      type: "atv",
+      class: "junk",
+      group: "junk",
+      code: "J"
+    },
+    royale: {
+      type: "kart",
+      class: "rod",
+      group: "rod",
+      code: "e"
+    },
+    dasher: {
+      type: "kart",
+      class: "rod",
+      group: "rod",
+      code: "b"
+    },
+    chopper: {
+      type: "bike",
+      class: "chopper",
+      group: "chopper",
+      code: "w"
+    },
+    lobster: {
+      type: "atv",
+      class: "lobster",
+      group: "lobster",
+      code: "L"
+    },
+    biddy: {
+      type: "kart",
+      class: "biddy",
+      group: "biddy",
+      code: "B"
+    },
+    titan: {
+      type: "kart",
+      class: "truck",
+      group: "truck",
+      code: "t"
+    },
+    dreadSled: {
+      type: "atv",
+      class: "dreadSled",
+      group: "dreadSled",
+      code: "x"
+    },
+    starSled: {
+      type: "kart",
+      class: "starSled",
+      group: "starSled",
+      code: "S"
+    },
+    reel: {
+      type: "kart",
+      class: "reel",
+      group: "reel",
+      code: "k"
+    },
+    bee: {
+      type: "kart",
+      class: "rod",
+      group: "rod",
+      code: "V"
+    },
+    fin: {
+      type: "bike",
+      class: "fin",
+      group: "fin",
+      code: "f"
+    },
+    rob: {
+      type: "bike",
+      class: "machBike",
+      group: "machBike",
+      code: "h"
+    },
+    carpet: {
+      type: "kart",
+      class: "frog",
+      group: "frog",
+      code: "c"
+    },
+    cloud: {
+      type: "kart",
+      class: "frog",
+      group: "frog",
+      code: "9"
+    },
+    dolphin: {
+      type: "bike",
+      class: "fin",
+      group: "fin",
+      code: "d"
+    },
+    blast: {
+      type: "kart",
+      class: "blast",
+      group: "blast",
+      code: "3"
+    },
+    horn: {
+      type: "kart",
+      class: "horn",
+      group: "horn",
+      code: "H"
+    },
+    dump: {
+      type: "kart",
+      class: "truck",
+      group: "truck",
+      code: "y"
+    },
+    loco: {
+      type: "bike",
+      class: "loco",
+      group: "loco",
+      code: "l"
+    },
+    trike: {
+      type: "atv",
+      class: "trike",
+      group: "trike",
+      code: "Y"
+    },
+    pipe: {
+      type: "kart",
+      class: "pipe",
+      group: "pipe",
+      code: "P"
+    },
+    bill: {
+      type: "kart",
+      class: "horn",
+      group: "horn",
+      code: "z"
+    },
+    gator: {
+      type: "atv",
+      class: "gator",
+      group: "gator",
+      code: "G"
+    },
+    bruiser: {
+      type: "atv",
+      class: "truck",
+      group: "truck",
+      code: "X"
+    }
   }
 };
