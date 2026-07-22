@@ -34,7 +34,6 @@
     max-width: 380px;
 }
 
-/* Shared glass panel shell — box-shadow uses full frame (Figma: show behind transparent areas) */
 .comparebox {
     height: 100%;
     max-height: 100%;
@@ -61,8 +60,6 @@
     overflow: hidden;
 }
 
-/* Stage 1: add (+) — transparent glass card; shadow bleeds through transparent areas
-   Figma "Show behind transparent areas" = checked → filter: drop-shadow() */
 .comparebox.add {
     display: flex;
     align-items: center;
@@ -232,7 +229,6 @@
     filter: blur(0.4px);
 }
 
-/* Confirm — Figma node 107:23 (~231px from panel bottom on 817px frame) */
 .confirm-btn {
     position: absolute;
     left: 50%;
@@ -268,7 +264,6 @@
     cursor: not-allowed;
 }
 
-/* Picker overlay — full-height, replaces card content */
 .picker-dropdowns {
     position: absolute;
     inset: 0;
@@ -330,7 +325,6 @@
     display: none;
 }
 
-/* Override dropdown-box styles for the overlay context — compact, no box model */
 .comparebox.choosing .dropdown-box {
     display: flex;
     flex-direction: column;
@@ -398,7 +392,6 @@
     visibility: hidden;
 }
 
-/* Stage 3: stats — Figma node 90:12 */
 .comparebox.stats::before {
     background: linear-gradient(
         135.59deg,
@@ -576,9 +569,6 @@
     }
 }
 
-/* ===== Shared styles from home/style.css (unscoped) ===== */
-
-/* Base .selected-pfp — used by JS-generated stats HTML */
 .selected-pfp {
     display: block;
     width: 95px;
@@ -638,7 +628,6 @@
     right: calc(28px + clamp(36px, 5.5vh, 47.5px));
 }
 
-/* The "x" sign between two selected pfps */
 .eks {
     aspect-ratio: 1/1;
     position: absolute;
@@ -649,7 +638,6 @@
     filter: blur(0.75px);
 }
 
-/* Base .stats-card — used by JS-generated stats HTML */
 .stats-card {
     border-radius: 25px;
     corner-shape: superellipse(1.1);
@@ -668,7 +656,6 @@
     z-index: -1;
 }
 
-/* Base .sections, .section, etc. — used by stats-sections-template */
 .sections {
     display: flex;
     flex-direction: column;

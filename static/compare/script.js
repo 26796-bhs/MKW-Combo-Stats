@@ -2,19 +2,16 @@ import { get_combo } from "../modules/communication-service.js";
 
 const MAX_PANELS = 3;
 
-// Global object to store all stats values across all panels
 const statsValues = {};
 
 function updateStatsBar(root, sectionName, statName, floatValue) {
     const percentageString = `${floatValue * 100}%`;
     
-    // Store the value for min/max calculation
     const key = `${sectionName}-${statName}`;
     if (!statsValues[key]) {
         statsValues[key] = [];
     }
-    
-    // Find the progress value element directly by navigating the DOM structure
+
     let progressValueElement = null;
     root.querySelectorAll(".sections .section").forEach((section) => {
         const sectionTitle = section.querySelector(".section-title");
@@ -23,8 +20,6 @@ function updateStatsBar(root, sectionName, statName, floatValue) {
                 const subsectionTitle = row.querySelector(".stats-title");
                 if (subsectionTitle && subsectionTitle.textContent.trim().toLowerCase() === statName.toLowerCase()) {
                     progressValueElement = row.querySelector('.stats-progress-value');
-                    
-                    // Store the element for min/max calculation
                     if (progressValueElement) {
                         statsValues[key].push({
                             value: floatValue,
@@ -46,8 +41,6 @@ function updateStatsBar(root, sectionName, statName, floatValue) {
                     const progressValue = row.querySelector(".stats-progress-value");
                     if (progressValue) {
                         progressValue.style.setProperty("--value", percentageString);
-                        
-                        // Remove any existing min/max classes
                         progressValue.classList.remove('min-value', 'max-value');
                     }
                 }
@@ -56,18 +49,14 @@ function updateStatsBar(root, sectionName, statName, floatValue) {
     });
 }
 
-// Function to apply min/max highlighting to all stats
 function applyMinMaxHighlighting() {
-    // Clear all existing min/max classes first
     document.querySelectorAll('.stats-progress-value').forEach(el => {
         el.classList.remove('min-value', 'max-value');
     });
+
     
-    // For each stat type, find min and max values and apply classes
     for (const [key, values] of Object.entries(statsValues)) {
         if (values.length === 0) continue;
-        
-        // Find min and max values
         let minValue = values[0].value;
         let maxValue = values[0].value;
         let minElement = values[0].element;
@@ -83,14 +72,11 @@ function applyMinMaxHighlighting() {
                 maxElement = values[i].element;
             }
         }
-        
-        // Apply classes to min and max elements
         if (minElement) minElement.classList.add('min-value');
         if (maxElement) maxElement.classList.add('max-value');
     }
 }
 
-// Modify applyComboStats to call applyMinMaxHighlighting after updating all stats
 async function applyComboStats(cardRoot, characterId, vehicleId) {
     const data = await get_combo(characterId, vehicleId);
     updateStatsBar(cardRoot, "SPEED", "On Road", data[0]);
@@ -102,8 +88,6 @@ async function applyComboStats(cardRoot, characterId, vehicleId) {
     updateStatsBar(cardRoot, "OTHER", "Accel", data[6]);
     updateStatsBar(cardRoot, "OTHER", "Turbo", data[7]);
     updateStatsBar(cardRoot, "OTHER", "Weight", data[8]);
-    
-    // After all stats are updated, apply min/max highlighting
     applyMinMaxHighlighting();
 }
 
@@ -180,8 +164,6 @@ function createChoosingPanel() {
     const vehTab = panel.querySelector(".picker-tab-vehicle");
 
     dropdownBody.append(charDropdown, vehDropdown);
-
-    /* charDropdown/vehDropdown are DocumentFragments — grab the actual .dropdown-box elements */
     const charBox = dropdownBody.querySelector('.dropdown-box:first-child');
     const vehBox = dropdownBody.querySelector('.dropdown-box:last-child');
 
@@ -224,9 +206,6 @@ function createChoosingPanel() {
             slot.classList.add("has-selection");
 
             confirmBtn.disabled = !(pick.character[2] && pick.vehicle[2]);
-
-            /* After picking, auto-focus the other category if still empty,
-               otherwise close the picker */
             if (focus === "character" && !pick.vehicle[2]) {
                 showPicker("vehicle");
             } else if (focus === "vehicle" && !pick.character[2]) {
