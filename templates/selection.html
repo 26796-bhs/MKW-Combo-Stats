@@ -45,7 +45,8 @@
                 <img class="map-card-img pfp-shape"
                     src="{{ map[9] or '' }}"
                     alt="{{ map[1] }}"
-                    loading="lazy"
+                    loading="eager"
+                    decoding="async"
                     referrerpolicy="no-referrer">
                 <p class="map-card-name">{{ map[1] }}</p>
             </div>
@@ -53,4 +54,5 @@
         </div>
     </div>
 </div>
+<script type="application/json" id="preload-image-urls">{{ preload_urls | tojson }}</script>
 {% endblock %}

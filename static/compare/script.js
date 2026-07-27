@@ -1,4 +1,5 @@
 import { get_combo } from "../modules/communication-service.js";
+import { preloadUrlsFromJsonElement } from "../modules/preload-images.js";
 
 const MAX_PANELS = 3;
 
@@ -191,16 +192,17 @@ function createChoosingPanel() {
 
     dropdowns.querySelectorAll(".selection").forEach((selection) => {
         selection.addEventListener("click", () => {
-            const image = selection.querySelector(".selection-pfp");
             const name = selection.querySelector("textPath");
             const hiddenid = selection.dataset.hiddenid;
             const isCharacter = selection.closest(".dropdown-box") === charBox;
-            const bgImage = image.style.getPropertyValue("--bg-image");
+            const imgUrl = selection.dataset.imgurl
+                || selection.querySelector(".selection-pfp-img")?.getAttribute("src")
+                || "";
             const focus = dropdowns.dataset.focus || (isCharacter ? "character" : "vehicle");
             const target = focus === "character" ? pick.character : pick.vehicle;
             const slot = focus === "character" ? charSlot : vehSlot;
 
-            target[0].style.backgroundImage = bgImage;
+            target[0].style.backgroundImage = imgUrl ? `url("${imgUrl}")` : "";
             target[1].textContent = name.textContent;
             target[2] = hiddenid;
             slot.classList.add("has-selection");
@@ -288,6 +290,8 @@ function onAddClick(addPanel) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    preloadUrlsFromJsonElement(document.getElementById("preload-image-urls"));
+
     const grid = document.getElementById("compare-grid");
     grid.appendChild(createAddPanel());
     updateGridLayout(grid);

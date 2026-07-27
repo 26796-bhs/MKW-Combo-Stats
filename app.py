@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request, abort
+from flask import Flask, g, render_template, request, abort, jsonify
 import sqlite3
 
 DATABASE = "database.db"
@@ -34,28 +34,43 @@ def home(): # Home page
 @app.route('/Selection')
 def selection(): # Selection page
     maps=query_db("SELECT * FROM Maps")
-    return render_template("selection.html", maps=maps)
+    characters=query_db("SELECT * FROM Characters")
+    vehicles=query_db("SELECT * FROM Vehicles")
+    preload_urls = list({
+        *(m[9] for m in maps if m[9]),
+        *(c[11] for c in characters if c[11]),
+        *(v[12] for v in vehicles if v[12]),
+    })
+    return render_template("selection.html", maps=maps, preload_urls=preload_urls)
 
 @app.route('/Compare')
 def compare(): # Compare page
     characters=query_db("SELECT * FROM Characters")
     vehicles=query_db("SELECT * FROM Vehicles")
-    return render_template("compare.html", characters=characters, vehicles=vehicles)
+    preload_urls = list({
+        *(c[11] for c in characters if c[11]),
+        *(v[12] for v in vehicles if v[12]),
+    })
+    return render_template("compare.html", characters=characters, vehicles=vehicles, preload_urls=preload_urls)
 
 
 @app.route('/characters/<id>')
 def char(id): # Fetch characters
     if id == "all":
-        return query_db("SELECT * FROM Characters")
+        rows = query_db("SELECT * FROM Characters")
+        return jsonify([list(r) for r in rows])
     else:
-        return query_db("SELECT * FROM Characters WHERE HiddenID = ?", [id])
+        rows = query_db("SELECT * FROM Characters WHERE HiddenID = ?", [id])
+        return jsonify([list(r) for r in rows])
 
-@app.route('/vehicles/<int:id>')
+@app.route('/vehicles/<path:id>')
 def vehic(id): #Fetch vheicles
-    if id == None:
-        return query_db("SELECT * FROM Vehicles")
+    if id == "all":
+        rows = query_db("SELECT * FROM Vehicles")
+        return jsonify([list(r) for r in rows])
     else:
-        return query_db("SELECT * FROM Vehicles WHERE HiddenID = ?", [id])
+        rows = query_db("SELECT * FROM Vehicles WHERE HiddenID = ?", [id])
+        return jsonify([list(r) for r in rows])
 
 @app.route('/maps')
 def maps():

@@ -279,7 +279,19 @@
 }
 
 .picker-dropdowns[hidden] {
-    display: none;
+    /* Override UA [hidden]{display:none!important} so images can preload. */
+    display: flex !important;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.comparebox.choosing .dropdown-box[hidden] {
+    /* Same: allow inactive tab images to load in the background. */
+    display: flex !important;
+    visibility: hidden;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 }
 
 .picker-dropdown-header {
@@ -379,10 +391,6 @@
 
 .comparebox.choosing .dropdown-box .dropdown-contentbox .name-arc-selection {
     font-size: 18px;
-}
-
-.comparebox.choosing .dropdown-box[hidden] {
-    display: none;
 }
 
 /* Hide preview/labels/confirm when picker is open */
@@ -830,12 +838,16 @@
 .selection-pfp {
     position: relative;
     width: 85px;
+    overflow: hidden;
+}
+
+.selection-pfp-img {
+    display: block;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    object-position: top;
-    background-image: var(--bg-image);
-    background-size: cover;
-    background-position: top center;
-    background-repeat: no-repeat;
+    object-position: top center;
+    border-radius: inherit;
 }
 
 .selection-pfp::before {

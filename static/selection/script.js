@@ -1,4 +1,5 @@
 import { get_best_combo, get_character, get_vehicle } from "../modules/communication-service.js";
+import { preloadUrlsFromJsonElement } from "../modules/preload-images.js";
 
 function setImage(el, url) {
     if (el.tagName === 'IMG') {
@@ -48,6 +49,8 @@ function selectMap(card) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    preloadUrlsFromJsonElement(document.getElementById('preload-image-urls'));
+
     const mapCards = document.querySelectorAll('.map-card');
     const prioritySelect = document.getElementById('priority-select');
     let selectedMapId = null;

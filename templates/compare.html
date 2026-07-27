@@ -81,9 +81,12 @@
         <p class="dropdown-title">Characters</p>
         <div class="dropdown-contentbox">
             {% for data in characters %}
-            <div class="selection" data-hiddenid="{{ data[0] }}"
+            <div class="selection" data-hiddenid="{{ data[0] }}" data-imgurl="{{ data[11] }}"
                 style="--bg-image: url('{{ data[11] }}'); --opacity: 0.25;">
-                <div class="pfp-shape selection-pfp" style="--bg-image: url('{{ data[11] }}');"></div>
+                <div class="pfp-shape selection-pfp">
+                    <img class="selection-pfp-img" src="{{ data[11] }}" alt="" width="85" height="85"
+                        loading="eager" decoding="async" referrerpolicy="no-referrer">
+                </div>
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
@@ -101,9 +104,12 @@
         <p class="dropdown-title">Vehicles</p>
         <div class="dropdown-contentbox">
             {% for data in vehicles %}
-            <div class="selection" data-hiddenid="{{ data[0] }}"
+            <div class="selection" data-hiddenid="{{ data[0] }}" data-imgurl="{{ data[12] }}"
                 style="--bg-image: url('{{ data[12] }}'); --opacity: 0.25;">
-                <div class="pfp-shape selection-pfp" style="--bg-image: url('{{ data[12] }}');"></div>
+                <div class="pfp-shape selection-pfp">
+                    <img class="selection-pfp-img" src="{{ data[12] }}" alt="" width="85" height="85"
+                        loading="eager" decoding="async" referrerpolicy="no-referrer">
+                </div>
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
@@ -115,4 +121,5 @@
         </div>
     </div>
 </template>
+<script type="application/json" id="preload-image-urls">{{ preload_urls | tojson }}</script>
 {% endblock %}
