@@ -289,8 +289,8 @@ function onAddClick(addPanel) {
     updateGridLayout(grid);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    preloadUrlsFromJsonElement(document.getElementById("preload-image-urls"));
+document.addEventListener("DOMContentLoaded", async () => {
+    await preloadUrlsFromJsonElement(document.getElementById("preload-image-urls"));
 
     const grid = document.getElementById("compare-grid");
     grid.appendChild(createAddPanel());

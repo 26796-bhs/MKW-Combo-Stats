@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block preload_assets %}true{% endblock %}
+{% block preload_skip_cached %}true{% endblock %}
+{% block preload_url_data %}{{ preload_urls | tojson }}{% endblock %}
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='compare/style.css') }}">
 <script type="module" src="{{ url_for('static', filename='compare/script.js') }}"></script>
@@ -121,5 +125,4 @@
         </div>
     </div>
 </template>
-<script type="application/json" id="preload-image-urls">{{ preload_urls | tojson }}</script>
 {% endblock %}

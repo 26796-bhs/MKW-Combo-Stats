@@ -29,7 +29,11 @@ def query_db(query, args=(), one=False):
 def home(): # Home page
     characters=query_db("SELECT * FROM Characters")
     vehicles=query_db("SELECT * FROM Vehicles")
-    return render_template("home.html", characters=characters, vehicles=vehicles)
+    preload_urls = list({
+        *(c[11] for c in characters if c[11]),
+        *(v[12] for v in vehicles if v[12]),
+    })
+    return render_template("home.html", characters=characters, vehicles=vehicles, preload_urls=preload_urls)
 
 @app.route('/Selection')
 def selection(): # Selection page
@@ -52,6 +56,11 @@ def compare(): # Compare page
         *(v[12] for v in vehicles if v[12]),
     })
     return render_template("compare.html", characters=characters, vehicles=vehicles, preload_urls=preload_urls)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')
+
 
 
 @app.route('/characters/<id>')

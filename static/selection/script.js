@@ -48,8 +48,8 @@ function selectMap(card) {
     return card.dataset.hiddenid;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    preloadUrlsFromJsonElement(document.getElementById('preload-image-urls'));
+document.addEventListener('DOMContentLoaded', async () => {
+    await preloadUrlsFromJsonElement(document.getElementById('preload-image-urls'));
 
     const mapCards = document.querySelectorAll('.map-card');
     const prioritySelect = document.getElementById('priority-select');

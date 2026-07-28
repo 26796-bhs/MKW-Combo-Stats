@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='guide.css') }} ">
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='loading.css') }}">
     {% block head %}{% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +17,82 @@
         rel="stylesheet">
 </head>
 
-<body style="background-color: #FFFFFF;">
+<body style="background-color: #FFFFFF;"
+    data-preload-assets="{% block preload_assets %}false{% endblock %}"
+    data-preload-skip-cached="{% block preload_skip_cached %}false{% endblock %}">
+    <script type="application/json" id="preload-image-urls">{% block preload_url_data %}[]{% endblock %}</script>
+    <div id="asset-loader" class="asset-loader asset-loader-cover" hidden>
+        <h1 class="asset-loader-title">Mario Kart World Combos</h1>
+        <p class="asset-loader-subtitle">Loading Assets...</p>
+        <div class="asset-loader-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+            id="asset-loader-bar">
+            <div class="asset-loader-fill" id="asset-loader-fill"></div>
+        </div>
+        <p class="asset-loader-percent" id="asset-loader-percent">0%</p>
+    </div>
+    <script>
+        (function () {
+            window.__MKW_SHOW_LOADER = false;
+            if (document.body.getAttribute("data-preload-assets") !== "true") return;
+
+            var loader = document.getElementById("asset-loader");
+            var skipCached = document.body.getAttribute("data-preload-skip-cached") === "true";
+
+            if (!skipCached) {
+                window.__MKW_SHOW_LOADER = true;
+                loader.hidden = false;
+                loader.classList.remove("asset-loader-cover");
+                document.documentElement.classList.add("asset-loading");
+                return;
+            }
+
+            var urls = [];
+            try {
+                urls = JSON.parse(document.getElementById("preload-image-urls").textContent);
+            } catch (e) { }
+            if (!Array.isArray(urls)) urls = [];
+
+            loader.hidden = false;
+            document.documentElement.classList.add("asset-loading");
+
+            var pending = 0;
+            for (var i = 0; i < urls.length; i++) {
+                if (!urls[i]) continue;
+                var img = new Image();
+                img.referrerPolicy = "no-referrer";
+                img.src = urls[i];
+                if (!img.complete) pending += 1;
+            }
+
+            function decide() {
+                if (pending <= 0) {
+                    loader.hidden = true;
+                    loader.classList.remove("asset-loader-cover");
+                    document.documentElement.classList.remove("asset-loading");
+                    window.__MKW_SHOW_LOADER = false;
+                    return;
+                }
+                window.__MKW_SHOW_LOADER = true;
+                loader.classList.remove("asset-loader-cover");
+            }
+
+            if (pending <= 0) {
+                requestAnimationFrame(function () {
+                    pending = 0;
+                    for (var i = 0; i < urls.length; i++) {
+                        if (!urls[i]) continue;
+                        var img = new Image();
+                        img.referrerPolicy = "no-referrer";
+                        img.src = urls[i];
+                        if (!img.complete) pending += 1;
+                    }
+                    decide();
+                });
+            } else {
+                decide();
+            }
+        })();
+    </script>
     <div class="box">
         <div class="nav-bar">
             <div class="navbar"></div>

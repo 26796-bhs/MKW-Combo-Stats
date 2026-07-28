@@ -1,0 +1,81 @@
+.asset-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0;
+    padding: 24px;
+    background: #FEFCFF;
+    color: #052631;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.28s ease;
+}
+
+.asset-loader[hidden] {
+    display: none !important;
+}
+
+.asset-loader.asset-loader-done {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.asset-loader-title {
+    margin: 0;
+    font-family: "Stack Sans Text", "SN Pro", sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.asset-loader-subtitle {
+    margin: 0 0 8px;
+    font-family: "Inter", "SN Pro", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(5, 38, 49, 0.55);
+    letter-spacing: 0.02em;
+}
+
+.asset-loader-track {
+    width: min(320px, 70vw);
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(46, 167, 255, 0.15);
+    overflow: hidden;
+}
+
+.asset-loader-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #2fa7ff 0%, #1e90ff 100%);
+    transition: width 0.15s ease-out;
+}
+
+.asset-loader-percent {
+    margin: 0;
+    font-family: "Inter", "SN Pro", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(5, 38, 49, 0.4);
+    font-variant-numeric: tabular-nums;
+}
+
+.asset-loader.asset-loader-cover .asset-loader-title,
+.asset-loader.asset-loader-cover .asset-loader-subtitle,
+.asset-loader.asset-loader-cover .asset-loader-track,
+.asset-loader.asset-loader-cover .asset-loader-percent {
+    visibility: hidden;
+}
+
+html.asset-loading,
+html.asset-loading body {
+    overflow: hidden;
+}

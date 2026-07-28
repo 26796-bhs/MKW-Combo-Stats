@@ -1,4 +1,5 @@
 import { get_combo } from "../modules/communication-service.js";
+import { preloadUrlsFromJsonElement } from "../modules/preload-images.js";
 
 function toggleNavBar() {
     var x = document.querySelector(".nav-links");
@@ -27,7 +28,9 @@ function updateStatsBar(sectionName, statName, floatValue) {
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+    await preloadUrlsFromJsonElement(document.getElementById("preload-image-urls"));
+
     const dropdowns = document.querySelectorAll('.dropdown-box');
     const selections = document.querySelectorAll('.selection');
     const selectedCharacter = [
