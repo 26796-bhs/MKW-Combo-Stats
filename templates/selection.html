@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block preload_assets %}true{% endblock %}
+{% block preload_skip_cached %}true{% endblock %}
 {% block preload_url_data %}{{ preload_urls | tojson }}{% endblock %}
 
 {% block head %}
@@ -9,10 +10,11 @@
 {% endblock %}
 
 {% block body %}
+<script type="application/json" id="background-preload-urls">{{ background_preload_urls | tojson }}</script>
 <div class="base-card">
     <div class="selection-panel">
         <div class="map-preview">
-            <img class="map-preview-img" id="map-preview-img" alt="Selected map preview" referrerpolicy="no-referrer">
+            <img class="map-preview-img" id="map-preview-img" alt="Selected map preview" referrerpolicy="no-referrer" hidden>
         </div>
         <div class="combo-panel">
             <p class="combo-title">Best combo for this map:</p>
@@ -27,11 +29,11 @@
             <div class="selection-combo">
                 <div class="combo-item">
                     <div class="combo-pfp pfp-shape" id="best-character-img"></div>
-                    <p class="combo-name" id="best-character-name">Character Name</p>
+                    <p class="combo-name" id="best-character-name">Loading…</p>
                 </div>
                 <div class="combo-item">
                     <div class="combo-pfp pfp-shape" id="best-vehicle-img"></div>
-                    <p class="combo-name" id="best-vehicle-name">Vehicle Name</p>
+                    <p class="combo-name" id="best-vehicle-name">Loading…</p>
                 </div>
             </div>
         </div>
@@ -45,12 +47,16 @@
             <div class="map-card" data-hiddenid="{{ map[0] }}"
                 {% if map[9] %}data-imgurl="{{ map[9] }}"{% endif %}
                 data-name="{{ map[1] }}">
+                {% if map[9] %}
                 <img class="map-card-img pfp-shape"
-                    src="{{ map[9] or '' }}"
+                    src="{{ map[9] }}"
                     alt="{{ map[1] }}"
                     loading="eager"
                     decoding="async"
                     referrerpolicy="no-referrer">
+                {% else %}
+                <div class="map-card-img pfp-shape map-card-img-empty" role="img" aria-label="{{ map[1] }}"></div>
+                {% endif %}
                 <p class="map-card-name">{{ map[1] }}</p>
             </div>
             {% endfor %}

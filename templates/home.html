@@ -1,36 +1,49 @@
 {% extends "layout.html" %}
 
 {% block preload_assets %}true{% endblock %}
+{% block preload_skip_cached %}true{% endblock %}
 {% block preload_url_data %}{{ preload_urls | tojson }}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='home/style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script type="module" src="{{ url_for('static', filename='home/script.js') }}"></script>
 {% endblock %}
 
 {% block body %}
 <div class="stats-card">
-    <div class="pfp-shape selected-pfp selected-character-pfp" style="--imgurl: url('{{ characters[0][11] }}');"></div>
+    <div class="stats-header">
+        <div class="pfp-shape selected-pfp selected-character-pfp has-image"
+            data-imgurl="{{ characters[0][11] }}"
+            data-hiddenid="{{ characters[0][0] }}">
+            <img class="pfp-img" src="{{ characters[0][11] }}" alt="" width="95" height="95"
+                loading="eager" decoding="async" referrerpolicy="no-referrer">
+        </div>
 
-    <svg class="name-arc name-arc-character" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path id="charNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
-        <text>
-            <textPath href="#charNamePath" startOffset="50%" text-anchor="middle">Mario</textPath>
-        </text>
-    </svg>
-    <svg class="eks" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-            stroke-linejoin="round" />
-    </svg>
-    <div class="pfp-shape selected-pfp selected-vehicle-pfp" style="--imgurl: url('{{ vehicles[0][12] }}');"></div>
+        <svg class="name-arc name-arc-character" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path id="charNamePath" d="M 0 18 q 87.5 20 175 0" fill="none" />
+            <text>
+                <textPath href="#charNamePath" startOffset="50%" text-anchor="middle">{{ characters[0][1] }}</textPath>
+            </text>
+        </svg>
+        <svg class="eks" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+        <div class="pfp-shape selected-pfp selected-vehicle-pfp has-image"
+            data-imgurl="{{ vehicles[0][12] }}"
+            data-hiddenid="{{ vehicles[0][0] }}">
+            <img class="pfp-img" src="{{ vehicles[0][12] }}" alt="" width="95" height="95"
+                loading="eager" decoding="async" referrerpolicy="no-referrer">
+        </div>
 
-    <svg class="name-arc name-arc-vehicle" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
-        <text>
-            <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">Standard Kart</textPath>
-        </text>
-    </svg>
-
+        <svg class="name-arc name-arc-vehicle" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path id="homeVehNamePath" d="M 0 18 q 87.5 20 175 0" fill="none" />
+            <text>
+                <textPath href="#homeVehNamePath" startOffset="50%" text-anchor="middle">{{ vehicles[0][1] }}</textPath>
+            </text>
+        </svg>
+    </div>
 
     <!-- Stats -->
     <div class="sections">
@@ -39,19 +52,19 @@
             <div class="section-stats-1">
                 <p class="stats-title">On Road</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 60%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
             <div class="section-stats-2">
                 <p class="stats-title">Off Road</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 45%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
             <div class="section-stats-3">
                 <p class="stats-title">In Water</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 50%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
         </div>
@@ -61,19 +74,19 @@
             <div class="section-stats-1">
                 <p class="stats-title">On Road</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 40%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
             <div class="section-stats-2">
                 <p class="stats-title">Off Road</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 55%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
             <div class="section-stats-3">
                 <p class="stats-title">In Water</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 50%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
         </div>
@@ -83,43 +96,59 @@
             <div class="section-stats-1">
                 <p class="stats-title">Accel</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 55%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
             <div class="section-stats-2">
                 <p class="stats-title">Turbo</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 55%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
             <div class="section-stats-3">
                 <p class="stats-title">Weight</p>
                 <div class="stats-progress-bar">
-                    <div class="stats-progress-value" style="--value: 45%;"></div>
+                    <div class="stats-progress-value" style="--value: 0%;"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Share -->
-    <div class="action-btn">Share</div>
+    <!-- Actions: split [Upvote | Share] -->
+    <div class="split-action" role="group" aria-label="Combo actions">
+        <button type="button" class="split-action-main" id="upvote-btn">Upvote</button>
+        <button type="button" class="split-action-share" id="share-btn" aria-label="Share combo">
+            <svg class="share-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 4v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 8l4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="share-label">Share</span>
+        </button>
+    </div>
+    <p class="share-status" id="share-status" role="status" aria-live="polite" hidden></p>
+    <p class="upvote-caption" id="upvote-caption" hidden>
+        <span id="upvote-count">{{ initial_upvotes }}</span> of people upvoted this combo.
+    </p>
 </div>
-
 
 <div class="combo-selection">
     <div id="character-dropdown" class="dropdown-box dropdown-expanded">
         <p class="dropdown-title">Characters</p>
         <div class="dropdown-contentbox">
             {% for data in characters %}
-            <div class="selection" data-hiddenid="{{ data[0] }}"
+            <div class="selection" data-hiddenid="{{ data[0] }}" data-imgurl="{{ data[11] }}"
                 style="--bg-image: url('{{ data[11] }}'); --opacity: 0.25;">
-                <div class=" pfp-shape selection-pfp" style="--bg-image: url('{{ data[11] }}');"></div>
+                <div class="pfp-shape selection-pfp has-image">
+                    <img class="selection-pfp-img" src="{{ data[11] }}" alt="" width="85" height="85"
+                        loading="eager" decoding="async" referrerpolicy="no-referrer">
+                </div>
 
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">
-                    <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <path id="charSelPath-{{ data[0] }}" d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
-                        <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                        <textPath href="#charSelPath-{{ data[0] }}" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
                     </text>
                 </svg>
             </div>
@@ -130,15 +159,18 @@
         <p class="dropdown-title">Vehicles</p>
         <div class="dropdown-contentbox">
             {% for data in vehicles %}
-            <div class="selection" data-hiddenid="{{ data[0] }}"
+            <div class="selection" data-hiddenid="{{ data[0] }}" data-imgurl="{{ data[12] }}"
                 style="--bg-image: url('{{ data[12] }}'); --opacity: 0.25;">
-                <div class=" pfp-shape selection-pfp" style="--bg-image: url('{{ data[12] }}');"></div>
+                <div class="pfp-shape selection-pfp has-image">
+                    <img class="selection-pfp-img" src="{{ data[12] }}" alt="" width="85" height="85"
+                        loading="eager" decoding="async" referrerpolicy="no-referrer">
+                </div>
 
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">
-                    <path id="vehNamePath" d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <path id="vehSelPath-{{ data[0] }}" d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
-                        <textPath href="#vehNamePath" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                        <textPath href="#vehSelPath-{{ data[0] }}" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
                     </text>
                 </svg>
             </div>

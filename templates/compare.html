@@ -92,9 +92,9 @@
                         loading="eager" decoding="async" referrerpolicy="no-referrer">
                 </div>
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <path id="cmpCharPath-{{ data[0] }}" d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
-                        <textPath startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                        <textPath href="#cmpCharPath-{{ data[0] }}" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
                     </text>
                 </svg>
             </div>
@@ -115,9 +115,9 @@
                         loading="eager" decoding="async" referrerpolicy="no-referrer">
                 </div>
                 <svg class="name-arc-selection" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M 0 30 q 87.5 75 175 0" fill="none" />
+                    <path id="cmpVehPath-{{ data[0] }}" d="M 0 30 q 87.5 75 175 0" fill="none" />
                     <text>
-                        <textPath startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
+                        <textPath href="#cmpVehPath-{{ data[0] }}" startOffset="50%" text-anchor="middle">{{ data[1] }}</textPath>
                     </text>
                 </svg>
             </div>

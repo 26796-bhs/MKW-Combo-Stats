@@ -7,42 +7,26 @@ const statsValues = {};
 
 function updateStatsBar(root, sectionName, statName, floatValue) {
     const percentageString = `${floatValue * 100}%`;
-    
     const key = `${sectionName}-${statName}`;
     if (!statsValues[key]) {
         statsValues[key] = [];
     }
 
-    let progressValueElement = null;
     root.querySelectorAll(".sections .section").forEach((section) => {
         const sectionTitle = section.querySelector(".section-title");
         if (sectionTitle && sectionTitle.textContent.trim().toUpperCase() === sectionName.toUpperCase()) {
             section.querySelectorAll('[class^="section-stats-"]').forEach((row) => {
                 const subsectionTitle = row.querySelector(".stats-title");
                 if (subsectionTitle && subsectionTitle.textContent.trim().toLowerCase() === statName.toLowerCase()) {
-                    progressValueElement = row.querySelector('.stats-progress-value');
+                    const progressValueElement = row.querySelector(".stats-progress-value");
                     if (progressValueElement) {
+                        statsValues[key] = statsValues[key].filter((entry) => entry.element !== progressValueElement);
                         statsValues[key].push({
                             value: floatValue,
-                            element: progressValueElement
+                            element: progressValueElement,
                         });
-                    }
-                }
-            });
-        }
-    });
-    
-    // Update the visual value
-    root.querySelectorAll(".sections .section").forEach((section) => {
-        const sectionTitle = section.querySelector(".section-title");
-        if (sectionTitle && sectionTitle.textContent.trim().toUpperCase() === sectionName.toUpperCase()) {
-            section.querySelectorAll('[class^="section-stats-"]').forEach((row) => {
-                const subsectionTitle = row.querySelector(".stats-title");
-                if (subsectionTitle && subsectionTitle.textContent.trim().toLowerCase() === statName.toLowerCase()) {
-                    const progressValue = row.querySelector(".stats-progress-value");
-                    if (progressValue) {
-                        progressValue.style.setProperty("--value", percentageString);
-                        progressValue.classList.remove('min-value', 'max-value');
+                        progressValueElement.style.setProperty("--value", percentageString);
+                        progressValueElement.classList.remove("min-value", "max-value");
                     }
                 }
             });
@@ -50,19 +34,28 @@ function updateStatsBar(root, sectionName, statName, floatValue) {
     });
 }
 
+function pruneStatsValues() {
+    for (const key of Object.keys(statsValues)) {
+        statsValues[key] = statsValues[key].filter((entry) => entry.element.isConnected);
+        if (statsValues[key].length === 0) {
+            delete statsValues[key];
+        }
+    }
+}
+
 function applyMinMaxHighlighting() {
-    document.querySelectorAll('.stats-progress-value').forEach(el => {
-        el.classList.remove('min-value', 'max-value');
+    document.querySelectorAll(".stats-progress-value").forEach((el) => {
+        el.classList.remove("min-value", "max-value");
     });
 
-    
-    for (const [key, values] of Object.entries(statsValues)) {
-        if (values.length === 0) continue;
+    for (const values of Object.values(statsValues)) {
+        if (values.length < 2) continue;
+
         let minValue = values[0].value;
         let maxValue = values[0].value;
         let minElement = values[0].element;
         let maxElement = values[0].element;
-        
+
         for (let i = 1; i < values.length; i++) {
             if (values[i].value < minValue) {
                 minValue = values[i].value;
@@ -73,8 +66,10 @@ function applyMinMaxHighlighting() {
                 maxElement = values[i].element;
             }
         }
-        if (minElement) minElement.classList.add('min-value');
-        if (maxElement) maxElement.classList.add('max-value');
+
+        if (minValue === maxValue) continue;
+        if (minElement) minElement.classList.add("min-value");
+        if (maxElement) maxElement.classList.add("max-value");
     }
 }
 
@@ -99,15 +94,42 @@ function cloneTemplate(id) {
 function updateGridLayout(grid) {
     const count = grid.children.length;
     grid.classList.remove("panels-1", "panels-2", "panels-3");
-    grid.classList.add(`panels-${Math.min(count, 3)}`);
+    grid.classList.add(`panels-${Math.min(Math.max(count, 1), 3)}`);
 }
 
 function countStatsPanels(grid) {
     return grid.querySelectorAll(".comparebox.stats").length;
 }
 
+function countOccupiedPanels(grid) {
+    return grid.querySelectorAll(".comparebox.stats, .comparebox.choosing").length;
+}
+
 function hasAddPanel(grid) {
     return grid.querySelector(".comparebox.add") !== null;
+}
+
+function ensureAddPanel(grid) {
+    const occupied = countOccupiedPanels(grid);
+    if (occupied >= MAX_PANELS) {
+        grid.querySelectorAll(".comparebox.add").forEach((panel) => panel.remove());
+        return;
+    }
+    if (!hasAddPanel(grid)) {
+        grid.appendChild(createAddPanel());
+    }
+}
+
+function removePanel(panel) {
+    const grid = panel.closest("#compare-grid");
+    panel.remove();
+    pruneStatsValues();
+    applyMinMaxHighlighting();
+    ensureAddPanel(grid);
+    if (grid.children.length === 0) {
+        grid.appendChild(createAddPanel());
+    }
+    updateGridLayout(grid);
 }
 
 function createAddPanel() {
@@ -132,24 +154,25 @@ function createChoosingPanel() {
     const vehDropdown = cloneTemplate("vehicle-dropdown-template");
 
     panel.innerHTML = `
-        <div class="picker-preview">
-            <button type="button" class="picker-slot picker-slot-character" aria-label="Select character">
-                <div class="picker-slot-image"></div>
-                <span class="picker-slot-hint">Character</span>
-            </button>
-            <button type="button" class="picker-slot picker-slot-vehicle" aria-label="Select vehicle">
-                <div class="picker-slot-image"></div>
-                <span class="picker-slot-hint">Vehicle</span>
-            </button>
+        <button type="button" class="cancel-choose-btn" aria-label="Cancel">Cancel</button>
+        <div class="picker-main">
+            <div class="picker-preview">
+                <button type="button" class="picker-slot picker-slot-character" aria-label="Select character">
+                    <div class="picker-slot-image"></div>
+                    <span class="picker-slot-hint">Character</span>
+                </button>
+                <button type="button" class="picker-slot picker-slot-vehicle" aria-label="Select vehicle">
+                    <div class="picker-slot-image"></div>
+                    <span class="picker-slot-hint">Vehicle</span>
+                </button>
+            </div>
+            <div class="picker-labels">
+                <span class="picker-label">Character Name</span>
+                <span class="picker-plus" aria-hidden="true">+</span>
+                <span class="picker-label">Vehicle Name</span>
+            </div>
+            <button type="button" class="confirm-btn" disabled>Confirm</button>
         </div>
-        <div class="picker-labels">
-            <span class="picker-label">Character Name</span>
-            <svg class="picker-plus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-            <span class="picker-label">Vehicle Name</span>
-        </div>
-        <button type="button" class="confirm-btn" disabled>Confirm</button>
         <div class="picker-dropdowns" hidden>
             <div class="picker-dropdown-header">
                 <button type="button" class="picker-tab picker-tab-character active" aria-label="Show characters">Characters</button>
@@ -165,8 +188,8 @@ function createChoosingPanel() {
     const vehTab = panel.querySelector(".picker-tab-vehicle");
 
     dropdownBody.append(charDropdown, vehDropdown);
-    const charBox = dropdownBody.querySelector('.dropdown-box:first-child');
-    const vehBox = dropdownBody.querySelector('.dropdown-box:last-child');
+    const charBox = dropdownBody.querySelector(".dropdown-box:first-child");
+    const vehBox = dropdownBody.querySelector(".dropdown-box:last-child");
 
     const charSlot = panel.querySelector(".picker-slot-character");
     const vehSlot = panel.querySelector(".picker-slot-vehicle");
@@ -174,7 +197,10 @@ function createChoosingPanel() {
     const vehLabel = panel.querySelector(".picker-labels .picker-label:last-child");
     const confirmBtn = panel.querySelector(".confirm-btn");
 
-    const pick = { character: [charSlot.querySelector(".picker-slot-image"), charLabel, null], vehicle: [vehSlot.querySelector(".picker-slot-image"), vehLabel, null] };
+    const pick = {
+        character: [charSlot.querySelector(".picker-slot-image"), charLabel, null],
+        vehicle: [vehSlot.querySelector(".picker-slot-image"), vehLabel, null],
+    };
 
     function showPicker(focus) {
         dropdowns.hidden = false;
@@ -184,6 +210,10 @@ function createChoosingPanel() {
         charBox.hidden = focus !== "character";
         vehBox.hidden = focus !== "vehicle";
     }
+
+    panel.querySelector(".cancel-choose-btn").addEventListener("click", () => {
+        removePanel(panel);
+    });
 
     charSlot.addEventListener("click", () => showPicker("character"));
     vehSlot.addEventListener("click", () => showPicker("vehicle"));
@@ -234,14 +264,20 @@ function createChoosingPanel() {
             pick.vehicle[2]
         ));
 
-        if (countStatsPanels(grid) < MAX_PANELS && !hasAddPanel(grid) && grid.children.length < MAX_PANELS) {
-            grid.appendChild(createAddPanel());
-        }
-
+        ensureAddPanel(grid);
         updateGridLayout(grid);
     });
 
     return panel;
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
 }
 
 function createStatsPanel(charImg, vehImg, charName, vehName, charId, vehId) {
@@ -250,28 +286,39 @@ function createStatsPanel(charImg, vehImg, charName, vehName, charId, vehId) {
 
     const sections = cloneTemplate("stats-sections-template");
     const uid = crypto.randomUUID().slice(0, 8);
+    const safeCharName = escapeHtml(charName);
+    const safeVehName = escapeHtml(vehName);
+    const safeCharImg = escapeHtml(charImg);
+    const safeVehImg = escapeHtml(vehImg);
 
     panel.innerHTML = `
-        <div class="stats-card" data-character-id="${charId}" data-vehicle-id="${vehId}">
+        <div class="stats-card" data-character-id="${escapeHtml(charId)}" data-vehicle-id="${escapeHtml(vehId)}">
             <div class="stats-header">
-                <div class="pfp-shape selected-pfp selected-character-pfp" style="--imgurl: url('${charImg}');"></div>
+                <div class="pfp-shape selected-pfp selected-character-pfp has-image" style="--imgurl: url('${safeCharImg}');">
+                    <img class="pfp-img" src="${safeCharImg}" alt="" width="95" height="95" loading="eager" decoding="async" referrerpolicy="no-referrer">
+                </div>
                 <svg class="name-arc name-arc-character" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path id="charPath-${uid}" d="M 0 30 q 87.5 75 175 0" fill="none" />
-                    <text><textPath href="#charPath-${uid}" startOffset="50%" text-anchor="middle">${charName}</textPath></text>
+                    <path id="charPath-${uid}" d="M 0 18 q 87.5 20 175 0" fill="none" />
+                    <text><textPath href="#charPath-${uid}" startOffset="50%" text-anchor="middle">${safeCharName}</textPath></text>
                 </svg>
-                <svg class="eks" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org">
-                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <div class="pfp-shape selected-pfp selected-vehicle-pfp" style="--imgurl: url('${vehImg}');"></div>
+                <button type="button" class="eks" aria-label="Remove comparison">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div class="pfp-shape selected-pfp selected-vehicle-pfp has-image" style="--imgurl: url('${safeVehImg}');">
+                    <img class="pfp-img" src="${safeVehImg}" alt="" width="95" height="95" loading="eager" decoding="async" referrerpolicy="no-referrer">
+                </div>
                 <svg class="name-arc name-arc-vehicle" viewBox="0 0 175 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path id="vehPath-${uid}" d="M 0 30 q 87.5 75 175 0" fill="none" />
-                    <text><textPath href="#vehPath-${uid}" startOffset="50%" text-anchor="middle">${vehName}</textPath></text>
+                    <path id="vehPath-${uid}" d="M 0 18 q 87.5 20 175 0" fill="none" />
+                    <text><textPath href="#vehPath-${uid}" startOffset="50%" text-anchor="middle">${safeVehName}</textPath></text>
                 </svg>
             </div>
         </div>
     `;
 
     panel.querySelector(".stats-card").appendChild(sections);
+    panel.querySelector(".eks").addEventListener("click", () => removePanel(panel));
     applyComboStats(panel, charId, vehId);
 
     return panel;
@@ -282,10 +329,7 @@ function onAddClick(addPanel) {
     const choosingPanel = createChoosingPanel();
     addPanel.replaceWith(choosingPanel);
 
-    if (grid.children.length < MAX_PANELS) {
-        grid.appendChild(createAddPanel());
-    }
-
+    ensureAddPanel(grid);
     updateGridLayout(grid);
 }
 

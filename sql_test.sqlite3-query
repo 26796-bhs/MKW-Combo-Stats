@@ -1,3 +1,0 @@
--- database: ./database.db
-
-SELECT BestCharacterTurbo, BestVehicleTurbo FROM Maps WHERE HiddenID = 0

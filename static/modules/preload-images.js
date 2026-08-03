@@ -17,22 +17,37 @@ export function preloadImages(urls, { onProgress } = {}) {
         document.body.appendChild(host);
     }
 
-    const existing = new Set(
-        [...host.querySelectorAll("img")].map((img) => img.src)
-    );
-
     let settled = 0;
     const tick = () => {
         settled += 1;
         onProgress?.(settled, total);
     };
 
-    return new Promise((resolve) => {
-        const finishIfDone = () => {
-            if (settled >= total) resolve();
-        };
+    const waitFor = (img) =>
+        new Promise((resolve) => {
+            const done = () => {
+                if (typeof img.decode === "function") {
+                    img.decode().then(resolve, resolve);
+                } else {
+                    resolve();
+                }
+            };
 
-        for (const url of unique) {
+            if (img.complete && img.naturalWidth > 0) {
+                done();
+                return;
+            }
+            if (img.complete && img.naturalWidth === 0) {
+                resolve();
+                return;
+            }
+
+            img.addEventListener("load", done, { once: true });
+            img.addEventListener("error", resolve, { once: true });
+        });
+
+    return Promise.all(
+        unique.map(async (url) => {
             const absolute = new URL(url, window.location.href).href;
             let img = [...host.querySelectorAll("img")].find((node) => node.src === absolute);
 
@@ -44,27 +59,12 @@ export function preloadImages(urls, { onProgress } = {}) {
                 img.alt = "";
                 img.src = url;
                 host.appendChild(img);
-            } else if (existing.has(absolute) && img.complete) {
-                tick();
-                finishIfDone();
-                continue;
             }
 
-            if (img.complete) {
-                tick();
-                finishIfDone();
-            } else {
-                img.addEventListener("load", () => {
-                    tick();
-                    finishIfDone();
-                }, { once: true });
-                img.addEventListener("error", () => {
-                    tick();
-                    finishIfDone();
-                }, { once: true });
-            }
-        }
-    });
+            await waitFor(img);
+            tick();
+        })
+    ).then(() => undefined);
 }
 
 export function extractCssUrl(value) {
@@ -85,6 +85,51 @@ export function preloadCssBackgroundUrls(root) {
         if (img.getAttribute("src")) urls.add(img.getAttribute("src"));
     });
     return preloadImages([...urls]);
+}
+
+export function setReferrerSafeImage(el, url) {
+    if (!el) return;
+
+    if (el.tagName === "IMG") {
+        if (url) {
+            el.referrerPolicy = "no-referrer";
+            el.src = url;
+            el.hidden = false;
+        } else {
+            el.removeAttribute("src");
+            el.hidden = true;
+        }
+        return;
+    }
+
+    let img = el.querySelector(":scope > img.pfp-img, :scope > img.selection-pfp-img, :scope > img.combo-pfp-img");
+    if (!img) {
+        img = document.createElement("img");
+        img.className = el.classList.contains("selection-pfp")
+            ? "selection-pfp-img"
+            : el.classList.contains("combo-pfp")
+                ? "combo-pfp-img"
+                : "pfp-img";
+        img.alt = "";
+        img.decoding = "async";
+        img.loading = "eager";
+        img.referrerPolicy = "no-referrer";
+        el.prepend(img);
+    }
+
+    if (url) {
+        img.src = url;
+        img.hidden = false;
+        el.style.setProperty("--imgurl", `url("${url}")`);
+        el.style.setProperty("--bg-image", `url("${url}")`);
+        el.classList.add("has-image");
+    } else {
+        img.removeAttribute("src");
+        img.hidden = true;
+        el.style.removeProperty("--imgurl");
+        el.style.removeProperty("--bg-image");
+        el.classList.remove("has-image");
+    }
 }
 
 function updateLoaderProgress(loaded, total) {
@@ -130,12 +175,11 @@ function countIncomplete(urls) {
         const img = new Image();
         img.referrerPolicy = "no-referrer";
         img.src = url;
-        if (!img.complete) pending += 1;
+        if (!img.complete || img.naturalWidth === 0) pending += 1;
     }
     return pending;
 }
 
-// Preload the images
 export async function preloadUrlsFromJsonElement(el) {
     let urls = [];
     if (el) {

@@ -272,6 +272,11 @@ INSERT INTO `Vehicles` VALUES (
 
 INSERT INTO `Maps` VALUES ();
 
-
+CREATE TABLE IF NOT EXISTS `ComboVotes` (
+    `CharacterID` INTEGER NOT NULL REFERENCES `Characters`(`HiddenID`),
+    `VehicleID` INTEGER NOT NULL REFERENCES `Vehicles`(`HiddenID`),
+    `Upvotes` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (`CharacterID`, `VehicleID`)
+);
 
 SELECT * FROM CHARACTERS ORDER BY Name ASC;

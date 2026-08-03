@@ -1,11 +1,14 @@
 .stats-card {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     width: 22.5%;
     left: 50px;
     bottom: 50px;
     top: 125px;
     border-radius: 25px;
     corner-shape: superellipse(1.1);
+    overflow: hidden;
 }
 
 .stats-card::before {
@@ -21,6 +24,14 @@
     z-index: -1;
 }
 
+.stats-header {
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    height: 160px;
+    z-index: 1;
+}
+
 .pfp-shape {
     border-radius: 35px;
     corner-shape: superellipse(1.1);
@@ -30,18 +41,27 @@
 
 .selected-pfp {
     display: block;
-    width: 100%;
-    height: 100%;
     object-fit: cover;
     object-position: top;
     position: absolute;
     width: 95px;
     height: 95px;
-    top: 50px;
+    top: 28px;
+    overflow: hidden;
     background-image: var(--imgurl);
     background-size: cover;
     background-position: top center;
     background-repeat: no-repeat;
+}
+
+.selected-pfp .pfp-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    position: relative;
+    z-index: 1;
 }
 
 .selected-pfp::before {
@@ -52,7 +72,6 @@
     right: 0;
     bottom: 0;
     background-image: var(--imgurl);
-    /* background-image: linear-gradient(155deg, #E4EDFC 20%, #DDFFF4 90%); */
     filter: blur(5px);
     border-radius: 25px;
     z-index: -1;
@@ -70,28 +89,28 @@
     position: absolute;
     width: 175px;
     height: 40px;
-    overflow: visible;
+    overflow: hidden;
     pointer-events: none;
     z-index: 2;
-    top: 85px;
+    top: 112px;
     transform: translateX(-50%);
 }
 
 .name-arc text {
     fill: #052631;
     font-size: 14px;
-    font-family: "Stack Sans Text", sans-serif;
+    font-family: "Nunito", sans-serif;
     font-weight: 700;
 }
 
 .name-arc-character {
     left: calc(15% + 47.5px);
-    top: 85px;
-    transform: translateX(-50%);
 }
 
 .name-arc-vehicle {
-    left: calc(100% - 15% - 47.5px);
+    left: auto;
+    right: calc(15% + 47.5px);
+    transform: translateX(50%);
 }
 
 .name-arc.name-arc-selection,
@@ -115,10 +134,11 @@
     aspect-ratio: 1/1;
     position: absolute;
     width: 25px;
-    top: 87.5px;
+    top: 63px;
     left: 50%;
     transform: translateX(-50%);
-    filter: blur(0.75px)
+    filter: blur(0.75px);
+    z-index: 2;
 }
 
 .sections {
@@ -127,10 +147,16 @@
     align-items: flex-start;
     gap: 24px;
     position: relative;
-    margin-top: 175px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 70px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    margin: 0 20px 12px;
+    z-index: 1;
+    scrollbar-width: none;
+}
+
+.sections::-webkit-scrollbar {
+    display: none;
 }
 
 .section {
@@ -139,6 +165,8 @@
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
     width: 100%;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.35);
 }
 
 .section-title {
@@ -178,7 +206,6 @@
     overflow: hidden;
     position: relative;
     box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.05);
-    filter: blur(1.25px);
 }
 
 .stats-progress-value {
@@ -189,28 +216,162 @@
     border-bottom-left-radius: 6px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
-    /* box-shadow: 0 3px 8px rgba(46, 151, 255, 0.18); */
 }
 
 .action-btn {
-    position: absolute;
-    left: 50%;
-    bottom: 47px;
-    transform: translate(-50%, 50%);
+    position: relative;
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 4px 0 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     aspect-ratio: 3 / 1;
     width: 150px;
+    border: none;
+    background: transparent;
     border-radius: 75px;
     corner-shape: superellipse(1.1);
     overflow: hidden;
     z-index: 1;
     color: #ffffff;
     font-family: "Stack Sans Text", sans-serif;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: width 0.2s ease;
+}
+
+.split-action {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    align-self: center;
+    width: min(240px, 86%);
+    height: 48px;
+    margin: 4px 12px 6px;
+    border-radius: 999px;
+    overflow: hidden;
+    z-index: 1;
+    flex: 0 0 auto;
+}
+
+.split-action::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(130deg, #2E96E7 0%, #41BDCD 35%, #60FEA2 100%);
+    filter: blur(2px);
+    border-radius: 999px;
+    z-index: -1;
+}
+
+.split-action-main,
+.split-action-share {
+    position: relative;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-family: "Stack Sans Text", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: flex-basis 0.28s ease, flex-grow 0.28s ease, opacity 0.2s ease, padding 0.28s ease;
+}
+
+.split-action-main {
+    flex: 1 1 auto;
+    padding: 0 18px;
+}
+
+.split-action-share {
+    flex: 0 0 52px;
+    width: auto;
+    padding: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.45);
+    gap: 0;
+}
+
+.split-action-share .share-icon {
+    display: block;
+    flex: 0 0 auto;
+}
+
+.split-action-share .share-label {
+    display: none;
+}
+
+/* Hover upvote → fills the whole pill */
+.split-action:has(.split-action-main:hover) .split-action-main {
+    flex: 1 1 100%;
+    padding: 0 18px;
+}
+
+.split-action:has(.split-action-main:hover) .split-action-share {
+    flex: 0 0 0;
+    padding: 0;
+    border-left-width: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Hover share → fills the whole pill; icon swaps to "Share" */
+.split-action:has(.split-action-share:hover) .split-action-share {
+    flex: 1 1 100%;
+    border-left-width: 0;
+    padding: 0 18px;
+}
+
+.split-action:has(.split-action-share:hover) .split-action-share .share-icon {
+    display: none;
+}
+
+.split-action:has(.split-action-share:hover) .split-action-share .share-label {
+    display: inline;
+}
+
+.split-action:has(.split-action-share:hover) .split-action-main {
+    flex: 0 0 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.split-action-main:hover,
+.split-action-share:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.split-action-main:disabled,
+.split-action-share:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.share-icon {
+    display: block;
+}
+
+.upvote-caption {
+    margin: 0 16px 14px;
+    text-align: center;
+    font-family: "Stack Sans Text", sans-serif;
+    font-size: 13px;
+    color: #445566;
+    z-index: 1;
+    flex: 0 0 auto;
+}
+
+.upvote-caption #upvote-count {
+    font-weight: 700;
+    color: #2E96E7;
 }
 
 .action-btn::before {
@@ -225,6 +386,27 @@
 
 .action-btn:hover {
     width: 165px;
+}
+
+.action-btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    width: 150px;
+}
+
+.share-status {
+    margin: 0 16px 4px;
+    align-self: center;
+    font-family: "Stack Sans Text", sans-serif;
+    font-size: 13px;
+    text-align: center;
+    max-width: 260px;
+    color: #2E96E7;
+    z-index: 1;
+}
+
+.share-status.share-status-error {
+    color: #e05555;
 }
 
 .combo-selection {
@@ -264,7 +446,7 @@
     position: absolute;
     inset: 0;
     border-radius: 25px;
-    backdrop-filter: blur(12) saturate(180%);
+    backdrop-filter: blur(12px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.7);
     z-index: -1;
     pointer-events: none; /* Crucial: lets clicks pass through */
@@ -349,12 +531,24 @@
 .selection-pfp {
     position: relative;
     width: 85px;
+    height: 85px;
+    overflow: hidden;
     object-fit: cover;
     object-position: top;
     background-image: var(--bg-image);
     background-size: cover;
     background-position: top center;
     background-repeat: no-repeat;
+}
+
+.selection-pfp-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -385,7 +579,112 @@
 
 .name-arc-selection text {
     fill: #052631;
-    font-size: 28px;
-    font-family: "Stack Sans Text", sans-serif;
+    font-size: 24px;
+    font-family: "Nunito", sans-serif;
     font-weight: 700;
+}
+
+@media screen and (max-width: 1100px) {
+    .stats-card {
+        position: relative;
+        width: auto;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        margin: 100px 24px 16px;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+    }
+
+    .combo-selection {
+        position: relative;
+        width: auto;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        margin: 0 24px 32px;
+        height: 480px;
+    }
+
+    .stats-header {
+        height: 150px;
+    }
+
+    .selected-character-pfp {
+        left: 12%;
+    }
+
+    .selected-vehicle-pfp {
+        right: 12%;
+    }
+
+    .name-arc-character {
+        left: calc(12% + 47.5px);
+    }
+
+    .name-arc-vehicle {
+        right: calc(12% + 47.5px);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .stats-card {
+        margin: 90px 16px 12px;
+    }
+
+    .combo-selection {
+        margin: 0 16px 24px;
+        height: 420px;
+    }
+
+    .stats-header {
+        height: 132px;
+    }
+
+    .selected-pfp {
+        width: 72px;
+        height: 72px;
+        top: 20px;
+    }
+
+    .name-arc {
+        width: 130px;
+        top: 86px;
+    }
+
+    .name-arc-character {
+        left: calc(12% + 36px);
+    }
+
+    .name-arc-vehicle {
+        right: calc(12% + 36px);
+    }
+
+    .eks {
+        top: 44px;
+        width: 20px;
+    }
+
+    .sections {
+        margin: 0 14px 8px;
+        gap: 14px;
+    }
+
+    .split-action {
+        width: min(220px, 90%);
+        height: 44px;
+        margin-bottom: 4px;
+    }
+
+    .upvote-caption {
+        margin-bottom: 12px;
+        font-size: 12px;
+    }
+
+    .dropdown-contentbox {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    }
 }

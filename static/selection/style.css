@@ -138,12 +138,24 @@
 
 .combo-pfp {
     width: 100px;
+    height: 100px;
+    overflow: hidden;
     background-image: var(--imgurl);
     background-size: cover;
     background-position: top center;
     background-repeat: no-repeat;
     box-shadow: 0 2px 8px rgba(6, 30, 40, 0.06);
     position: relative;
+}
+
+.combo-pfp-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    position: relative;
+    z-index: 1;
 }
 
 .combo-pfp::before {
@@ -262,6 +274,10 @@
     background-color: white;
 }
 
+.map-card-img-empty {
+    background: linear-gradient(155deg, #E4EDFC 20%, #DDFFF4 90%);
+}
+
 .map-card-name {
     position: relative;
     z-index: 1;
@@ -287,6 +303,12 @@
         flex: 0 0 auto;
     }
 
+    .map-preview {
+        flex: 0 0 auto;
+        min-height: 180px;
+        height: 220px;
+    }
+
     .map-picker {
         min-height: 400px;
     }
@@ -299,9 +321,33 @@
         left: 16px;
         right: 16px;
         padding: 16px;
+        gap: 16px;
+    }
+
+    .map-preview {
+        min-height: 150px;
+        height: 180px;
+    }
+
+    .selection-combo {
+        gap: 12px;
+    }
+
+    .combo-item {
+        width: 100px;
+    }
+
+    .combo-pfp {
+        width: 84px;
+        height: 84px;
     }
 
     .maps-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .map-card-img-empty {
+        background: linear-gradient(155deg, #E4EDFC 20%, #DDFFF4 90%);
     }
 }

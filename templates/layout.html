@@ -6,15 +6,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='guide.css') }} ">
-    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='guide.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='loading.css') }}">
     {% block head %}{% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&family=Stack+Sans+Text:wght@200..700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&family=SN+Pro:ital,wght@0,200..900;1,200..900&family=Stack+Sans+Text:wght@200..700&display=swap"
         rel="stylesheet">
+    <script type="module" src="{{ url_for('static', filename='modules/navbar.js') }}"></script>
 </head>
 
 <body style="background-color: #FFFFFF;"
@@ -103,9 +104,9 @@
                 <a class="nav-link" href="/Selection">Selection</a>
                 <a class="nav-link" href="/About">About</a>
                 <a class="nav-link" href="/Credits">Credits</a>
-                <a class="source-button" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
+                <a class="source-button" href="https://github.com/26796-bhs/MKW-Combo-Stats" target="_blank" rel="noopener noreferrer">Source</a>
             </div>
-            <a href="javascript:void(0);" class="icon">&#9776;</a>
+            <a href="javascript:void(0);" class="icon" aria-label="Open navigation menu">&#9776;</a>
         </div>
     </div>
     {% block body %}

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block preload_assets %}false{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='about/style.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="about-page">
+    <h1 class="about-title">About MKW Combo Stats</h1>
+    <p>
+        MKW Combo Stats helps you explore Mario Kart World character and vehicle combos,
+        compare their stats side by side, and find the strongest pick for any map.
+    </p>
+
+    <div class="about-section">
+        <h2 class="about-heading">What you can do here</h2>
+        <ul class="about-list">
+            <li><strong>Home</strong> -- pick a character and vehicle to see the combo's full stat breakdown.</li>
+            <li><strong>Compare</strong> -- line up multiple combos side by side and instantly spot the best and worst stats.</li>
+            <li><strong>Selection</strong> -- choose a map and get the best character/vehicle combo for it, prioritized by speed or turbo.</li>
+        </ul>
+    </div>
+
+    <div class="about-section">
+        <h2 class="about-heading">Where the numbers come from</h2>
+        <p>
+            All stats are sourced from the Mario Kart Wiki community and the game's own files.
+            See the <a href="/Credits">Credits</a> page for details.
+        </p>
+    </div>
+
+    <div class="about-section">
+        <h2 class="about-heading">Open source</h2>
+        <p>
+            This project is open source. Browse or contribute on
+            <a href="https://github.com/26796-bhs/MKW-Combo-Stats" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}
