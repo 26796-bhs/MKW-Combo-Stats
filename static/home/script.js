@@ -1,4 +1,4 @@
-import { get_combo, get_upvotes, upvote_combo } from "../modules/communication-service.js";
+import { get_combo, get_upvotes, upvote_combo, downvote_combo } from "../modules/communication-service.js";
 import { preloadUrlsFromJsonElement, setReferrerSafeImage } from "../modules/preload-images.js";
 
 function updateStatsBar(sectionName, statName, floatValue) {
@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const upvoteCaption = document.getElementById("upvote-caption");
     const upvoteBtn = document.getElementById("upvote-btn");
     const shareBtn = document.getElementById("share-btn");
+    let hasVoted = false;
 
     function hasComboSelected() {
         return selectedCharacter[2] != null
@@ -92,19 +93,22 @@ document.addEventListener("DOMContentLoaded", async function () {
             && selectedVehicle[2] !== "";
     }
 
-    function setUpvoteCaption(count) {
-        if (!upvoteCountEl || !upvoteCaption) return;
-        upvoteCountEl.textContent = String(count);
-        upvoteCaption.hidden = !hasComboSelected();
+    function setVoteUi(count, voted) {
+        hasVoted = Boolean(voted);
+        if (upvoteCountEl) upvoteCountEl.textContent = String(count);
+        if (upvoteCaption) upvoteCaption.hidden = !hasComboSelected();
+        if (upvoteBtn) upvoteBtn.textContent = hasVoted ? "Downvote" : "Upvote";
     }
 
     async function refreshUpvoteCount() {
         if (!hasComboSelected()) {
             if (upvoteCaption) upvoteCaption.hidden = true;
+            if (upvoteBtn) upvoteBtn.textContent = "Upvote";
+            hasVoted = false;
             return;
         }
-        const count = await get_upvotes(selectedCharacter[2], selectedVehicle[2]);
-        setUpvoteCaption(count);
+        const data = await get_upvotes(selectedCharacter[2], selectedVehicle[2]);
+        setVoteUi(data.upvotes, data.voted);
     }
 
     if (upvoteBtn) {
@@ -113,8 +117,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             upvoteBtn.disabled = true;
             if (shareBtn) shareBtn.disabled = true;
             try {
-                const count = await upvote_combo(selectedCharacter[2], selectedVehicle[2]);
-                setUpvoteCaption(count);
+                const data = hasVoted
+                    ? await downvote_combo(selectedCharacter[2], selectedVehicle[2])
+                    : await upvote_combo(selectedCharacter[2], selectedVehicle[2]);
+                setVoteUi(data.upvotes, data.voted);
             } catch (err) {
                 console.error(err);
             } finally {

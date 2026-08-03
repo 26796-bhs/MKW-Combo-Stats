@@ -60,30 +60,153 @@ def execute_db(query, args=()):
 
 
 def ensure_combo_votes_table():
-    """Create ComboVotes if missing (write-side support for upvotes)."""
+    """
+    Per-device votes: one row = one upvote from one device.
+    INSERT on upvote, DELETE on downvote, COUNT(*) for totals.
+    """
+    info = query_db("PRAGMA table_info(ComboVotes)")
+    cols = {row[1] for row in info} if info else set()
+
+    if "DeviceKey" in cols:
+        return
+
+    # Migrate away from the old aggregate Upvotes column schema.
+    if info:
+        execute_db("ALTER TABLE ComboVotes RENAME TO ComboVotes_legacy")
+
     execute_db(
         """
         CREATE TABLE IF NOT EXISTS ComboVotes (
             CharacterID INTEGER NOT NULL REFERENCES Characters(HiddenID),
             VehicleID INTEGER NOT NULL REFERENCES Vehicles(HiddenID),
-            Upvotes INTEGER NOT NULL DEFAULT 0,
-            PRIMARY KEY (CharacterID, VehicleID)
+            DeviceKey TEXT NOT NULL,
+            CreatedAt TEXT NOT NULL DEFAULT (datetime('now')),
+            PRIMARY KEY (CharacterID, VehicleID, DeviceKey)
         )
         """
     )
 
+    if info:
+        execute_db("DROP TABLE IF EXISTS ComboVotes_legacy")
 
-with app.app_context():
-    ensure_combo_votes_table()
+
+def ensure_cups_seeded():
+    """Populate Cups if empty (matches map groupings in sql_setup)."""
+    row = query_db("SELECT COUNT(*) FROM Cups", one=True)
+    if row and row[0] > 0:
+        return
+
+    cups = [
+        (0, "Mushroom Cup", 0, 1, 2, 3),
+        (1, "Flower Cup", 4, 5, 6, 7),
+        (2, "Star Cup", 8, 9, 10, 11),
+        (3, "Shell Cup", 12, 13, 14, 15),
+        (4, "Banana Cup", 16, 17, 18, 19),
+        (5, "Leaf Cup", 20, 21, 22, 23),
+        (6, "Lightning Cup", 24, 25, 26, 27),
+        # Special Cup only has three maps in this database.
+        (7, "Special Cup", 28, 29, 31, None),
+    ]
+    for cup in cups:
+        execute_db(
+            """
+            INSERT OR IGNORE INTO Cups (HiddenID, Name, Course1, Course2, Course3, Course4)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            cup,
+        )
+
+
+def get_maps_grouped_by_cup():
+    """
+    JOIN Cups ↔ Maps so Selection can categorise courses by cup.
+    Returns [{id, name, maps: [[HiddenID, Name, ..., ImageUrl], ...]}, ...]
+    """
+    rows = query_db(
+        """
+        SELECT
+            Cups.HiddenID,
+            Cups.Name,
+            course.CourseOrder,
+            Maps.HiddenID,
+            Maps.Name,
+            Maps.Road,
+            Maps.OffRoad,
+            Maps.Water,
+            Maps.BestCharacterSpeed,
+            Maps.BestVehicleSpeed,
+            Maps.BestCharacterTurbo,
+            Maps.BestVehicleTurbo,
+            Maps.ImageUrl
+        FROM Cups
+        JOIN (
+            SELECT HiddenID AS CupID, Course1 AS MapID, 1 AS CourseOrder FROM Cups
+            UNION ALL
+            SELECT HiddenID, Course2, 2 FROM Cups
+            UNION ALL
+            SELECT HiddenID, Course3, 3 FROM Cups
+            UNION ALL
+            SELECT HiddenID, Course4, 4 FROM Cups
+        ) AS course ON course.CupID = Cups.HiddenID
+        JOIN Maps ON Maps.HiddenID = course.MapID
+        WHERE course.MapID IS NOT NULL
+        ORDER BY Cups.HiddenID ASC, course.CourseOrder ASC
+        """
+    )
+
+    groups = []
+    by_id = {}
+    for row in rows:
+        cup_id, cup_name = row[0], row[1]
+        map_row = row[3:]  # same shape as MAP_COLUMNS select
+        if cup_id not in by_id:
+            group = {"id": cup_id, "name": cup_name, "maps": []}
+            by_id[cup_id] = group
+            groups.append(group)
+        by_id[cup_id]["maps"].append(map_row)
+    return groups
 
 
 def get_upvote_count(character_id, vehicle_id):
     row = query_db(
-        "SELECT Upvotes FROM ComboVotes WHERE CharacterID = ? AND VehicleID = ?",
+        """
+        SELECT COUNT(*) FROM ComboVotes
+        WHERE CharacterID = ? AND VehicleID = ?
+        """,
         [character_id, vehicle_id],
         one=True,
     )
     return row[0] if row else 0
+
+
+def user_has_voted(character_id, vehicle_id, device_key):
+    if not device_key:
+        return False
+    row = query_db(
+        """
+        SELECT 1 FROM ComboVotes
+        WHERE CharacterID = ? AND VehicleID = ? AND DeviceKey = ?
+        """,
+        [character_id, vehicle_id, device_key],
+        one=True,
+    )
+    return bool(row)
+
+
+def normalise_device_key(raw):
+    key = (raw or "").strip()
+    if not key or len(key) > 128:
+        return None
+    # Allow hex hashes / uuid-like keys only.
+    allowed = set("0123456789abcdefABCDEF-")
+    if any(ch not in allowed for ch in key):
+        return None
+    return key.lower()
+
+
+with app.app_context():
+    ensure_combo_votes_table()
+    ensure_cups_seeded()
 
 
 @app.route("/")
@@ -108,7 +231,16 @@ def home():
 
 @app.route("/Selection")
 def selection():
-    maps = query_db(f"SELECT {MAP_COLUMNS} FROM Maps")
+    cup_groups = get_maps_grouped_by_cup()
+    # Flat list for image preload (maps appear once even if JOINed).
+    maps = []
+    seen = set()
+    for group in cup_groups:
+        for m in group["maps"]:
+            if m[0] not in seen:
+                seen.add(m[0])
+                maps.append(m)
+
     characters = query_db(f"SELECT {CHARACTER_COLUMNS} FROM Characters")
     vehicles = query_db(f"SELECT {VEHICLE_COLUMNS} FROM Vehicles")
     # Only map images block the loading screen; character/vehicle images load quietly after.
@@ -119,6 +251,7 @@ def selection():
     })
     return render_template(
         "selection.html",
+        cup_groups=cup_groups,
         maps=maps,
         preload_urls=preload_urls,
         background_preload_urls=background_preload_urls,
@@ -293,19 +426,24 @@ def apiselection():
 
 @app.get("/upvotes/<int:character_id>/<int:vehicle_id>")
 def upvotes_get(character_id, vehicle_id):
-    return {"upvotes": get_upvote_count(character_id, vehicle_id)}
+    device_key = normalise_device_key(request.args.get("device", ""))
+    return {
+        "upvotes": get_upvote_count(character_id, vehicle_id),
+        "voted": user_has_voted(character_id, vehicle_id, device_key) if device_key else False,
+    }
 
 
 @app.post("/upvote")
 def upvote():
-    """
-    Create or update a ComboVotes row (database write).
-    Expects form fields: character, vehicle.
-    """
+    """INSERT a per-device vote (Create). Rejects duplicate votes from the same device."""
     try:
         character_id = int(request.form.get("character", ""))
         vehicle_id = int(request.form.get("vehicle", ""))
     except (TypeError, ValueError):
+        abort(400)
+
+    device_key = normalise_device_key(request.form.get("device", ""))
+    if not device_key:
         abort(400)
 
     char = query_db(
@@ -321,30 +459,49 @@ def upvote():
     if not char or not veh:
         abort(404)
 
-    existing = query_db(
-        "SELECT Upvotes FROM ComboVotes WHERE CharacterID = ? AND VehicleID = ?",
-        [character_id, vehicle_id],
-        one=True,
-    )
-    if existing:
-        execute_db(
-            """
-            UPDATE ComboVotes
-            SET Upvotes = Upvotes + 1
-            WHERE CharacterID = ? AND VehicleID = ?
-            """,
-            [character_id, vehicle_id],
-        )
-    else:
-        execute_db(
-            """
-            INSERT INTO ComboVotes (CharacterID, VehicleID, Upvotes)
-            VALUES (?, ?, 1)
-            """,
-            [character_id, vehicle_id],
-        )
+    if user_has_voted(character_id, vehicle_id, device_key):
+        return {
+            "upvotes": get_upvote_count(character_id, vehicle_id),
+            "voted": True,
+        }
 
-    return {"upvotes": get_upvote_count(character_id, vehicle_id)}
+    execute_db(
+        """
+        INSERT INTO ComboVotes (CharacterID, VehicleID, DeviceKey)
+        VALUES (?, ?, ?)
+        """,
+        [character_id, vehicle_id, device_key],
+    )
+    return {
+        "upvotes": get_upvote_count(character_id, vehicle_id),
+        "voted": True,
+    }
+
+
+@app.post("/downvote")
+def downvote():
+    """DELETE this device's vote for the combo (Delete)."""
+    try:
+        character_id = int(request.form.get("character", ""))
+        vehicle_id = int(request.form.get("vehicle", ""))
+    except (TypeError, ValueError):
+        abort(400)
+
+    device_key = normalise_device_key(request.form.get("device", ""))
+    if not device_key:
+        abort(400)
+
+    execute_db(
+        """
+        DELETE FROM ComboVotes
+        WHERE CharacterID = ? AND VehicleID = ? AND DeviceKey = ?
+        """,
+        [character_id, vehicle_id, device_key],
+    )
+    return {
+        "upvotes": get_upvote_count(character_id, vehicle_id),
+        "voted": False,
+    }
 
 
 @app.route("/db/")

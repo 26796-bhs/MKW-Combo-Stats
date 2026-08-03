@@ -42,23 +42,30 @@
     <div class="map-picker">
         <p class="picker-title">Maps</p>
         <hr class="picker-divider">
-        <div class="maps-grid">
-            {% for map in maps %}
-            <div class="map-card" data-hiddenid="{{ map[0] }}"
-                {% if map[9] %}data-imgurl="{{ map[9] }}"{% endif %}
-                data-name="{{ map[1] }}">
-                {% if map[9] %}
-                <img class="map-card-img pfp-shape"
-                    src="{{ map[9] }}"
-                    alt="{{ map[1] }}"
-                    loading="eager"
-                    decoding="async"
-                    referrerpolicy="no-referrer">
-                {% else %}
-                <div class="map-card-img pfp-shape map-card-img-empty" role="img" aria-label="{{ map[1] }}"></div>
-                {% endif %}
-                <p class="map-card-name">{{ map[1] }}</p>
-            </div>
+        <div class="maps-by-cup">
+            {% for cup in cup_groups %}
+            <section class="cup-section" data-cup-id="{{ cup.id }}">
+                <h2 class="cup-title">{{ cup.name }}</h2>
+                <div class="maps-grid">
+                    {% for map in cup.maps %}
+                    <div class="map-card" data-hiddenid="{{ map[0] }}"
+                        {% if map[9] %}data-imgurl="{{ map[9] }}"{% endif %}
+                        data-name="{{ map[1] }}">
+                        {% if map[9] %}
+                        <img class="map-card-img pfp-shape"
+                            src="{{ map[9] }}"
+                            alt="{{ map[1] }}"
+                            loading="eager"
+                            decoding="async"
+                            referrerpolicy="no-referrer">
+                        {% else %}
+                        <div class="map-card-img pfp-shape map-card-img-empty" role="img" aria-label="{{ map[1] }}"></div>
+                        {% endif %}
+                        <p class="map-card-name">{{ map[1] }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
             {% endfor %}
         </div>
     </div>

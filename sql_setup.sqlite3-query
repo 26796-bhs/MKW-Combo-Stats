@@ -295,3 +295,21 @@ INSERT INTO `Maps` VALUES
 (28, 'Acorn Heights', 0.7, 0.3, 0.0, 6, 17, 31, 23, "https://mario.wiki.gallery/images/b/bc/MKWorld_Acorn_Heights_Icon.png"),
 (29, 'Mario Circuit', 1.0, 0.0, 0.0, 7, 20, 12, 26, "https://mario.wiki.gallery/images/f/f0/MKWorld_Mario_Circuit_icon.png"),
 (31, 'Rainbow Road', 1.0, 0.0, 0.0, 38, 5, 45, 21, "https://mario.wiki.gallery/images/8/88/MKWorld_Rainbow_Road_icon.png");
+
+INSERT INTO `Cups` VALUES
+(0, 'Mushroom Cup', 0, 1, 2, 3),
+(1, 'Flower Cup', 4, 5, 6, 7),
+(2, 'Star Cup', 8, 9, 10, 11),
+(3, 'Shell Cup', 12, 13, 14, 15),
+(4, 'Banana Cup', 16, 17, 18, 19),
+(5, 'Leaf Cup', 20, 21, 22, 23),
+(6, 'Lightning Cup', 24, 25, 26, 27),
+(7, 'Special Cup', 28, 29, 31, NULL);
+
+CREATE TABLE IF NOT EXISTS `ComboVotes` (
+    `CharacterID` INTEGER NOT NULL REFERENCES `Characters`(`HiddenID`),
+    `VehicleID` INTEGER NOT NULL REFERENCES `Vehicles`(`HiddenID`),
+    `DeviceKey` TEXT NOT NULL,
+    `CreatedAt` TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (`CharacterID`, `VehicleID`, `DeviceKey`)
+);
