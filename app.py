@@ -508,6 +508,9 @@ def downvote():
 def db():
     return "Man, you ain't gettin' no database by adding /db/ 💀"
 
+@app.route("/500test")
+def test_500():
+    abort(500)
 
 if __name__ == "__main__":
     app.run(debug=True)
