@@ -301,6 +301,13 @@ def teapot():
     abort(418)
 
 
+@app.route("/coffeemachine")
+@app.route("/218")
+def coffee_machine():
+    """Easter egg — unofficial reverse of 418."""
+    return render_template("218.html")
+
+
 @app.route("/505")
 def force_505():
     """Demo route so the 505 page can be opened in a browser."""
