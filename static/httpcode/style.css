@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Stack Sans Text", "SN Pro", system-ui, sans-serif;
+    background: #fff;
+    color: #111;
+    overflow: hidden;
+    position: relative;
+}
+
+.watermark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(12rem, 40vw, 28rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #000;
+    opacity: 0.08;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.watermark img {
+    width: clamp(14rem, 48vw, 32rem);
+    height: auto;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    text-align: left;
+}
+
+.content h1 {
+    font-size: 3rem;
+}
+
+.content p {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    margin-bottom: 1rem;
+}
+
+.content a {
+    font-size: 1.25rem;
+}
