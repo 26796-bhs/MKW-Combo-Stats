@@ -313,6 +313,11 @@ def force_505():
     """Demo route so the 505 page can be opened in a browser."""
     abort(505)
 
+# Flags for beta/hidden features
+@app.route("/flags")
+def flag():
+    return render_template("flags.html")
+
 
 @app.route("/About")
 def about():

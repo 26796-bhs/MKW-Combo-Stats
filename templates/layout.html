@@ -13,9 +13,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&family=SN+Pro:ital,wght@0,200..900;1,200..900&family=Stack+Sans+Text:wght@200..700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&family=Oswald:wght@200..700&family=SN+Pro:ital,wght@0,200..900;1,200..900&family=Stack+Sans+Text:wght@200..700&display=swap"
         rel="stylesheet">
     <script type="module" src="{{ url_for('static', filename='modules/navbar.js') }}"></script>
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem("mkw-flag-beta-nav-bar") === "1") {
+                    document.documentElement.classList.add("beta-nav-bar");
+                }
+            } catch (e) { }
+        })();
+    </script>
 </head>
 
 <body style="background-color: #FFFFFF;"
@@ -31,6 +40,7 @@
         </div>
         <p class="asset-loader-percent" id="asset-loader-percent">0%</p>
     </div>
+    <!-- Loader -->
     <script>
         (function () {
             window.__MKW_SHOW_LOADER = false;
@@ -39,6 +49,7 @@
             var loader = document.getElementById("asset-loader");
             var skipCached = document.body.getAttribute("data-preload-skip-cached") === "true";
 
+            // Show loader if cache is skipped
             if (!skipCached) {
                 window.__MKW_SHOW_LOADER = true;
                 loader.hidden = false;

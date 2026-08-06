@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block preload_assets %}false{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='flag/style.css') }}">
+<script type="module" src="{{ url_for('static', filename='flag/script.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="flag-page">
+    <h1 class="flag-title">Feature flags</h1>
+    <p class="flag-intro">Toggle experimental options for testing. Changes apply immediately and persist in this browser.</p>
+
+    <!-- THis flag changes the design of the nav bar -->
+    <label class="flag-option" for="beta-nav-bar">
+        <input type="checkbox" id="beta-nav-bar" name="beta-nav-bar">
+        <span class="flag-option-text">
+            <span class="flag-option-name">beta-nav-bar</span>
+            <span class="flag-option-desc">Beta navbar: reverse action-button gradient, white text, white Source with blue label.</span>
+        </span>
+    </label>
+</div>
+{% endblock %}
