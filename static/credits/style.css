@@ -1,13 +1,12 @@
-.credits-page {
-    min-height: calc(100vh - 80px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 1rem;
+.credits-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.75rem;
+    font-weight: 700;
 }
 
-.credits-page p {
-    margin: 0;
+.credits-intro {
+    margin: 0 0 1.5rem;
+    max-width: 36rem;
     font-size: 1.125rem;
+    line-height: 1.5;
 }

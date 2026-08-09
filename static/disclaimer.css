@@ -1,0 +1,34 @@
+.page-shell {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    padding: 3rem 1.5rem;
+    gap: 0.5rem;
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+.fair-use-disclaimer {
+    max-width: 36rem;
+    margin-top: 0.5rem;
+    padding: 1rem 1.15rem;
+    border: 2px solid #111;
+    background: #f7f7f7;
+}
+
+.fair-use-heading {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.fair-use-disclaimer p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}

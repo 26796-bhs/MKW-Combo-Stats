@@ -1,15 +1,14 @@
-{% extends "layout.html" %}
+{% extends "disclaimer.html" %}
 
 {% block preload_assets %}false{% endblock %}
 
-{% block head %}
+{% block page_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='about/style.css') }}">
 {% endblock %}
 
-{% block body %}
-<div class="about-page">
+{% block page_body %}
     <h1 class="about-title">About MKW Combo Stats</h1>
-    <p>
+    <p class="about-intro">
         MKW Combo Stats helps you explore Mario Kart World character and vehicle combos,
         compare their stats side by side, and find the strongest pick for any map.
     </p>
@@ -38,5 +37,4 @@
             <a href="https://github.com/26796-bhs/MKW-Combo-Stats" target="_blank" rel="noopener noreferrer">GitHub</a>.
         </p>
     </div>
-</div>
 {% endblock %}
