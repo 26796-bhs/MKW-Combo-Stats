@@ -1,7 +1,6 @@
 /* Shared profile image shape — copied from home/style.css */
 .pfp-shape {
     border-radius: 35px;
-    corner-shape: superellipse(1.1);
     aspect-ratio: 1 / 1;
     background-color: white;
 }
@@ -15,7 +14,6 @@
     display: flex;
     gap: 28px;
     border-radius: 25px;
-    corner-shape: superellipse(1.1);
     padding: 24px;
     box-sizing: border-box;
     min-height: 0;
@@ -40,7 +38,6 @@
     gap: 0;
     min-height: 0;
     border-radius: 25px;
-    corner-shape: superellipse(1.1);
     overflow: hidden;
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
@@ -110,7 +107,6 @@
     background-color: #ffffff;
     border: 1px solid #F5F5F5;
     border-radius: 10px;
-    corner-shape: superellipse(1.1);
     padding: 6px 12px;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
@@ -187,7 +183,6 @@
     min-width: 0;
     min-height: 0;
     border-radius: 25px;
-    corner-shape: superellipse(1.1);
     background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
     border: 1px solid #F5F5F5;
@@ -249,7 +244,6 @@
     background-color: #fdfdfda0;
     border: 1px solid #F5F5F5;
     border-radius: 15px;
-    corner-shape: superellipse(1.1);
     cursor: pointer;
     transition: background-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
     position: relative;

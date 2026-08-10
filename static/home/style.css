@@ -7,7 +7,6 @@
     bottom: 50px;
     top: 125px;
     border-radius: 25px;
-    corner-shape: superellipse(1.1);
     overflow: hidden;
 }
 
@@ -34,7 +33,6 @@
 
 .pfp-shape {
     border-radius: 35px;
-    corner-shape: superellipse(1.1);
     aspect-ratio: 1 / 1;
     background-color: white;
 }
@@ -231,7 +229,6 @@
     border: none;
     background: transparent;
     border-radius: 75px;
-    corner-shape: superellipse(1.1);
     overflow: hidden;
     z-index: 1;
     color: #ffffff;
@@ -430,7 +427,6 @@
     position: relative;
     width: 100%;
     border-radius: 25px;
-    corner-shape: superellipse(1.1);
     background-color: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(250, 250, 250, 0.4);
     box-shadow: 0 2px 8px rgba(6, 30, 40, 0.04);
