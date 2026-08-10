@@ -11,6 +11,12 @@ DROP TABLE IF EXISTS Characters;
 DROP TABLE IF EXISTS Vehicles;
 DROP TABLE IF EXISTS Types;
 
+
+
+
+
+
+
 CREATE TABLE `Types` (
     `ID` PRIMARY KEY UNIQUE,
     `Name`
