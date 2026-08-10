@@ -20,10 +20,11 @@
 .box .navbar {
     position: absolute;
     inset: 0;
-    background-color: #d9d9d900;
+    background-color: transparent;
+    background-image: linear-gradient(310deg, #2E96E7 0%, #41BDCD 35%, #60FEA2 100%);
     box-shadow: 0px 0px 100px #00000040;
-    backdrop-filter: blur(50px) brightness(100%);
-    -webkit-backdrop-filter: blur(50px) brightness(100%);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 
 .site-title,
@@ -51,10 +52,9 @@
 
 .nav-link {
     font-size: 16px;
+    color: #ffffff;
     text-decoration: underline;
 }
-
-
 
 .source-button {
     display: inline-flex;
@@ -62,8 +62,8 @@
     justify-content: center;
     padding: 0 24px;
     min-height: 44px;
-    /* background-color: var(--colorsindigo); */
-    color: #ffffff;
+    color: #2E96E7;
+    background-color: #ffffff;
     border-radius: 29px;
     font-size: 16px;
     overflow: hidden;
@@ -77,50 +77,46 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--colorsindigo);
-    filter: blur(5px);
+    background-color: #ffffff;
+    filter: none;
     border-radius: 29px;
     overflow: hidden;
-    /* corner-shape: superellipse(1.1); */
     z-index: -1;
 }
 
 .icon {
     display: none;
     font-size: 24px;
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
     cursor: pointer;
     position: relative;
     z-index: 2;
 }
 
-/* Beta nav theme */
-html.beta-nav-bar .box .navbar {
-    background-color: transparent;
-    background-image: linear-gradient(310deg, #2E96E7 0%, #41BDCD 35%, #60FEA2 100%);
+/* Legacy nav — frosted glass bar, dark text, indigo Source */
+html.legacy-nav-bar .box .navbar {
+    background-color: #d9d9d900;
+    background-image: none;
     box-shadow: 0px 0px 100px #00000040;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: blur(50px) brightness(100%);
+    -webkit-backdrop-filter: blur(50px) brightness(100%);
 }
 
-html.beta-nav-bar .site-title {
+html.legacy-nav-bar .site-title,
+html.legacy-nav-bar .nav-link,
+html.legacy-nav-bar .icon {
     color: #000000;
 }
 
-html.beta-nav-bar .nav-link,
-html.beta-nav-bar .icon {
+html.legacy-nav-bar .source-button {
     color: #ffffff;
+    background-color: transparent;
 }
 
-html.beta-nav-bar .source-button {
-    color: #2E96E7;
-    background-color: #ffffff;
-}
-
-html.beta-nav-bar .source-button::before {
-    background-color: #ffffff;
-    filter: none;
+html.legacy-nav-bar .source-button::before {
+    background-color: var(--colorsindigo);
+    filter: blur(5px);
 }
 
 @media screen and (max-width: 768px) {
@@ -142,11 +138,12 @@ html.beta-nav-bar .source-button::before {
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(50px);
-        -webkit-backdrop-filter: blur(50px);
+        background-image: linear-gradient(310deg, #2E96E7 0%, #41BDCD 35%, #60FEA2 100%);
+        background-color: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         padding: 20px;
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
         border-radius: 0 0 10px 10px;
         z-index: 11;
     }
@@ -166,18 +163,20 @@ html.beta-nav-bar .source-button::before {
         display: block;
     }
 
-    html.beta-nav-bar .nav-links.responsive {
-        background-image: linear-gradient(310deg, #2E96E7 0%, #41BDCD 35%, #60FEA2 100%);
-        background-color: transparent;
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+    html.legacy-nav-bar .nav-links.responsive {
+        background-image: none;
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(50px);
+        -webkit-backdrop-filter: blur(50px);
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    html.beta-nav-bar .nav-links.responsive .nav-link {
+    html.legacy-nav-bar .nav-links.responsive .nav-link {
+        color: #000000;
+    }
+
+    html.legacy-nav-bar .nav-links.responsive .source-button {
         color: #ffffff;
-    }
-
-    html.beta-nav-bar .nav-links.responsive .source-button {
-        color: #2E96E7;
-        background-color: #ffffff;
+        background-color: transparent;
     }
 }

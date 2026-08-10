@@ -1,15 +1,15 @@
-const BETA_NAV_FLAG_KEY = "mkw-flag-beta-nav-bar";
+const LEGACY_NAV_FLAG_KEY = "mkw-flag-legacy-nav-bar";
 
-export function applyBetaNavBar(enabled) {
-    document.documentElement.classList.toggle("beta-nav-bar", !!enabled);
+export function applyLegacyNavBar(enabled) {
+    document.documentElement.classList.toggle("legacy-nav-bar", !!enabled);
     try {
-        localStorage.setItem(BETA_NAV_FLAG_KEY, enabled ? "1" : "0");
+        localStorage.setItem(LEGACY_NAV_FLAG_KEY, enabled ? "1" : "0");
     } catch (e) { }
 }
 
-export function isBetaNavBarEnabled() {
+export function isLegacyNavBarEnabled() {
     try {
-        return localStorage.getItem(BETA_NAV_FLAG_KEY) === "1";
+        return localStorage.getItem(LEGACY_NAV_FLAG_KEY) === "1";
     } catch (e) {
         return false;
     }

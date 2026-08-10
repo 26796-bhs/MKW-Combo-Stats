@@ -2,8 +2,10 @@
 
 -- Use the ▷ button in the top right corner to run the entire file.
 
-DROP TABLE IF EXISTS Maps;
+
+DROP TABLE IF EXISTS ComboVotes;
 DROP TABLE IF EXISTS Cups;
+DROP TABLE IF EXISTS Maps;
 DROP TABLE IF EXISTS Rally;
 DROP TABLE IF EXISTS Characters;
 DROP TABLE IF EXISTS Vehicles;
@@ -217,7 +219,7 @@ INSERT INTO `Vehicles` (
 (8, "Roadster Royale",   0,     3,8,8,8,3,4,2,2,2           ,"https://mario.wiki.gallery/images/thumb/b/be/MKWorld_Kart_Roadster_Royale.png/225px-MKWorld_Kart_Roadster_Royale.png"),
 (9, "B Dasher",          0,     4,8,4,4,4,3,8,3,3           ,"https://mario.wiki.gallery/images/thumb/e/e0/MKWorld_Kart_B_Dasher.png/225px-MKWorld_Kart_B_Dasher.png"),
 (10, "Biddybuggy",       0,     7,1,6,1,7,1,5,9,5           ,"https://mario.wiki.gallery/images/thumb/d/db/MKWorld_Kart_Biddybuggy.png/225px-MKWorld_Kart_Biddybuggy.png"),
-(11, "Bowser Bruiser",   2,     1,7,10,7,1,5,1,7,1          ,"https://mario.wiki.gallery/images/thumb/b/b2/MKWorld_ATV_Bowser_Bruiser.png/225px-MKWorld_ATV_Bowser_Bruiser.png"),
+(11, "Bowser Bruiser",   2,     1,7,10,7,1,5,1,7,1          ,"https://mario.wiki.gallery/images/thumb/5/51/MKWorld_Kart_Bowser_Bruiser.png/225px-MKWorld_Kart_Bowser_Bruiser.png"),
 (12, "Tiny Titan",       0,     1,7,10,7,1,5,1,7,1          ,"https://mario.wiki.gallery/images/thumb/7/7c/MKWorld_Kart_Tiny_Titan.png/225px-MKWorld_Kart_Tiny_Titan.png"),
 (13, "Reel Racer",       0,     2,8,8,8,2,3,4,4,4           ,"https://mario.wiki.gallery/images/thumb/a/aa/MKWorld_Kart_Reel_Racer.png/225px-MKWorld_Kart_Reel_Racer.png"),
 (14, "Bumble V",         0,     4,8,4,4,4,3,8,3,3           ,"https://mario.wiki.gallery/images/thumb/7/73/MKWorld_Kart_Bumble_V.png/225px-MKWorld_Kart_Bumble_V.png"),
@@ -238,14 +240,14 @@ INSERT INTO `Vehicles` (
 (29, "R.O.B. H.O.G.",    1,     7,6,1,1,7,0,10,6,6          ,"https://mario.wiki.gallery/images/thumb/a/a1/MKWorld_Bike_ROB_HOG_Famicom.png/225px-MKWorld_Bike_ROB_HOG_Famicom.png"),
 (30, "Dolphin Dasher",   1,     8,0,0,5,8,0,6,6,10          ,"https://mario.wiki.gallery/images/thumb/d/d8/MKWorld_Bike_Dolphin_Dasher.png/225px-MKWorld_Bike_Dolphin_Dasher.png"),
 (31, "Loco Moto",        1,     6,4,4,4,6,1,6,6,6           ,"https://mario.wiki.gallery/images/thumb/b/b7/MKWorld_Bike_Loco_Moto.png/225px-MKWorld_Bike_Loco_Moto.png"),
-(32, "Funky Dorrie",     2,     5,4,4,8,5,4,1,1,6           ,"https://mario.wiki.gallery/images/thumb/1/14/MKWorld_ATV_Funky_Dorrie.png/225px-MKWorld_ATV_Funky_Dorrie.png"),
-(33, "Junkyard Hog",     2,     3,8,8,8,3,4,2,2,2           ,"https://mario.wiki.gallery/images/thumb/3/3b/MKWorld_ATV_Junkyard_Hog.png/225px-MKWorld_ATV_Junkyard_Hog.png"),
-(34, "Lobster Roller",   2,     2,7,7,10,2,6,0,0,5          ,"https://mario.wiki.gallery/images/thumb/4/4b/MKWorld_ATV_Lobster_Roller.png/225px-MKWorld_ATV_Lobster_Roller.png"),
-(35, "Blastronaut III",  0,     6,5,5,5,6,3,3,3,3           ,"https://mario.wiki.gallery/images/thumb/9/9b/MKWorld_Kart_Blastronaut_III.png/225px-MKWorld_Kart_Blastronaut_III.png"),
-(36, "Mecha Trike",      2,     1,7,7,10,1,5,1,1,7          ,"https://mario.wiki.gallery/images/thumb/6/69/MKWorld_Kart_Mecha_Trike.png/225px-MKWorld_Kart_Mecha_Trike.png"),
-(37, "Rallygator",       2,     8,0,5,0,8,0,6,10,6          ,"https://mario.wiki.gallery/images/thumb/a/a8/MKWorld_ATV_Rallygator.png/225px-MKWorld_ATV_Rallygator.png"),
-(38, "Dread Sled",       2,     3,3,9,5,3,3,3,9,4           ,"https://mario.wiki.gallery/images/thumb/5/52/MKWorld_ATV_Dread_Sled.png/225px-MKWorld_ATV_Dread_Sled.png"),
-(39, "Stellar Sled",     0,     0,6,8,11,0,5,1,2,8          ,"https://mario.wiki.gallery/images/thumb/5/5a/MKWorld_Kart_Stellar_Sled.png/225px-MKWorld_Kart_Stellar_Sled.png");
+(32, "Funky Dorrie",     2,     5,4,4,8,5,4,1,1,6           ,"https://mario.wiki.gallery/images/thumb/3/35/MKWorld_Trike_Funky_Dorrie.png/225px-MKWorld_Trike_Funky_Dorrie.png"),
+(33, "Junkyard Hog",     2,     3,8,8,8,3,4,2,2,2           ,"https://mario.wiki.gallery/images/thumb/b/b3/MKWorld_Trike_Junkyard_Hog.png/225px-MKWorld_Trike_Junkyard_Hog.png"),
+(34, "Lobster Roller",   2,     2,7,7,10,2,6,0,0,5          ,"https://mario.wiki.gallery/images/3/36/MKWorld_Trike_Lobster_Roller.png"),
+(35, "Blastronaut III",  0,     6,5,5,5,6,3,3,3,3           ,"https://mario.wiki.gallery/images/6/6d/MKWorld_Trike_Blastronaut_III.png"),
+(36, "Mecha Trike",      2,     1,7,7,10,1,5,1,1,7          ,"https://mario.wiki.gallery/images/thumb/9/90/MKWorld_Trike_Mecha_Trike.png/225px-MKWorld_Trike_Mecha_Trike.png"),
+(37, "Rallygator",       2,     8,0,5,0,8,0,6,10,6          ,"https://mario.wiki.gallery/images/1/13/MKWorld_Trike_Rallygator.png"),
+(38, "Dread Sled",       2,     3,3,9,5,3,3,3,9,4           ,"https://mario.wiki.gallery/images/thumb/4/48/MKWorld_Mobile_Dread_Sled.png/225px-MKWorld_Mobile_Dread_Sled.png"),
+(39, "Stellar Sled",     0,     0,6,8,11,0,5,1,2,8          ,"https://mario.wiki.gallery/images/thumb/c/c4/MKWorld_Mobile_Stellar_Sled.png/225px-MKWorld_Mobile_Stellar_Sled.png");
 
 
 INSERT INTO `Maps` VALUES
