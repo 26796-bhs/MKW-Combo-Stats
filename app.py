@@ -404,12 +404,14 @@ def combo_stats(character_id, vehicle_id):
 
 @app.route("/maps")
 def maps():
-    return query_db(f"SELECT {MAP_COLUMNS} FROM Maps")
+    rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps")
+    return jsonify([list(r) for r in rows])
 
 
 @app.route("/maps/<int:id>")
 def maps_with_id(id):
-    return query_db(f"SELECT {MAP_COLUMNS} FROM Maps WHERE HiddenID = ?", [id])
+    rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps WHERE HiddenID = ?", [id])
+    return jsonify([list(r) for r in rows])
 
 
 @app.post("/api/selection/")
