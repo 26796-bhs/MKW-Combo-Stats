@@ -179,7 +179,7 @@ def get_upvote_count(character_id, vehicle_id):
     return row[0] if row else 0
 
 
-def user_has_voted(character_id, vehicle_id, device_key):
+def user_has_voted(character_id, vehicle_id, device_key): # Check if the user has voted on a combo by combo and device key
     if not device_key:
         return False
     row = query_db(
@@ -297,20 +297,18 @@ def im_a_teapot(error):
 @app.route("/teapot")
 @app.route("/418")
 def teapot():
-    """Easter egg — HTTP 418 I'm a teapot."""
     abort(418)
 
 
 @app.route("/coffeemachine")
 @app.route("/218")
 def coffee_machine():
-    """Easter egg — unofficial reverse of 418."""
     return render_template("218.html")
 
 
 @app.route("/505")
 def force_505():
-    """Demo route so the 505 page can be opened in a browser."""
+    # Demo route so the 505 page can be opened in a browser.
     abort(505)
 
 # Flags for beta/hidden features
@@ -329,7 +327,7 @@ def credits():
     return render_template("credits.html")
 
 
-@app.get("/proxy-image")
+@app.get("/proxy-image") # Proxy image used to generate image for share button
 def proxy_image():
     url = request.args.get("url", "")
     parsed = urlparse(url)
@@ -384,9 +382,8 @@ def vehic(id=None):
     return jsonify([list(r) for r in rows])
 
 
-@app.route("/combo/<int:character_id>/<int:vehicle_id>")
+@app.route("/combo/<int:character_id>/<int:vehicle_id>") # Get calculated combo data
 def combo_stats(character_id, vehicle_id):
-    """Calculate combo stats on the server (replaces client-side calculation.js)."""
     char = query_db(
         f"SELECT {CHARACTER_COLUMNS} FROM Characters WHERE HiddenID = ?",
         [character_id],
@@ -402,13 +399,13 @@ def combo_stats(character_id, vehicle_id):
     return jsonify(calculate_stats(char, veh))
 
 
-@app.route("/maps")
+@app.route("/maps") # Get all maps
 def maps():
     rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps")
     return jsonify([list(r) for r in rows])
 
 
-@app.route("/maps/<int:id>")
+@app.route("/maps/<int:id>")  # Get individual map data
 def maps_with_id(id):
     rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps WHERE HiddenID = ?", [id])
     return jsonify([list(r) for r in rows])
@@ -438,7 +435,7 @@ def apiselection():
     return {"character": result[0], "vehicle": result[1]}
 
 
-@app.get("/upvotes/<int:character_id>/<int:vehicle_id>")
+@app.get("/upvotes/<int:character_id>/<int:vehicle_id>") # Get the upvote of a combo. Results depend on previous user votings 
 def upvotes_get(character_id, vehicle_id):
     device_key = normalise_device_key(request.args.get("device", ""))
     return {
@@ -447,9 +444,9 @@ def upvotes_get(character_id, vehicle_id):
     }
 
 
-@app.post("/upvote")
+@app.post("/upvote") # Upvote a combo which can be seen by other users.
 def upvote():
-    """INSERT a per-device vote (Create). Rejects duplicate votes from the same device."""
+    # INSERT a per-device vote (Create). and rejects duplicate votes from the same device.
     try:
         character_id = int(request.form.get("character", ""))
         vehicle_id = int(request.form.get("vehicle", ""))
@@ -492,15 +489,15 @@ def upvote():
     }
 
 
-@app.post("/downvote")
+@app.post("/downvote") # Reverse action of upvote. Can only be done if the user has voted the combo previously
 def downvote():
-    """DELETE this device's vote for the combo (Delete)."""
     try:
         character_id = int(request.form.get("character", ""))
         vehicle_id = int(request.form.get("vehicle", ""))
     except (TypeError, ValueError):
         abort(400)
 
+    # Get device key to check if the user has voted on the combo before
     device_key = normalise_device_key(request.form.get("device", ""))
     if not device_key:
         abort(400)

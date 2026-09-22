@@ -1,4 +1,4 @@
-"""Server-side combo stat calculation (moved from static/modules/calculation.js)."""
+# Server-side combo stat calculation (moved from static/modules/calculation.js).
 
 # Max combined values used to normalise bars to 0–1.
 MAXIMUM_VALUE = [
