@@ -1,4 +1,12 @@
-from flask import Flask, g, render_template, request, abort, jsonify, Response
+from flask import (
+    Flask,
+    Response,
+    abort,
+    g,
+    jsonify,
+    render_template,
+    request,
+)
 import sqlite3
 import urllib.error
 import urllib.request
@@ -14,16 +22,18 @@ ALLOWED_IMAGE_HOSTS = {
 
 # Named column lists — avoid SELECT * so queries stay explicit.
 CHARACTER_COLUMNS = (
-    "HiddenID, Name, MiniTurbo, SpeedOnRoad, SpeedOffRoad, SpeedOnWater, "
-    "Acceleration, Weight, HandlingOnRoad, HandlingOffRoad, HandlingOnWater, ImageUrl"
+    "HiddenID, Name, MiniTurbo, SpeedOnRoad, SpeedOffRoad, "
+    "SpeedOnWater, Acceleration, Weight, HandlingOnRoad, "
+    "HandlingOffRoad, HandlingOnWater, ImageUrl"
 )
 VEHICLE_COLUMNS = (
-    "HiddenID, Name, VehicleType, MiniTurbo, SpeedOnRoad, SpeedOffRoad, SpeedOnWater, "
-    "Acceleration, Weight, HandlingOnRoad, HandlingOffRoad, HandlingOnWater, ImageUrl"
+    "HiddenID, Name, VehicleType, MiniTurbo, SpeedOnRoad, "
+    "SpeedOffRoad, SpeedOnWater, Acceleration, Weight, "
+    "HandlingOnRoad, HandlingOffRoad, HandlingOnWater, ImageUrl"
 )
 MAP_COLUMNS = (
-    "HiddenID, Name, Road, OffRoad, Water, BestCharacterSpeed, BestVehicleSpeed, "
-    "BestCharacterTurbo, BestVehicleTurbo, ImageUrl"
+    "HiddenID, Name, Road, OffRoad, Water, BestCharacterSpeed, "
+    "BestVehicleSpeed, BestCharacterTurbo, BestVehicleTurbo, ImageUrl"
 )
 
 app = Flask(__name__)
@@ -110,7 +120,8 @@ def ensure_cups_seeded():
     for cup in cups:
         execute_db(
             """
-            INSERT OR IGNORE INTO Cups (HiddenID, Name, Course1, Course2, Course3, Course4)
+            INSERT OR IGNORE INTO Cups
+            (HiddenID, Name, Course1, Course2, Course3, Course4)
             VALUES (?, ?, ?, ?, ?, ?)
             """,
             cup,
@@ -140,7 +151,8 @@ def get_maps_grouped_by_cup():
             Maps.ImageUrl
         FROM Cups
         JOIN (
-            SELECT HiddenID AS CupID, Course1 AS MapID, 1 AS CourseOrder FROM Cups
+            SELECT HiddenID AS CupID, Course1 AS MapID, 1 AS CourseOrder
+            FROM Cups
             UNION ALL
             SELECT HiddenID, Course2, 2 FROM Cups
             UNION ALL
@@ -179,7 +191,8 @@ def get_upvote_count(character_id, vehicle_id):
     return row[0] if row else 0
 
 
-def user_has_voted(character_id, vehicle_id, device_key): # Check if the user has voted on a combo by combo and device key
+def user_has_voted(character_id, vehicle_id, device_key):
+    """Check if the user has voted on a combo by combo and device key."""
     if not device_key:
         return False
     row = query_db(
@@ -236,14 +249,15 @@ def selection():
     maps = []
     seen = set()
     for group in cup_groups:
-        for m in group["maps"]:
-            if m[0] not in seen:
-                seen.add(m[0])
-                maps.append(m)
+        for map_entry in group["maps"]:
+            if map_entry[0] not in seen:
+                seen.add(map_entry[0])
+                maps.append(map_entry)
 
     characters = query_db(f"SELECT {CHARACTER_COLUMNS} FROM Characters")
     vehicles = query_db(f"SELECT {VEHICLE_COLUMNS} FROM Vehicles")
-    # Only map images block the loading screen; character/vehicle images load quietly after.
+    # Only map images block the loading screen; character/vehicle images
+    # load quietly after.
     preload_urls = list({*(m[9] for m in maps if m[9])})
     background_preload_urls = list({
         *(c[11] for c in characters if c[11]),
@@ -311,7 +325,8 @@ def force_505():
     # Demo route so the 505 page can be opened in a browser.
     abort(505)
 
-# Flags for beta/hidden features
+
+# Flags for beta/hidden features.
 @app.route("/flags")
 def flag():
     return render_template("flags.html")
@@ -327,12 +342,16 @@ def credits():
     return render_template("credits.html")
 
 
-@app.get("/proxy-image") # Proxy image used to generate image for share button
+@app.get("/proxy-image")
 def proxy_image():
+    """Proxy image used to generate image for share button."""
     url = request.args.get("url", "")
     parsed = urlparse(url)
     host = (parsed.hostname or "").lower()
-    if parsed.scheme not in ("http", "https") or host not in ALLOWED_IMAGE_HOSTS:
+    if (
+        parsed.scheme not in ("http", "https")
+        or host not in ALLOWED_IMAGE_HOSTS
+    ):
         abort(400)
 
     req = urllib.request.Request(
@@ -371,7 +390,7 @@ def char(id=None):
 
 @app.route("/vehicles/")
 @app.route("/vehicles/<path:id>")
-def vehic(id=None):
+def vehicle(id=None):
     if id is None or id == "all":
         rows = query_db(f"SELECT {VEHICLE_COLUMNS} FROM Vehicles")
         return jsonify([list(r) for r in rows])
@@ -382,49 +401,58 @@ def vehic(id=None):
     return jsonify([list(r) for r in rows])
 
 
-@app.route("/combo/<int:character_id>/<int:vehicle_id>") # Get calculated combo data
+@app.route("/combo/<int:character_id>/<int:vehicle_id>")
 def combo_stats(character_id, vehicle_id):
-    char = query_db(
+    """Get calculated combo data."""
+    character = query_db(
         f"SELECT {CHARACTER_COLUMNS} FROM Characters WHERE HiddenID = ?",
         [character_id],
         one=True,
     )
-    veh = query_db(
+    vehicle = query_db(
         f"SELECT {VEHICLE_COLUMNS} FROM Vehicles WHERE HiddenID = ?",
         [vehicle_id],
         one=True,
     )
-    if not char or not veh:
+    if not character or not vehicle:
         abort(404)
-    return jsonify(calculate_stats(char, veh))
+    return jsonify(calculate_stats(character, vehicle))
 
 
-@app.route("/maps") # Get all maps
+@app.route("/maps")
 def maps():
+    """Get all maps."""
     rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps")
     return jsonify([list(r) for r in rows])
 
 
-@app.route("/maps/<int:id>")  # Get individual map data
+@app.route("/maps/<int:id>")
 def maps_with_id(id):
-    rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps WHERE HiddenID = ?", [id])
+    """Get individual map data."""
+    rows = query_db(
+        f"SELECT {MAP_COLUMNS} FROM Maps WHERE HiddenID = ?",
+        [id],
+    )
     return jsonify([list(r) for r in rows])
 
 
 @app.post("/api/selection/")
-def apiselection():
+def api_selection():
     # Accept form fields (preferred) or JSON body for older clients.
-    map_id = request.form.get("map") or (request.get_json(silent=True) or {}).get("map")
-    priority = request.form.get("priority") or (request.get_json(silent=True) or {}).get("priority")
+    json_payload = request.get_json(silent=True) or {}
+    map_id = request.form.get("map") or json_payload.get("map")
+    priority = request.form.get("priority") or json_payload.get("priority")
     if priority == "Speed":
         result = query_db(
-            "SELECT BestCharacterSpeed, BestVehicleSpeed FROM Maps WHERE HiddenID = ?",
+            "SELECT BestCharacterSpeed, BestVehicleSpeed FROM Maps "
+            "WHERE HiddenID = ?",
             [map_id],
             one=True,
         )
     elif priority == "Turbo":
         result = query_db(
-            "SELECT BestCharacterTurbo, BestVehicleTurbo FROM Maps WHERE HiddenID = ?",
+            "SELECT BestCharacterTurbo, BestVehicleTurbo FROM Maps "
+            "WHERE HiddenID = ?",
             [map_id],
             one=True,
         )
@@ -435,18 +463,23 @@ def apiselection():
     return {"character": result[0], "vehicle": result[1]}
 
 
-@app.get("/upvotes/<int:character_id>/<int:vehicle_id>") # Get the upvote of a combo. Results depend on previous user votings 
+@app.get("/upvotes/<int:character_id>/<int:vehicle_id>")
 def upvotes_get(character_id, vehicle_id):
+    """Get the upvote count for a combo, depending on prior user votes."""
     device_key = normalise_device_key(request.args.get("device", ""))
     return {
         "upvotes": get_upvote_count(character_id, vehicle_id),
-        "voted": user_has_voted(character_id, vehicle_id, device_key) if device_key else False,
+        "voted": (
+            user_has_voted(character_id, vehicle_id, device_key)
+            if device_key
+            else False
+        ),
     }
 
 
-@app.post("/upvote") # Upvote a combo which can be seen by other users.
+@app.post("/upvote")
 def upvote():
-    # INSERT a per-device vote (Create). and rejects duplicate votes from the same device.
+    """Upvote a combo which can be seen by other users."""
     try:
         character_id = int(request.form.get("character", ""))
         vehicle_id = int(request.form.get("vehicle", ""))
@@ -457,17 +490,17 @@ def upvote():
     if not device_key:
         abort(400)
 
-    char = query_db(
+    character = query_db(
         "SELECT HiddenID FROM Characters WHERE HiddenID = ?",
         [character_id],
         one=True,
     )
-    veh = query_db(
+    vehicle = query_db(
         "SELECT HiddenID FROM Vehicles WHERE HiddenID = ?",
         [vehicle_id],
         one=True,
     )
-    if not char or not veh:
+    if not character or not vehicle:
         abort(404)
 
     if user_has_voted(character_id, vehicle_id, device_key):
@@ -489,15 +522,16 @@ def upvote():
     }
 
 
-@app.post("/downvote") # Reverse action of upvote. Can only be done if the user has voted the combo previously
+@app.post("/downvote")
 def downvote():
+    """Reverse action of upvote if the user previously voted."""
     try:
         character_id = int(request.form.get("character", ""))
         vehicle_id = int(request.form.get("vehicle", ""))
     except (TypeError, ValueError):
         abort(400)
 
-    # Get device key to check if the user has voted on the combo before
+    # Get device key to check if the user has voted on the combo before.
     device_key = normalise_device_key(request.form.get("device", ""))
     if not device_key:
         abort(400)
@@ -519,9 +553,11 @@ def downvote():
 def db():
     return "Man, you ain't gettin' no database by adding /db/ 💀"
 
+
 @app.route("/500test")
 def test_500():
     abort(500)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

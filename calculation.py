@@ -1,4 +1,5 @@
-# Server-side combo stat calculation (moved from static/modules/calculation.js).
+# Server-side combo stat calculation
+# (moved from static/modules/calculation.js).
 
 # Max combined values used to normalise bars to 0–1.
 MAXIMUM_VALUE = [
@@ -15,14 +16,16 @@ def calculate_stats(char, veh):
     Calculate normalised combo stats from character and vehicle rows.
 
     Character columns:
-        [0] HiddenID, [1] Name, [2] MiniTurbo, [3] SpeedOnRoad, [4] SpeedOffRoad,
-        [5] SpeedOnWater, [6] Acceleration, [7] Weight, [8] HandlingOnRoad,
-        [9] HandlingOffRoad, [10] HandlingOnWater, [11] ImageUrl
+        [0] HiddenID, [1] Name, [2] MiniTurbo, [3] SpeedOnRoad,
+        [4] SpeedOffRoad, [5] SpeedOnWater, [6] Acceleration,
+        [7] Weight, [8] HandlingOnRoad, [9] HandlingOffRoad,
+        [10] HandlingOnWater, [11] ImageUrl
 
     Vehicle columns:
-        [0] HiddenID, [1] Name, [2] VehicleType, [3] MiniTurbo, [4] SpeedOnRoad,
-        [5] SpeedOffRoad, [6] SpeedOnWater, [7] Acceleration, [8] Weight,
-        [9] HandlingOnRoad, [10] HandlingOffRoad, [11] HandlingOnWater, [12] ImageUrl
+        [0] HiddenID, [1] Name, [2] VehicleType, [3] MiniTurbo,
+        [4] SpeedOnRoad, [5] SpeedOffRoad, [6] SpeedOnWater,
+        [7] Acceleration, [8] Weight, [9] HandlingOnRoad,
+        [10] HandlingOffRoad, [11] HandlingOnWater, [12] ImageUrl
 
     Returns:
         [spdSr, spdRr, spdWt, hndSr, hndRr, hndWt, acc, turbo, weight]
