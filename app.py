@@ -1,3 +1,10 @@
+"""Flask application for browsing Mario Kart Wii character, vehicle, and map data."""
+
+import sqlite3
+import urllib.error
+import urllib.request
+from urllib.parse import urlparse
+
 from flask import (
     Flask,
     Response,
@@ -7,10 +14,6 @@ from flask import (
     render_template,
     request,
 )
-import sqlite3
-import urllib.error
-import urllib.request
-from urllib.parse import urlparse
 
 from calculation import calculate_stats
 
@@ -40,21 +43,25 @@ app = Flask(__name__)
 
 
 def get_db():
+    """Get the database"""
     db = getattr(g, "_database", None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row
         db.execute("PRAGMA foreign_keys = ON")
     return db
 
 
 @app.teardown_appcontext
-def close_connection(exception):
+def close_connection(_exception):
+    """Close the active database connection for the request context."""
     db = getattr(g, "_database", None)
     if db is not None:
         db.close()
 
 
 def query_db(query, args=(), one=False):
+    """Execute a read query and return one row or all rows based on the flag."""
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
@@ -180,15 +187,16 @@ def get_maps_grouped_by_cup():
 
 
 def get_upvote_count(character_id, vehicle_id):
+    """Return the number of votes recorded for the given character/vehicle pair."""
     row = query_db(
         """
-        SELECT COUNT(*) FROM ComboVotes
+        SELECT COUNT(*) AS total FROM ComboVotes
         WHERE CharacterID = ? AND VehicleID = ?
         """,
         [character_id, vehicle_id],
         one=True,
     )
-    return row[0] if row else 0
+    return row["total"] if row else 0
 
 
 def user_has_voted(character_id, vehicle_id, device_key):
@@ -207,6 +215,7 @@ def user_has_voted(character_id, vehicle_id, device_key):
 
 
 def normalise_device_key(raw):
+    """Normalise a user device key so vote requests are validated consistently."""
     key = (raw or "").strip()
     if not key or len(key) > 128:
         return None
@@ -224,15 +233,19 @@ with app.app_context():
 
 @app.route("/")
 def home():
+    """Render the home page with character and vehicle data for the landing screen."""
     characters = query_db(f"SELECT {CHARACTER_COLUMNS} FROM Characters")
     vehicles = query_db(f"SELECT {VEHICLE_COLUMNS} FROM Vehicles")
     preload_urls = list({
-        *(c[11] for c in characters if c[11]),
-        *(v[12] for v in vehicles if v[12]),
+        *(c["ImageUrl"] for c in characters if c["ImageUrl"]),
+        *(v["ImageUrl"] for v in vehicles if v["ImageUrl"]),
     })
     initial_upvotes = 0
     if characters and vehicles:
-        initial_upvotes = get_upvote_count(characters[0][0], vehicles[0][0])
+        initial_upvotes = get_upvote_count(
+            characters[0]["HiddenID"],
+            vehicles[0]["HiddenID"],
+        )
     return render_template(
         "home.html",
         characters=characters,
@@ -244,6 +257,7 @@ def home():
 
 @app.route("/Selection")
 def selection():
+    """Render the map selection screen with grouped cup data and preload metadata."""
     cup_groups = get_maps_grouped_by_cup()
     # Flat list for image preload (maps appear once even if JOINed).
     maps = []
@@ -260,8 +274,8 @@ def selection():
     # load quietly after.
     preload_urls = list({*(m[9] for m in maps if m[9])})
     background_preload_urls = list({
-        *(c[11] for c in characters if c[11]),
-        *(v[12] for v in vehicles if v[12]),
+        *(c["ImageUrl"] for c in characters if c["ImageUrl"]),
+        *(v["ImageUrl"] for v in vehicles if v["ImageUrl"]),
     })
     return render_template(
         "selection.html",
@@ -274,11 +288,12 @@ def selection():
 
 @app.route("/Compare")
 def compare():
+    """Render the comparison screen with characters and vehicles to compare."""
     characters = query_db(f"SELECT {CHARACTER_COLUMNS} FROM Characters")
     vehicles = query_db(f"SELECT {VEHICLE_COLUMNS} FROM Vehicles")
     preload_urls = list({
-        *(c[11] for c in characters if c[11]),
-        *(v[12] for v in vehicles if v[12]),
+        *(c["ImageUrl"] for c in characters if c["ImageUrl"]),
+        *(v["ImageUrl"] for v in vehicles if v["ImageUrl"]),
     })
     return render_template(
         "compare.html",
@@ -289,39 +304,46 @@ def compare():
 
 
 @app.errorhandler(404)
-def page_not_found(error):
+def page_not_found(_error):
+    """Render the custom 404 page for missing routes."""
     return render_template("404.html"), 404
 
 
 @app.errorhandler(500)
-def internal_server_error(error):
+def internal_server_error(_error):
+    """Render the custom 500 page for server errors."""
     return render_template("500.html"), 500
 
 
 @app.errorhandler(505)
-def http_version_not_supported(error):
+def http_version_not_supported(_error):
+    """Render the custom 505 page for unsupported HTTP versions."""
     return render_template("505.html"), 505
 
 
 @app.errorhandler(418)
-def im_a_teapot(error):
+def im_a_teapot(_error):
+    """Render the custom 418 page for teapot requests."""
     return render_template("418.html"), 418
 
 
 @app.route("/teapot")
 @app.route("/418")
 def teapot():
+    """Trigger the teapot status in the same way as the demo error page."""
     abort(418)
 
 
 @app.route("/coffeemachine")
 @app.route("/218")
 def coffee_machine():
+    """Render the coffee machine status page for the humorous 218 response."""
     return render_template("218.html")
 
 
 @app.route("/505")
 def force_505():
+    """Demo route so the 505 page can be opened directly in a browser."""
     # Demo route so the 505 page can be opened in a browser.
     abort(505)
 
@@ -329,16 +351,19 @@ def force_505():
 # Flags for beta/hidden features.
 @app.route("/flags")
 def flag():
+    """Render the feature-flag screen used during beta testing."""
     return render_template("flags.html")
 
 
 @app.route("/About")
 def about():
+    """Render the about page."""
     return render_template("about.html")
 
 
 @app.route("/Credits")
-def credits():
+def credits_page():
+    """Render the credits page."""
     return render_template("credits.html")
 
 
@@ -377,26 +402,28 @@ def proxy_image():
 
 @app.route("/characters")
 @app.route("/characters/<id>")
-def char(id=None):
-    if id is None or id == "all":
+def char_detail(character_id=None):
+    """Return character records, either all characters or a specific character."""
+    if character_id is None or character_id == "all":
         rows = query_db(f"SELECT {CHARACTER_COLUMNS} FROM Characters")
         return jsonify([list(r) for r in rows])
     rows = query_db(
         f"SELECT {CHARACTER_COLUMNS} FROM Characters WHERE HiddenID = ?",
-        [id],
+        [character_id],
     )
     return jsonify([list(r) for r in rows])
 
 
 @app.route("/vehicles/")
 @app.route("/vehicles/<path:id>")
-def vehicle(id=None):
-    if id is None or id == "all":
+def vehicle_data(vehicle_id=None):
+    """Return vehicle records, either all vehicles or a specific vehicle."""
+    if vehicle_id is None or vehicle_id == "all":
         rows = query_db(f"SELECT {VEHICLE_COLUMNS} FROM Vehicles")
         return jsonify([list(r) for r in rows])
     rows = query_db(
         f"SELECT {VEHICLE_COLUMNS} FROM Vehicles WHERE HiddenID = ?",
-        [id],
+        [vehicle_id],
     )
     return jsonify([list(r) for r in rows])
 
@@ -420,28 +447,30 @@ def combo_stats(character_id, vehicle_id):
 
 
 @app.route("/maps")
-def maps():
+def maps_data():
     """Get all maps."""
     rows = query_db(f"SELECT {MAP_COLUMNS} FROM Maps")
     return jsonify([list(r) for r in rows])
 
 
 @app.route("/maps/<int:id>")
-def maps_with_id(id):
+def map_data(map_id):
     """Get individual map data."""
     rows = query_db(
         f"SELECT {MAP_COLUMNS} FROM Maps WHERE HiddenID = ?",
-        [id],
+        [map_id],
     )
     return jsonify([list(r) for r in rows])
 
 
 @app.post("/api/selection/")
 def api_selection():
+    """Return the best character/vehicle stats for a selected map and priority."""
     # Accept form fields (preferred) or JSON body for older clients.
     json_payload = request.get_json(silent=True) or {}
     map_id = request.form.get("map") or json_payload.get("map")
     priority = request.form.get("priority") or json_payload.get("priority")
+    result = None
     if priority == "Speed":
         result = query_db(
             "SELECT BestCharacterSpeed, BestVehicleSpeed FROM Maps "
@@ -550,12 +579,14 @@ def downvote():
 
 
 @app.route("/db/")
-def db():
+def database_status():
+    """Return an intentionally playful database access message."""
     return "Man, you ain't gettin' no database by adding /db/ 💀"
 
 
 @app.route("/500test")
 def test_500():
+    """Trigger a server error for testing the 500 page."""
     abort(500)
 
 
