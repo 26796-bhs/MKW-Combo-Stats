@@ -1,4 +1,4 @@
-"""Flask application for browsing Mario Kart Wii character, vehicle, and map data."""
+"""Flask application for browsing Mario Kart World character, vehicle, and map data."""
 
 import sqlite3
 import urllib.error
@@ -401,7 +401,7 @@ def proxy_image():
 
 
 @app.route("/characters")
-@app.route("/characters/<id>")
+@app.route("/characters/<character_id>")
 def char_detail(character_id=None):
     """Return character records, either all characters or a specific character."""
     if character_id is None or character_id == "all":
@@ -415,7 +415,7 @@ def char_detail(character_id=None):
 
 
 @app.route("/vehicles/")
-@app.route("/vehicles/<path:id>")
+@app.route("/vehicles/<vehicle_id>")
 def vehicle_data(vehicle_id=None):
     """Return vehicle records, either all vehicles or a specific vehicle."""
     if vehicle_id is None or vehicle_id == "all":
